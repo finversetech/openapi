@@ -379,7 +379,7 @@ paths:
           description: The type of institution
           required: false
           type: string
-          enum: [BANK, WALLET]
+          enum: [BANK, WALLET, TEST]
       tags:
         - customer
         - link
@@ -1521,7 +1521,7 @@ definitions:
       institution_type:
         type: string
         example: BANK
-        enum: [BANK, WALLET]
+        enum: [BANK, WALLET, TEST]
       products_supported:
         type: array
         example:
