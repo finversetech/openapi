@@ -379,6 +379,7 @@ paths:
           description: The type of institution
           required: false
           type: string
+          enum: [BANK, WALLET]
       tags:
         - customer
         - link
@@ -1516,24 +1517,31 @@ definitions:
         example: ["real"]
         items:
           type: string
+          enum: [real, test]
       institution_type:
         type: string
         example: BANK
+        enum: [BANK, WALLET]
       products_supported:
         type: array
         example:
           [
             ACCOUNTS,
-            BALANCES,
-            BALANCE_HISTORY,
             TRANSACTIONS,
-            ACCOUNT_NUMBER,
+            STATEMENTS,
+            ACCOUNT_NUMBERS,
             IDENTITY,
-            CREDIT_DETAILS,
-            AUTO_REFRESH,
           ]
         items:
           type: string
+          enum: 
+            [
+              ACCOUNTS,
+              TRANSACTIONS,
+              STATEMENTS,
+              ACCOUNT_NUMBERS,
+              IDENTITY,
+            ]
       parent_institution_name:
         type: string
         example: Parent Mock Bank
@@ -1545,9 +1553,11 @@ definitions:
         example: Personal Internet Banking
       user_type:
         type: string
-        example: INDIVIDUAL
+        example: PERSONAL
+        enum: [PERSONAL, BUSINESS]
       status:
         type: string
+        enum: [SUPPORTED, ALPHA, BETA]
         example: SUPPORTED
       status_details:
         type: object
@@ -1569,10 +1579,6 @@ definitions:
       updated_at:
         type: string
         format: date-time
-      payment_rails:
-        type: array
-        items:
-          type: string
     required:
       - institution_id
       - countries
