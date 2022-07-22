@@ -1,10 +1,7 @@
 # openapi
 
 We uses the `OpenAPI 2.0` to specify our API and to generate SDKs.
-
-## Getting started
-
-Adding finverse.yml will trigger the CICD to build the SDKs.
+See `finverse.yml`.
 
 # Generated SDKs
 
