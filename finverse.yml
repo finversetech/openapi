@@ -2237,3 +2237,29 @@ definitions:
         items:
           type: string
 
+  EncryptedPayload:
+    properties:
+      ciphertext:
+        type: string
+        description: The credential payload encrypted with AES (base64)
+      initializationVector:
+        type: string
+        description: The 16 byte IV used w/ AES (base64)
+      messageAuthenticationCode:
+        type: string
+        description: The MAC to verify AES decryption validity
+      envelopeEncryptionKey:
+        type: string
+        description: The AES key encrypted with an RSA pubkey (base64)
+      keyId:
+        type: string
+        description: The identifier of the public key used to encrypt the AES key
+      state:
+        type: string
+    required:
+      - ciphertext
+      - initializationVector
+      - messageAuthenticationCode
+      - envelopeEncryptionKey
+      - keyId
+      - state
