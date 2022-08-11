@@ -443,6 +443,41 @@ paths:
       tags:
         - link
 
+  /link/woauth:
+    post:
+      description: Creates a new link
+      operationId: createLinkWoauth
+      security:
+        - Oauth2: [link]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/LinkResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: linkRequest
+          description: Request body for starting a new Link
+          required: true
+          schema:
+            $ref: "#/definitions/LinkRequest"
+      tags:
+        - link
+
   /link/token:
     post:
       description: generate a link token that can be used to create link
