@@ -585,6 +585,47 @@ paths:
       tags:
         - link
 
+  /link/action/{loginIdentityId}:
+    post:
+      description: Post the user action value
+      operationId: linkAction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: loginIdentityId
+          description: The login identity id
+          type: string
+        - in: body
+          required: true
+          name: actionRequest
+          description: Request body for post link action
+          schema:
+            $ref: "#/definitions/ActionRequest"
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      tags:
+        - link
+
+
   /auth/callback:
     get:
       description: Callback url to get the oauth authorization token
@@ -1800,6 +1841,13 @@ definitions:
         x-nullable: true
     required:
       - store_credential
+
+  ActionRequest:
+    properties:
+      encrypted_action:
+        $ref: "#/definitions/EncryptedPayload"
+    required:
+      - encrypted_action
 
   GetLoginIdentityByIdResponse:
     properties:
