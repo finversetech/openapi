@@ -1594,6 +1594,10 @@ definitions:
       name:
         type: string
         example: "SMS OTP"
+      is_default_method:
+        type: boolean
+        example: true
+        x-nullable: true
       login_fields:
         type: array
         items:
