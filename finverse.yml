@@ -1821,15 +1821,17 @@ definitions:
           type: string
         description: products that are requested
         example: ["ACCOUNTS", "TRANSACTIONS", "PAYMENTS"]
-      store_credential:
+      store_credentials:
         type: boolean
         example: true
       encrypted_credentials:
         $ref: "#/definitions/EncryptedPayload"
     required:
       - institution_id
+      - user_id
       - consent
       - products_requested
+      - store_credentials
       - encrypted_credentials
 
 
