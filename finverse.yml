@@ -589,6 +589,8 @@ paths:
     post:
       description: Post the user action value
       operationId: linkAction
+      security:
+        - Oauth2: [link:api]
       consumes:
         - application/json
       produces:
@@ -618,6 +620,36 @@ paths:
           description: Unauthorized
           schema:
             $ref: "#/definitions/BadRequestModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      tags:
+        - link
+
+  /link/status/{loginIdentityId}:
+    get:
+      description: Check the status of a given loginIdentity
+      operationId: linkStatus
+      security:
+        - Oauth2: [link:api]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/LinkStatusResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/FvErrorModel"
         "500":
           description: Internal Server Error
           schema:
@@ -2373,3 +2405,149 @@ definitions:
       - envelopeEncryptionKey
       - keyId
       - state
+
+  LinkStatusResponse:
+    properties:
+      success:
+        $ref: "#/definitions/AccessTokenResponse"
+      pending:
+        $ref: "#/definitions/LinkStatusPendingModel"
+      action:
+        $ref: "#/definitions/LinkStatusActionModel"
+
+  LinkStatusPendingModel:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      details:
+        type: string
+
+  LinkStatusActionModel:
+    properties:
+      id:
+        type: string
+        description: Unique identifier
+      type:
+        type: string
+        description: The type of user screen the UI is to render
+        example: ACTION
+      name:
+        type: string
+        description: The name of the user screen the UI is to render
+        example: DEVICE_SELECTION
+      messages:
+        type: array
+        items:
+          $ref: '#/definitions/UserMessage'
+      fields:
+        type: array
+        items:
+          $ref: '#/definitions/UserField'
+      buttons:
+        type: array
+        items:
+          $ref: '#/definitions/UserButton'
+    required:
+      - id
+      - type
+      - name
+      - messages
+      - fields
+
+  UserMessage:
+    properties:
+      name:
+        type: string
+        description: The name of the message
+      type:
+        type: string
+        description: The type of the message. This will help how the UI renders this text.
+      value:
+        type: string
+        description: The actual text value.
+    required:
+      - name
+      - type
+      - value
+
+  UserField:
+    properties:
+      name:
+        type: string
+        description: The name of the field. This will be used as the key when submitting response.
+      label:
+        type: string
+        description: The label for this field.
+      placeholder:
+        type: string
+        description: The placeholder for this field.
+      type:
+        type: string
+        description: The type of field. Currently it can only be SELECT, INPUT or PASSWORD
+        example: SELECT
+      options:
+        type: array
+        description: This is only applicable when the field type is SELECT
+        items: 
+          $ref: '#/definitions/UserFieldOption'
+    required:
+      - name
+      - type
+  
+  UserButton:
+    properties:
+      name:
+        type: string
+        description: The name of the button.
+      value:
+        type: string
+        description: The text that will be displayed for this button
+        example: Submit One time password
+      type:
+        type: string
+        description: The type of button. Currently it can only be SUBMIT
+        example: SUBMIT
+    required:
+      - name
+      - value
+      - type
+
+  UserFieldOption:
+    properties:
+      label:
+        type: string
+        description: The value displayed in the select element.
+        example: joe-iphone-13
+      value:
+        type: string
+        description: The value that will be submitted if this option was selected.
+        example: Joe's iPhone 13 Pro Max
+    required:
+      - label
+      - value
+
+  FvErrorModel:
+    properties:
+      type: 
+        type: string
+        enum: [LINK_ERROR, API_ERROR] # Can add more error types as and when needed
+        description: The error type
+        example: LINKING_ERROR
+      code:
+        type: string
+        example: CREDENTIALS_INVALID
+      message:
+        type: string
+      details:
+        type: string
+      request_id:
+        type: string
+        description: The request_id provided in the request header 
+    required:
+      - type
+      - code
+      - message
+      - details
+      - request_id
