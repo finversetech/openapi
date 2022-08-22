@@ -653,7 +653,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/FvErrorModel"
+            $ref: "#/definitions/ErrorResponse"
       tags:
         - link
 
@@ -2071,16 +2071,12 @@ definitions:
         description: seconds
       refresh_token:
         type: string
-      issued_at:
-        type: number
-        format: int64
     required:
       - access_token
       - login_identity_id
       - token_type
       - expires_in
       - refresh_token
-      - issued_at
 
   BadRequestModel:
     properties:
