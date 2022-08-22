@@ -2528,6 +2528,12 @@ definitions:
       - label
       - value
 
+  ErrBodyModel:
+    properties:
+      error:
+        type: object
+        $ref: '#/definitions/FvErrorModel'
+
   FvErrorModel:
     properties:
       type: 
