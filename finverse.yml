@@ -2538,6 +2538,16 @@ definitions:
         type: object
         $ref: '#/definitions/FvErrorModel'
 
+  SwaggerErrBodyModel:
+    properties:
+      code:
+        type: number
+      message:
+        type: string
+      error:
+        type: object
+        $ref: '#/definitions/FvErrorModel'
+
   FvErrorModel:
     properties:
       type: 
