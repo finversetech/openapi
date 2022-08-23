@@ -1882,10 +1882,10 @@ definitions:
 
   ActionRequest:
     properties:
-      encrypted_action:
+      encrypted_credentials:
         $ref: "#/definitions/EncryptedPayload"
     required:
-      - encrypted_action
+      - encrypted_credentials
 
   GetLoginIdentityByIdResponse:
     properties:
@@ -2430,7 +2430,7 @@ definitions:
 
   LinkStatusActionModel:
     properties:
-      id:
+      actionId:
         type: string
         description: Unique identifier
       type:
@@ -2454,7 +2454,7 @@ definitions:
         items:
           $ref: '#/definitions/UserButton'
     required:
-      - id
+      - actionId
       - type
       - name
       - messages
