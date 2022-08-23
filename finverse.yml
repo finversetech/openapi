@@ -1884,8 +1884,13 @@ definitions:
     properties:
       encrypted_credentials:
         $ref: "#/definitions/EncryptedPayload"
+      actionId:
+        type: string
+        description: The action id 
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
     required:
       - encrypted_credentials
+      - actionId
 
   GetLoginIdentityByIdResponse:
     properties:
