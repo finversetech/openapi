@@ -649,11 +649,11 @@ paths:
         "400":
           description: Invalid Request
           schema:
-            $ref: "#/definitions/FvErrorModel"
+            $ref: "#/definitions/ErrBodyModel"
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/FvErrorModel"
+            $ref: "#/definitions/ErrBodyModel"
       tags:
         - link
 
