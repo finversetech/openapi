@@ -410,36 +410,38 @@ paths:
 
   /link:
     post:
-      description: Creates a new link
+      description: Create a new link and submit credentials
       operationId: createLink
       security:
-        - Oauth2: [link]
+        - Oauth2: [link:api]
+      consumes:
+        - application/json
       produces:
         - application/json
+      parameters:
+        - in: body
+          name: apiLinkRequest
+          description: Request body for creating a new link and submitting credentials
+          required: true
+          schema:
+            $ref: "#/definitions/ApiLinkRequest"
       responses:
         "200":
-          description: Service Okay
+          description: ok
           schema:
-            $ref: "#/definitions/LinkResponse"
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
         "400":
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModel"
         "401":
           description: Unauthorized
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModel"
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: body
-          name: linkRequest
-          description: Request body for starting a new Link
-          required: true
-          schema:
-            $ref: "#/definitions/LinkRequest"
+            $ref: "#/definitions/ErrBodyModel"
       tags:
         - link
 
@@ -475,44 +477,6 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/LinkRequest"
-      tags:
-        - link
-
-  # This endpoint is a placeholder for development till ipygg switches to /link/woauth, then this endpoint handler will be linked to /link
-  /link/dummy:
-    post:
-      description: Create a new link and submit credentials
-      operationId: createLinkDummy #Remove createLinkDummy gen files once this endpoint is moved
-      security:
-        - Oauth2: [link:api]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: apiLinkRequest
-          description: Request body for creating a new link and submitting credentials
-          required: true
-          schema:
-            $ref: "#/definitions/ApiLinkRequest"
-      responses:
-        "200":
-          description: ok
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
       tags:
         - link
 
