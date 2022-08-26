@@ -2405,15 +2405,12 @@ definitions:
       keyId:
         type: string
         description: The identifier of the public key used to encrypt the AES key
-      state:
-        type: string
     required:
       - ciphertext
       - initializationVector
       - messageAuthenticationCode
       - envelopeEncryptionKey
       - keyId
-      - state
 
   LinkStatusResponse:
     properties:
