@@ -1573,6 +1573,11 @@ definitions:
       updated_at:
         type: string
         format: date-time
+      login_actions:
+        type: array
+        items:
+          type: object
+          $ref: "#/definitions/LoginAction"
     required:
       - institution_id
       - countries
@@ -1599,6 +1604,31 @@ definitions:
         items:
           type: object
           $ref: "#/definitions/LoginField"
+
+  # This model is near identitcal to the action model, however we do not want action_id here
+  LoginAction:
+    properties:
+      type:
+        type: string
+        example: "ACTION"
+      name:
+        type: string
+        example: "MOBILE_OTP"
+      messages:
+        type: array
+        items:
+          type: object
+          $ref: "#/definitions/UserMessage"
+      fields:
+        type: array
+        items:
+          type: object
+          $ref: "#/definitions/UserField"
+      buttons:
+        type: array
+        items:
+          type: object
+          $ref: "#/definitions/UserButton"
 
   LoginField:
     properties:
