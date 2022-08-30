@@ -554,7 +554,7 @@ paths:
       description: Create a new link using an existing LIID
       operationId: relinkV2
       security:
-        - Ouath2: [relinkApi:create]
+        - Oauth2: [relinkApi:create]
       produces:
         - application/json
       responses:
