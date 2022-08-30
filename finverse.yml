@@ -413,7 +413,7 @@ paths:
       description: Create a new link and submit credentials
       operationId: createLink
       security:
-        - Oauth2: [link:api]
+        - Oauth2: [linkApi:create]
       consumes:
         - application/json
       produces:
@@ -554,7 +554,7 @@ paths:
       description: Create a new link using an existing LIID
       operationId: relinkV2
       security:
-        - Ouath2: [link:api]
+        - Ouath2: [relinkApi:create]
       produces:
         - application/json
       responses:
@@ -595,7 +595,7 @@ paths:
       description: Post the user action value
       operationId: linkAction
       security:
-        - Oauth2: [link:api]
+        - Oauth2: [linkApi:update]
       consumes:
         - application/json
       produces:
@@ -637,7 +637,7 @@ paths:
       description: Check the status of a given loginIdentity
       operationId: linkStatus
       security:
-        - Oauth2: [link:api]
+        - Oauth2: [linkApi:read]
       produces:
         - application/json
       parameters:
