@@ -549,6 +549,47 @@ paths:
       tags:
         - link
 
+  /link/relink/{loginIdentityId}:
+    post:
+      description: Create a new link using an existing LIID
+      operationId: relinkV2
+      security:
+        - Ouath2: [link:api]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          required: true
+          name: loginIdentityId
+          description: The login identity id
+          type: string
+        - in: body
+          name: apiRelinkRequest
+          description: Request body for relinking and submitting credentials
+          required: true
+          schema:
+            $ref: "#/definitions/ApiRelinkRequest"
+      tags:
+        - link
+
+
   /link/action/{loginIdentityId}:
     post:
       description: Post the user action value
@@ -1860,6 +1901,17 @@ definitions:
       - store_credentials
       - encrypted_credentials
 
+  ApiRelinkRequest:
+    properties:
+      store_credential:
+        type: boolean
+      consent:
+        type: boolean
+      encrypted_credentials:
+        $ref: "#/definitions/EncryptedPayload"
+    required:
+      - consent
+      - encrypted_credentials
 
   RelinkRequest:
     properties:
