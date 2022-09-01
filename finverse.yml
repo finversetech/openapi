@@ -1587,9 +1587,11 @@ definitions:
         type: string
         example: Personal Internet Banking
       user_type:
-        type: string
-        example: PERSONAL
-        enum: [PERSONAL, BUSINESS]
+        type: array
+        items:
+          type: string
+          example: INDIVIDUAL
+          enum: [PERSONAL, INDIVIDUAL, BUSINESS]
       status:
         type: string
         enum: [SUPPORTED, ALPHA, BETA]
