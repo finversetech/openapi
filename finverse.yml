@@ -1610,6 +1610,8 @@ definitions:
         items:
           type: object
           $ref: "#/definitions/LoginMethod"
+      payment_info:
+        $ref: "#/definitions/PaymentInfo"
       color:
         type: string
         example: "#FFFFFF"
@@ -2621,3 +2623,14 @@ definitions:
       - message
       - details
       - request_id
+
+  PaymentInfo:
+    properties:
+      currencies_supported:
+        type: array
+        example: [HKD,CNY]
+        items:
+          type: string
+      other_info:
+        $ref: "#/definitions/OtherInfo"
+
