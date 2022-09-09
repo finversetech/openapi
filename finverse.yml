@@ -434,10 +434,6 @@ paths:
           description: Invalid Request
           schema:
             $ref: "#/definitions/ErrBodyModel"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
         "500":
           description: Internal Server Error
           schema:
@@ -566,10 +562,6 @@ paths:
           description: Invalid Request
           schema:
             $ref: "#/definitions/ErrBodyModel"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
         "500":
           description: Internal Server Error
           schema:
@@ -619,10 +611,6 @@ paths:
             $ref: "#/definitions/GetLoginIdentityByIdResponse"
         "400":
           description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "401":
-          description: Unauthorized
           schema:
             $ref: "#/definitions/ErrBodyModel"
         "500":
