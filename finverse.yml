@@ -192,6 +192,11 @@ paths:
           description: The account id
           required: true
           type: string
+        - in: query
+          name: source
+          description: The source will determine what type of balance history will be returned
+          type: string
+          enum: [INSTITUTION, COMPUTED]
       tags:
         - login_identity
 
@@ -1121,6 +1126,9 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/BalanceHistory"
+      source:
+        type: string
+        enum: [INSTITUTION, COMPUTED]
 
   GetIdentityResponse:
     properties:
