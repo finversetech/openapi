@@ -2154,6 +2154,37 @@ definitions:
             description: A link to visit for further action
             example: link.finverse.com
 
+  BadRequestModelV2:
+    properties:
+      error:
+        type: object
+        properties:
+          type: 
+            type: string
+            enum: [LINK_ERROR, API_ERROR]
+            description: The error type
+            example: LINKING_ERROR
+          error_code:
+            type: string
+            example: CREDENTIALS_INVALID
+          code:
+            type: number
+            example: 40004
+          message:
+            type: string
+          details:
+            type: string
+          request_id:
+            type: string
+            description: The request_id provided in the request header 
+        required:
+          - type
+          - code
+          - error_code
+          - message
+          - details
+          - request_id
+
   GetStatementsResponse:
     properties:
       statements:
@@ -2602,10 +2633,10 @@ definitions:
     properties:
       type: 
         type: string
-        enum: [LINK_ERROR, API_ERROR] # Can add more error types as and when needed
+        enum: [LINK_ERROR, API_ERROR]
         description: The error type
         example: LINKING_ERROR
-      error_code: # TODO: should be required after refactoring all errors
+      error_code:
         type: string
         example: CREDENTIALS_INVALID
       code:
