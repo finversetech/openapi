@@ -1893,6 +1893,8 @@ definitions:
         example: true
       encrypted_credentials:
         $ref: "#/definitions/EncryptedPayload"
+      payment_instruction_id:
+        type: string
     required:
       - institution_id
       - user_id
