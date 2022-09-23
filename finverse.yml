@@ -782,15 +782,15 @@ paths:
         400:
           description: Bad Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
       tags:
         - customer
 
