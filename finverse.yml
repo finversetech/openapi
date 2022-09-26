@@ -50,6 +50,23 @@ tags:
     name: link
 
 paths:
+  /jwks:
+    get:
+      description: get jwks
+      operationId: getCredSubmitJwks
+      security: []
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: ok
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - public
+
   /auth/customer/token:
     post:
       description: generate an access_token
