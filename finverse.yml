@@ -663,6 +663,35 @@ paths:
       tags:
         - link
 
+  /link/fvlink/status/{loginIdentityId}:
+    get:
+      description: Check the status of a given login identity via FVLink
+      operationId: linkStatusNonSensitive
+      security: 
+        - Oauth2: [fvLinkStatus:read]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/NonSensitiveLinkStatusResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - link
 
   /auth/callback:
     get:
@@ -2511,6 +2540,13 @@ definitions:
         $ref: "#/definitions/LinkStatusPendingModel"
       action:
         $ref: "#/definitions/LinkStatusActionModel"
+
+  NonSensitiveLinkStatusResponse:
+    properties:
+      action:
+        $ref: "#/definitions/LinkStatusActionModel"
+      redirect_uri:
+        type: string
 
   LinkStatusPendingModel:
     properties:
