@@ -119,10 +119,6 @@ paths:
           description: Invalid Request
           schema:
             $ref: "#/definitions/BadRequestModelV2"
-        404:
-          description: Not Found
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
         500:
           description: Internal Server Error
           schema:
