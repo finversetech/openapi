@@ -172,11 +172,11 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/BadRequestModelV2"
       parameters:
         - in: path
           name: accountId
