@@ -2184,8 +2184,8 @@ definitions:
       refresh_token:
         type: string
       issued_at:
-        type: number
-        format: int64
+        type: string
+        format: date-time
     required:
       - access_token
       - login_identity_id
