@@ -1021,11 +1021,11 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/BadRequestModelV2"
       parameters:
         - in: path
           name: statementId
@@ -1771,10 +1771,14 @@ definitions:
         type: number
         format: int64
         description: seconds
+      issued_at:
+        type: string
+        format: date-time
     required:
       - access_token
       - token_type
       - expires_in
+      - issued_at
 
   LinkTokenRequest:
     properties:
@@ -1890,6 +1894,9 @@ definitions:
         type: number
         format: int64
         description: seconds
+      issued_at:
+        type: string
+        format: date-time
       link_url:
         type: string
         example: https://link.dev.finverse.net/onboarding?token=dasdsa8erhiu7rey78r
@@ -1898,6 +1905,7 @@ definitions:
       - token_type
       - expires_in
       - link_url
+      - issued_at
 
   LinkRequest:
     properties:
