@@ -373,14 +373,10 @@ paths:
           description: Successful
           schema:
             $ref: "#/definitions/ListInstitutionsResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrorResponse"
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/BadRequestModelV2"
       parameters:
         # Probably we want to remove the filtering options since we do not want it
         - in: query
