@@ -853,10 +853,6 @@ paths:
           description: Invalid Request
           schema:
             $ref: "#/definitions/BadRequestModelV2"
-        "404":
-          description: Not Found
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
         "500":
           description: Internal Server Error
           schema:
@@ -885,10 +881,6 @@ paths:
             $ref: "#/definitions/GetLoginIdentityHistoryResponse"
         "400":
           description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "404":
-          description: Not Found
           schema:
             $ref: "#/definitions/BadRequestModelV2"
         "500":
