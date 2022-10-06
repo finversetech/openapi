@@ -1683,6 +1683,10 @@ definitions:
         type: boolean
         example: true
         x-nullable: true
+      status: 
+        type: string
+        enum: [SUPPORTED, ALPHA, BETA]
+        example: SUPPORTED
       login_fields:
         type: array
         items:
