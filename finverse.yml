@@ -381,7 +381,7 @@ paths:
         # Probably we want to remove the filtering options since we do not want it
         - in: query
           name: country
-          description: The country the institution belongs to
+          description: (Deprecated) The country the institution belongs to
           required: false
           type: string
         - in: query
