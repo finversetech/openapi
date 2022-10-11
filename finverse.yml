@@ -1228,9 +1228,6 @@ definitions:
       account_nickname:
         type: string
         example: Emergency Fund
-      account_type:
-        type: string
-        example: SAVINGS
       account_sub_type:
         type: string
         example: TIME_DEPOSIT
@@ -1264,6 +1261,9 @@ definitions:
       is_excluded:
         type: boolean
         example: false
+      account_type:
+        type: object
+        $ref: "#/definitions/AccountType"
     required:
       - is_parent
       - is_closed
@@ -2727,4 +2727,15 @@ definitions:
           type: string
       other_info:
         $ref: "#/definitions/OtherInfo"
+
+  AccountType:
+    properties:
+      type:
+        type: string
+        example: "DEPOSIT"
+        enum: [DEPOSIT, CARD, INVESTMENT, LOAN, UNKNOWN]
+      subtype:
+        type: string
+        example: "SAVINGS"
+        enum: [CHECKING, SAVINGS, TIME_DEPOSIT, OTHER, CREDIT_CARD, DEBIT_CARD, SECURITIES, FUNDS, STOCKS, BONDS, MORTGAGE, PERSONAL_LOAN, REVOLVING_LOAN, UNKNOWN]
 
