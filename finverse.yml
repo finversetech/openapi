@@ -1337,9 +1337,11 @@ definitions:
       category:
         type: string
         example: OTHER
+        description: (Deprecated)
       category_id:
         type: string
         example: OTHER
+        description: (Deprecated)
       merchant_name:
         type: string
         example: FUEL COFFEE
@@ -1368,14 +1370,38 @@ definitions:
         $ref: "#/definitions/CurrencyAmount"
       transfer_details:
         type: object
+        description: (Deprecated)
       created_at:
         type: string
         format: date-time
       updated_at:
         type: string
         format: date-time
+      categories:
+        type: array
+        description: Array of category labels
+        items:
+          type: string
+        example: ["TRANSFER"]
+      category_details:
+        type: object
+        $ref: "#/definitions/categoryDetails"
     required:
       - is_pending
+
+  categoryDetails:
+    type: object
+    properties:
+      categories:
+        type: array
+        items:
+          type: string
+        example: ["TRANSFER"]
+      source:
+        type: string
+        example: TRANSACTION_RULES
+      source_id:
+        type: string
 
   ListTransactionsResponse:
     properties:
