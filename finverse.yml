@@ -1058,6 +1058,380 @@ paths:
       tags:
         - login_identity
 
+  /payments/jwks:
+    get:
+      description: get payment jwks
+      operationId: getPaymentsJwks
+      security: []
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetJWKSResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - public
+
+  /mandates:
+    post:
+      description: CREATE Mandate
+      operationId: createMandate
+      security:
+        - Oauth2: [mandate:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createMandateRequest
+          description: request body for creating mandate
+          schema:
+            $ref: "#/definitions/CreateMandateRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreateMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /mandates/institution_selection:
+    post:
+      description: Update InstitutionID and SenderType for Mandate
+      operationId: setMandateInstitution
+      security:
+        - Oauth2: [mandate_auth:update]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: updateRequest
+          description: request body for updating mandate institutionId and senderType
+          schema:
+            $ref: "#/definitions/SetMandateInstitutionRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SetMandateInstitutionResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /mandates/{mandateId}:
+    get:
+      description: Get Mandate details by mandate_id
+      operationId: getMandate
+      security:
+        - Oauth2: [mandate:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: mandateId
+          description: mandate id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /mandates/link:
+    post:
+      description: Get link to launch FV Link UI in mandate authorization mode
+      operationId: getMandateAuthLink
+      security:
+        - Oauth2: [mandate:create]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateAuthLinkResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: getMandateAuthLinkRequest
+          description: request body for mandate authorization link
+          schema:
+            $ref: "#/definitions/GetMandateAuthLinkRequest"
+          required: true
+      tags:
+        - customer
+
+  /payments:
+    post:
+      description: Create new Payment
+      operationId: createPayment
+      security:
+        - Oauth2: [payment:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createPaymentRequest
+          description: request body for creating payment
+          schema:
+            $ref: "#/definitions/CreatePaymentRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /payments/{paymentId}:
+    get:
+      description: Get Payment details by payment_id
+      operationId: getPayment
+      security:
+        - Oauth2: [payment:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: paymentId
+          description: payment id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /mandates/auth:
+    get:
+      description: Get Mandate Authorization by mandate id
+      operationId: getMandateAuth
+      # Need to update this to the proper scope
+      security:
+        - Oauth2: [mandate_auth:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateAuthResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+    post:
+      description: Submit authorization checklist items
+      operationId: submitAuthChecklist
+      # Need to update this to the proper scope
+      security:
+        - Oauth2: [mandate_auth:update]
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: submitAuthChecklistRequest
+          description: request body for submitting auth checklist
+          schema:
+            $ref: "#/definitions/SubmitAuthChecklistRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SubmitAuthChecklistResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /payments/instruction:
+    post:
+      description: Create a new payment instruction to be used when linking to perform new payment
+      operationId: createPaymentInstruction
+      security:
+        - Oauth2: [payment:create]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreatePaymentInstructionResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: paymentInstruction
+          description: Request body for starting a new Link
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerPaymentInstruction"
+      tags:
+        - customer
+
+  /payments/instruction/{paymentInstructionId}:
+    get:
+      description: Get payment instructions by payment_instruction_id
+      operationId: getPaymentInstruction
+      security:
+        - Oauth2: [payment:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetPaymentInstructionsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: path
+          name: paymentInstructionId
+          description: The id of a payment instruction
+          required: true
+          type: string
+      tags:
+        - customer
+
 definitions:
   ErrorResponse:
     type: object
@@ -2765,3 +3139,673 @@ definitions:
         example: "SAVINGS"
         enum: [CHECKING, SAVINGS, TIME_DEPOSIT, OTHER, CREDIT_CARD, DEBIT_CARD, SECURITIES, FUNDS, STOCKS, BONDS, MORTGAGE, PERSONAL_LOAN, REVOLVING_LOAN, UNKNOWN]
 
+  CreatePaymentRequest:
+    properties:
+      amount:
+        type: integer
+        example: 100
+        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      currency:
+        type: string
+        example: HKD
+        description: The currency code as defined in ISO 4217.
+      type:
+        type: string
+        description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
+        enum: ["MANDATE", "SINGLE"]
+      payment_details:
+        description: Additional details required for each payment type.
+        $ref: "#/definitions/PaymentDetails2"
+    required:
+      - payment_details
+      - amount
+      - currency
+      - type
+
+  PaymentDetails2:
+    properties:
+      description:
+        type: string
+        description: The transaction description provided to banks, which banks will show to their customers.
+      mandate_id:
+        type: string
+        description: ID of the mandate this pament is referring to.
+      transaction_reference_id:
+        type: string
+        description: Customer's ID for this transaction
+    required:
+      - mandate_id
+
+  PaymentResponse:
+    properties:
+      payment_id:
+        type: string
+        description: Finverse Payment ID
+      amount:
+        type: integer
+        example: 100
+        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      currency:
+        type: string
+        example: HKD
+        description: The currency code as defined in ISO 4217.
+      type:
+        type: string
+        description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
+        enum: ["MANDATE", "SINGLE"]
+      last_update:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      status:
+        type: string
+        description: Possible values - CREATED, AUTHORIZED, SUBMITTED, EXECUTED, FAILED, REJECTED, CANCELLED.
+        enum:
+          [
+            "AUTHORIZATION_REQUIRED",
+            "AUTHORIZING",
+            "PROCESSING",
+            "SUBMITTED",
+            "EXECUTED",
+            "FAILED",
+            "REVOKED",
+          ]
+      payment_details:
+        description: Additional details required for each payment type.
+        $ref: "#/definitions/PaymentDetails2"
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
+      sender:
+        $ref: "#/definitions/GetMandateSender"
+      error:
+        $ref: "#/definitions/FvErrorModel"
+
+  CreatePaymentInstructionResponse:
+    properties:
+      payment_instruction_id:
+        type: string
+
+  GetPaymentInstructionsResponse:
+    properties:
+      payment_instruction:
+        $ref: "#/definitions/PaymentInstruction"
+
+  CustomerPaymentInstruction:
+    properties:
+      user_id:
+        type: string
+        description: A id of the user of this payment, need to equal to userId when creating link
+        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
+      type:
+        type: string
+        description: Type of payment is being created, please check Documentation on which payment type is supported in each institution
+        enum: ["DEBIT_AUTHORIZATION"]
+      recipient_name:
+        type: string
+        description: The recipient name
+        example: John Wick
+      recipient_account_id:
+        type: string
+        description: The recipient account Id
+        example: Something
+      sender_name:
+        type: string
+        description: The sender name
+        example: Jane Doe
+      sender_account_id:
+        type: string
+        description: The sender account Id
+        example: Something
+      start_date:
+        type: string
+        description: When the payment should start
+        example: 2022-01-23
+        format: date
+        x-nullable: true
+      end_date:
+        type: string
+        description: When the payment should stop
+        example: 2022-11-30
+        format: date
+        x-nullable: true
+      currency:
+        type: string
+        description: The currency for the payment
+        example: HKD
+      amount:
+        type: number
+        description: The payment amount
+        example: 123.45
+      frequency:
+        type: string
+        description: How often the payment should be executed
+        example: DAILY, WEEKLY OR MONTHLY
+      remarks:
+        type: string
+        description: Related remarks about this instruction
+        example: This is regular payment to pay for loan
+    required:
+      - user_id
+      - type
+
+  PaymentInstruction:
+    properties:
+      payment_instruction_id:
+        type: string
+        description: An id of the this payment
+        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
+      user_id:
+        type: string
+        description: An id of the user of this payment, need to equal to userId when creating link
+        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
+      login_identity_id:
+        type: string
+        description: An id that links this payment to a specific Login Identity
+        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
+      type:
+        type: string
+        description: Type of payment that was created, please check Documentation on which payment type is supported in each institution
+        enum: ["DEBIT_AUTHORIZATION"]
+      recipient_name:
+        type: string
+        description: The recipient name
+        example: John Wick
+      recipient_account_id:
+        type: string
+        description: The recipient account Id
+        example: Something
+      sender_name:
+        type: string
+        description: The sender name
+        example: Jane Doe
+      sender_account:
+        $ref: "#/definitions/PaymentAccount"
+      sender_account_id:
+        type: string
+        description: The sender account Id
+        example: The sender account ID
+      start_date:
+        type: string
+        description: When the payment should start
+        example: 2022-01-23
+        format: date
+        x-nullable: true
+      end_date:
+        type: string
+        description: When the payment should stop
+        example: 2022-11-30
+        format: date
+        x-nullable: true
+      currency:
+        type: string
+        description: The currency for the payment
+        example: HKD
+      amount:
+        type: number
+        description: The payment amount
+        example: 123.45
+      frequency:
+        type: string
+        description: How often the payment should be executed
+        example: DAILY, WEEKLY OR MONTHLY
+      remarks:
+        type: string
+        description: Related remarks about this instruction
+        example: This is regular payment to pay for loan
+      status:
+        type: string
+        description: Status of the payment
+        example: UNKNOWN, STARTED, SUBMITTED, FAILED, NOT_SUPPORTED OR TEMPORARILY_UNAVAILABLE_FOR_INSTITUTION
+      reference_id:
+        type: string
+        description: Reference identification returned by institution
+      last_update:
+        type: string
+        format: date-time
+      info:
+        type: object
+        description: Extra information collected for this payment instruction
+
+  CreateMandateRequest:
+    properties:
+      recipient:
+        $ref: "#/definitions/MandateRecipientRequest"
+        description: Information about the accountholder receiving the payment. See below.
+      sender:
+        $ref: "#/definitions/CreateMandateSender"
+        description: Information about the accountholder sending the payment. See below.
+      mandate_details:
+        $ref: "#/definitions/MandateDetails"
+        description: Additional details on the mandate. See below.
+    required:
+      - recipient
+      - sender
+      - mandate_details
+
+  CreateMandateResponse:
+    properties:
+      last_update:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      mandate_id:
+        type: string
+        description: Finverse Mandate ID (ULID)
+      mandate_status:
+        type: string
+        description: Mandate status
+        enum:
+          [
+            "AUTHORIZATION_REQUIRED",
+            "AUTHORIZING",
+            "PROCESSING",
+            "SUBMITTED",
+            "SUCCEEDED",
+            "FAILED",
+            "REVOKED",
+          ]
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
+      sender:
+        $ref: "#/definitions/GetMandateSender"
+      mandate_details:
+        $ref: "#/definitions/MandateDetails"
+      error:
+        $ref: "#/definitions/FvErrorModel"
+    required:
+      - last_update
+      - mandate_id
+      - mandate_status
+      - recipient
+      - sender
+      - mandate_details
+
+  SetMandateInstitutionRequest:
+    properties:
+      institution_id:
+        type: string
+        description: Finverse Institution ID
+    required:
+      - institution_id
+
+  SetMandateInstitutionResponse:
+    properties:
+      mandate_id:
+        type: string
+        description: Finverse Mandate ID
+    required:
+      - mandate_id
+
+  GetMandateResponse:
+    properties:
+      last_update:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      mandate_id:
+        type: string
+        description: Finverse Mandate ID (ULID)
+      mandate_status:
+        type: string
+        description: Mandate status
+        enum:
+          [
+            "AUTHORIZATION_REQUIRED",
+            "AUTHORIZING",
+            "PROCESSING",
+            "SUBMITTED",
+            "SUCCEEDED",
+            "FAILED",
+            "REVOKED",
+          ]
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
+      sender:
+        $ref: "#/definitions/GetMandateSender"
+      mandate_details:
+        $ref: "#/definitions/MandateDetails"
+      error:
+        $ref: "#/definitions/FvErrorModel"
+    required:
+      - last_update
+      - mandate_id
+      - mandate_status
+      - recipient
+      - sender
+      - mandate_details
+
+  MandateRecipient:
+    properties:
+      name:
+        type: string
+        description: Merchant account name
+      recipient_account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
+    required:
+      - name
+      - recipient_account_id
+
+  MandateRecipientRequest:
+    properties:
+      recipient_account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
+    required:
+      - recipient_account_id
+
+  CreateMandateSender:
+    properties:
+      name:
+        type: string
+      user_id:
+        type: string
+        description: Customer App's user ID, representing the end-user making the payment.
+      sender_reference_id:
+        type: string
+        description: Customer App's reference ID, representing the sender's account or billing reference number.
+    required:
+      - user_id
+
+  GetMandateSender:
+    properties:
+      name:
+        type: string
+      user_id:
+        type: string
+        description: Customer App's user ID, representing the end-user making the payment.
+      sender_reference_id:
+        type: string
+        description: Customer App's reference ID, representing the sender's account or billing reference number.
+      sender_account:
+        $ref: "#/definitions/PaymentAccount"
+        description: Details on the sender's bank account linked with the Mandate (during Mandate authorization)
+    required:
+      - user_id
+      - sender_account
+
+  MandateDetails:
+    properties:
+      currency:
+        type: string
+        description: ISO currency code
+      start_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than or the same as the date of creation. If unspecified, default to the date of creation.
+      end_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than the date of creation.
+      payment_schedule:
+        $ref: "#/definitions/PaymentSchedule"
+        x-nullable: true
+        description: Pre-scheduled payment details (only communicated to banks which require a specific payment schedule and amount when setting up a mandate).
+      transaction_limits:
+        $ref: "#/definitions/TransactionLimits"
+        x-nullable: true
+        description: Pre-set limits on the frequency and amounts of payments under this mandate.
+      description:
+        type: string
+        description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+      sender_type:
+        type: string
+        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
+        enum: ["INDIVIDUAL", "BUSINESS"]
+    required:
+      - currency
+      - sender_type
+
+  PaymentSchedule:
+    properties:
+      amount:
+        type: integer
+        example: 100
+        description: Amount to be paid, in currency’s smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      frequency:
+        type: string
+        description: Frequency of the payment. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
+        enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
+    required:
+      - amount
+      - frequency
+
+  TransactionLimits:
+    properties:
+      max_period_amount:
+        type: integer
+        description: Maximum amount of money that can be paid during the reference period (across any number of transactions). Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+      max_period_count:
+        type: integer
+        description: Maximum number of transactions (of any amount) that can be executed during the reference period.
+      max_transaction_amount:
+        type: integer
+        description: The maximum amount of money that can be transferred in a single transaction under this mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+      period:
+        type: string
+        x-nullable: true
+        description: Reference calendar periods for the payment limits. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
+        enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
+
+  GetMandateAuthLinkResponse:
+    properties:
+      access_token:
+        type: string
+        description: Short-lived access-token to interact with Finverse Link
+      expires_in:
+        type: integer
+        description: Access token validity duration (in seconds)
+      link_url:
+        type: string
+        description: URL to launch Finverse Link to authorize the mandate
+      token_type:
+        type: string
+        enum: ["Bearer"]
+    required:
+      - access_token
+      - expires_in
+      - link_url
+      - token_type
+
+  GetMandateAuthLinkRequest:
+    properties:
+      mandate_id:
+        type: string
+        description: Mandate ID
+      link_customizations:
+        $ref: "#/definitions/MandateAuthLinkCustomizations"
+    required:
+      - mandate_id
+      - link_customizations
+
+  MandateAuthLinkCustomizations:
+    properties:
+      countries:
+        type: array
+        items:
+          type: string
+        description: institution's country filter
+        example: ["HKG", "SGP"]
+      institution_id:
+        type: string
+        description: Institution to preselect
+        example: hsbc-hk
+      institution_status:
+        type: string
+        description: institution's status filter
+        example: "alpha beta supported"
+      language:
+        type: string
+        description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
+        example: en
+      link_mode:
+        type: string
+        description: Space separated list of the tags of the institutions to view.
+        example: real
+      products_supported:
+        type: array
+        items:
+          type: string
+        description: institution's supported product filter. For mandate authorization, this field should contain ["MANDATE"]
+        example: ["ACCOUNTS", "TRANSACTIONS", "MANDATE"]
+      ui_mode:
+        type: string
+        enum: [iframe, redirect, auto_redirect, standalone]
+        description: The UI mode link is intended to be used in - "iframe" (default), "auto_redirect" or "redirect" or "standalone"
+        example: "redirect"
+      user_type:
+        type: array
+        items:
+          type: string
+        description: institution's supported user_type filter
+        example: ["PERSONAL"]
+
+  GetMandateAuthResponse:
+    properties:
+      mandate_id:
+        type: string
+        description: Finverse Mandate ID
+      mandate_status:
+        type: string
+        description: Mandate status
+        enum: ["CREATED", "PROCESSING", "SUBMITTED", "ERROR"]
+      recipient_account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
+      institution_id:
+        type: string
+        description: Finverse Institution ID. Only returned if institution_id was included in the request.
+      sender_type:
+        type: string
+        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
+        enum: ["INDIVIDUAL", "BUSINESS"]
+      auth_checklist:
+        description: Checklist of the authorization factors needed to complete Mandate authorization
+        type: array
+        items:
+          $ref: "#/definitions/AuthChecklistFactor"
+      encryption_info:
+        description: Encryption_info used in the POST. The object contains the key_id and the URL where the key is hosted.
+        $ref: "#/definitions/MandateAuthEncryptionInfo"
+      last_update:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      error:
+        $ref: "#/definitions/FvErrorModel"
+    required:
+      - mandate_id
+      - mandate_status
+      - recipient_account_id
+      - institution_id
+      - auth_checklist
+      - encryption_info
+      - last_update
+
+  MandateAuthEncryptionInfo:
+    properties:
+      jwks_url:
+        type: string
+      key_id:
+        type: string
+    required:
+      - jwks_url
+      - key_id
+
+  AuthChecklistFactor:
+    properties:
+      type:
+        type: string
+        description: Type of authorization factor
+        enum:
+          [
+            "ACCOUNT_IDENTIFICATION",
+            "USER_IDENTIFICATION",
+            "ENDUSER_CONSENT",
+            "ACCOUNTHOLDER_AUTHENTICATION",
+          ]
+      group_id:
+        type: string
+        description: Allows grouping similar checklist item types together
+      required:
+        type: string
+        description: Indicates whether authorization factor is known to be required at this time.  Possible values are YES, NO, OPTIONAL
+        enum: ["YES", "NO", "OPTIONAL"]
+      options:
+        description: Array of the options accepted for a specific authorization factor
+        type: array
+        items:
+          $ref: "#/definitions/AuthChecklistOptions"
+    required:
+      - type
+      - group_id
+      - required
+      - options
+
+  AuthChecklistOptions:
+    properties:
+      name:
+        type: string
+        description: Name of authorization factor. Possible values are INSTITUTION_CREDENTIALS_LOGIN, INSTITUTION_OAUTH_LOGIN,
+        enum: ["INSTITUTION_CREDENTIALS_LOGIN", "INSTITUTION_OAUTH_LOGIN"]
+      submitted_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ) for when the authorization factor was submitted to Finverse
+        x-nullable: true
+      submitted_by:
+        type: string
+        description: Indicates who submitted the authorization factor to Finverse. Possible values are CUSTOMER_APP, FINVERSE_LINK
+        enum: ["CUSTOMER_APP", "FINVERSE_LINK"]
+    required:
+      - name
+
+  SubmitAuthChecklistResponse:
+    properties:
+      mandate_id:
+        type: string
+        description: Finverse Mandate ID
+      auth_checklist:
+        description: Checklist of the authorization factors needed to complete Mandate authorization
+        type: array
+        items:
+          $ref: "#/definitions/AuthChecklistFactor"
+      mandate_status:
+        type: string
+        description: Mandate status
+        enum: ["CREATED", "PROCESSING", "SUBMITTED", "ERROR"]
+      last_update:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+    required:
+      - mandate_id
+      - auth_checklist
+      - mandate_status
+      - last_update
+
+  SubmitAuthChecklistRequest:
+    properties:
+      key_id:
+        type: string
+        description: The key_id that was used to encrypt the envelope key
+      envelope_encryption_key:
+        type: string
+        description: The encrypted envelope key
+      initialization_vector:
+        type: string
+        description: The initialization vector used for enncrypting the payload
+      message_authentication_code:
+        type: string
+        description: The authentication code is used to authenticate the origin of the message
+      ciphertext:
+        type: string
+        description: The encrypted payload that contains auth checklist items
+    required:
+      - key_id
+      - envelope_encryption_key
+      - initialization_vector
+      - message_authentication_code
+      - ciphertext
