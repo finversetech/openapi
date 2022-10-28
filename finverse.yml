@@ -263,6 +263,12 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+        - in: query
+          name: enrichments
+          description: when true, response will be enriched transactions; otherwise it will be raw transactions
+          required: false
+          type: boolean
+          default: false
       tags:
         - login_identity
 
@@ -304,7 +310,7 @@ paths:
           minimum: 1
           maximum: 1000
         - in: query
-          name: enrichedTransactions
+          name: enrichments
           description: when true, response will be enriched transactions; otherwise it will be raw transactions
           required: false
           type: boolean
