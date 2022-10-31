@@ -3389,10 +3389,18 @@ definitions:
       mandate_details:
         $ref: "#/definitions/MandateDetails"
         description: Additional details on the mandate. See below.
+      sender_details:
+        description: Sender details which will be used for fraud checking.
+        type: array
+        minItems: 1
+        maxItems: 10
+        items:
+          $ref: "#/definitions/SenderDetail"
     required:
       - recipient
       - sender
       - mandate_details
+      - sender_details
 
   CreateMandateResponse:
     properties:
@@ -3476,6 +3484,11 @@ definitions:
         $ref: "#/definitions/GetMandateSender"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
+      sender_details:
+        description: Sender details which will be used for fraud checking.
+        type: array
+        items:
+          $ref: "#/definitions/SenderDetail"
       error:
         $ref: "#/definitions/FvErrorModel"
     required:
@@ -3569,6 +3582,20 @@ definitions:
     required:
       - currency
       - sender_type
+
+  SenderDetail:
+    properties:
+      details_type:
+        type: string
+        description: The type of the details. For e.g. HK_ID, PASSPORT, ACCOUNTHOLDER_NAME etc 
+        enum: ["HK_ID", "PASSPORT", "HK_BUSINESS_REGISTRATION", "HK_CERTIFICATE_OF_INCORPORATION", "ACCOUNTHOLDER_NAME"]
+      values:
+        description: The possible values of the detail. For e.g. "John Wick Adams" for ACCOUNTHOLDER_NAME or A123456 for HK_ID
+        type: array
+        minItems: 1
+        maxItems: 10
+        items:
+          type: string
 
   PaymentSchedule:
     properties:
