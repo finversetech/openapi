@@ -3430,6 +3430,11 @@ definitions:
         $ref: "#/definitions/GetMandateSender"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
+      sender_details:
+        description: Sender details which will be used for fraud checking.
+        type: array
+        items:
+          $ref: "#/definitions/SenderDetail"
       error:
         $ref: "#/definitions/FvErrorModel"
     required:
