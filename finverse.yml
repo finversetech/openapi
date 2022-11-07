@@ -3721,6 +3721,9 @@ definitions:
         enum: [iframe, redirect, auto_redirect, standalone]
         description: The UI mode link is intended to be used in - "iframe" (default), "auto_redirect" or "redirect" or "standalone"
         example: "redirect"
+      redirect_uri:
+        type: string
+        description: The URI to redirect to. Required if ui_mode is "redirect" or "auto_redirect"
       user_type:
         type: array
         items:
