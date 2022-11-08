@@ -3538,13 +3538,11 @@ definitions:
       sender_details:
         description: Sender details which will be used for fraud checking.
         type: array
-        minItems: 1
         maxItems: 10
         items:
           $ref: "#/definitions/SenderDetail"
     required:
       - user_id
-      - sender_details
       - sender_type
 
   GetMandateSender:
@@ -3607,19 +3605,17 @@ definitions:
     properties:
       details_type:
         type: string
-        description: The type of the details. For e.g. HK_ID, PASSPORT, ACCOUNTHOLDER_NAME etc
+        description: The type of the details. For e.g. HK_ID, PASSPORT etc
         enum:
           [
             "HK_ID",
             "PASSPORT",
             "HK_BUSINESS_REGISTRATION",
             "HK_CERTIFICATE_OF_INCORPORATION",
-            "ACCOUNTHOLDER_NAME",
           ]
       values:
-        description: The possible values of the detail. For e.g. "John Wick Adams" for ACCOUNTHOLDER_NAME or A123456 for HK_ID
+        description: The possible values of the detail. For e.g. A123456 for HK_ID
         type: array
-        minItems: 1
         maxItems: 10
         items:
           type: string
