@@ -2014,12 +2014,6 @@ definitions:
         items:
           type: string
           enum: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY]
-      payments_supported:
-        type: array
-        example: [MANDATE, DEBIT_AUTHORIZATION]
-        items:
-          type: string
-          enum: [MANDATE, DEBIT_AUTHORIZATION]
       parent_institution_name:
         type: string
         example: Parent Mock Bank
@@ -2073,7 +2067,6 @@ definitions:
       - countries
       - institution_type
       - products_supported
-      - payments_supported
       - institution_name
       - user_type
       - status
@@ -3143,8 +3136,16 @@ definitions:
         example: [HKD, CNY]
         items:
           type: string
+      payments_supported:
+        type: array
+        example: [MANDATE, DEBIT_AUTHORIZATION]
+        items:
+          type: string
+          enum: [MANDATE, DEBIT_AUTHORIZATION]
       other_info:
         $ref: "#/definitions/OtherInfo"
+    required:
+      - payments_supported
 
   AccountType:
     properties:
