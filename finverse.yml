@@ -1216,15 +1216,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModel"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModel"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/ErrBodyModel"
       parameters:
         - in: body
           name: getMandateAuthLinkRequest
