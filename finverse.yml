@@ -3428,6 +3428,19 @@ definitions:
         description: Finverse Mandate ID (ULID)
       mandate_status:
         type: string
+        description: Mandate status (deprecated)
+        enum:
+          [
+            "AUTHORIZATION_REQUIRED",
+            "AUTHORIZING",
+            "PROCESSING",
+            "SUBMITTED",
+            "SUCCEEDED",
+            "FAILED",
+            "REVOKED",
+          ]
+      status:
+        type: string
         description: Mandate status
         enum:
           [
@@ -3451,6 +3464,7 @@ definitions:
       - last_update
       - mandate_id
       - mandate_status
+      - status
       - recipient
       - sender
       - mandate_details
@@ -3482,6 +3496,19 @@ definitions:
         description: Finverse Mandate ID (ULID)
       mandate_status:
         type: string
+        description: Mandate status (deprecated)
+        enum:
+          [
+            "AUTHORIZATION_REQUIRED",
+            "AUTHORIZING",
+            "PROCESSING",
+            "SUBMITTED",
+            "SUCCEEDED",
+            "FAILED",
+            "REVOKED",
+          ]
+      status:
+        type: string
         description: Mandate status
         enum:
           [
@@ -3505,6 +3532,7 @@ definitions:
       - last_update
       - mandate_id
       - mandate_status
+      - status
       - recipient
       - sender
       - mandate_details
