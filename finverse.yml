@@ -49,1400 +49,6 @@ tags:
   - description: Operations required a link token
     name: link
 
-paths:
-  /jwks:
-    get:
-      description: get jwks
-      operationId: getCredSubmitJwks
-      security: []
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: ok
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - public
-
-  /auth/customer/token:
-    post:
-      description: generate an access_token
-      operationId: generateCustomerAccessToken
-      security: []
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: tokenRequest
-          description: token request
-          schema:
-            $ref: "#/definitions/TokenRequest"
-      responses:
-        "200":
-          description: ok
-          schema:
-            $ref: "#/definitions/TokenResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - public
-
-  /accounts/{accountId}:
-    get:
-      description: Get a specific account's information
-      operationId: getAccount
-      security:
-        - Oauth2: [account]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetAccountResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: accountId
-          description: The account id
-          required: true
-          type: string
-      tags:
-        - login_identity
-
-  /accounts:
-    get:
-      description: Get a list of accounts for a login identity
-      operationId: listAccounts
-      security:
-        - Oauth2: [account]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/ListAccountsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-  /account_numbers/{accountId}:
-    get:
-      description: Get the account number for a specific account
-      operationId: getAccountNumber
-      security:
-        - Oauth2: [account_number]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetAccountNumberResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: accountId
-          description: The account id
-          required: true
-          type: string
-      tags:
-        - login_identity
-
-  /balance_history/{accountId}:
-    get:
-      description: Get the balance history for a specific account
-      operationId: getBalanceHistory
-      security:
-        - Oauth2: [balance_history]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetBalanceHistoryResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: accountId
-          description: The account id
-          required: true
-          type: string
-        - in: query
-          name: source
-          description: The source will determine what type of balance history will be returned
-          type: string
-          enum: [INSTITUTION, COMPUTED]
-      tags:
-        - login_identity
-
-  /transactions/{accountId}:
-    get:
-      description: Get a list of transactions for a particular account. The transactions are returned in sorted order, with the most recent one appearing first.
-      operationId: listTransactionsByAccountId
-      security:
-        - Oauth2: [transaction]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/ListTransactionsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: accountId
-          description: The account id (ULID, example - 01EP4A1MZDHKETZFRPF0K62S6S)
-          required: true
-          type: string
-        - in: query
-          name: offset
-          description: default is 0
-          required: false
-          type: integer
-          default: 0
-          minimum: 0
-        - in: query
-          name: limit
-          description: default is 500, max is 1000
-          required: false
-          type: integer
-          default: 500
-          minimum: 1
-          maximum: 1000
-        - in: query
-          name: enrichments
-          description: when true, response will be enriched transactions; otherwise it will be raw transactions
-          required: false
-          type: boolean
-          default: false
-      tags:
-        - login_identity
-
-  /transactions:
-    get:
-      description: Get a list of transactions for a login identity. The transactions are returned in sorted order, with the most recent one appearing first.
-      operationId: listTransactionsByLoginIdentityId
-      security:
-        - Oauth2: [transaction]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/ListTransactionsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: query
-          name: offset
-          description: default is 0
-          required: false
-          type: integer
-          default: 0
-          minimum: 0
-        - in: query
-          name: limit
-          description: default is 500, max is 1000
-          required: false
-          type: integer
-          default: 500
-          minimum: 1
-          maximum: 1000
-        - in: query
-          name: enrichments
-          description: when true, response will be enriched transactions; otherwise it will be raw transactions
-          required: false
-          type: boolean
-          default: false
-      tags:
-        - login_identity
-
-  /income:
-    get:
-      description: Get income figures for a login identity
-      operationId: getIncomeEstimateByLoginIdentityId
-      security:
-        - Oauth2: [income:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/IncomeResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-  /institutions/{institutionId}:
-    get:
-      description: Get a specific institution by institutionId
-      operationId: getInstitution
-      security:
-        - Oauth2: [institution]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/Institution"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: institutionId
-          description: The institution id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /institutions:
-    get:
-      description: Get a list of institutions
-      operationId: listInstitutions
-      security:
-        - Oauth2: [institution]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/ListInstitutionsResponse"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        # Probably we want to remove the filtering options since we do not want it
-        - in: query
-          name: country
-          description: (Deprecated) The country the institution belongs to
-          required: false
-          type: string
-        - in: query
-          name: countries
-          description: The countries the institution belongs to
-          required: false
-          type: array
-          items:
-            type: string
-        - in: query
-          name: products_supported
-          description: The products that this institution supports
-          required: false
-          type: string
-        - in: query
-          name: institution_type
-          description: The type of institution
-          required: false
-          type: string
-          enum: [BANK, WALLET, TEST]
-      tags:
-        - customer
-        - link
-
-  /identity:
-    get:
-      description: \[BETA] Get a list of identity data for a given login identity
-      operationId: getIdentity
-      security:
-        - Oauth2: [identity]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetIdentityResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-  /link:
-    post:
-      description: Create a new link and submit credentials
-      operationId: createLink
-      security:
-        - Oauth2: [linkApi:create]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: apiLinkRequest
-          description: Request body for creating a new link and submitting credentials
-          required: true
-          schema:
-            $ref: "#/definitions/ApiLinkRequest"
-      responses:
-        "200":
-          description: ok
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
-
-  /link/woauth:
-    post:
-      description: Creates a new link
-      operationId: createLinkWoauth
-      security:
-        - Oauth2: [link]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Service Okay
-          schema:
-            $ref: "#/definitions/LinkResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: body
-          name: linkRequest
-          description: Request body for starting a new Link
-          required: true
-          schema:
-            $ref: "#/definitions/LinkRequest"
-      tags:
-        - link
-
-  /link/token:
-    post:
-      description: generate a link token that can be used to create link
-      operationId: generateLinkToken
-      security:
-        - Oauth2: [link:token]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: linkTokenRequest
-          description: token request
-          required: true
-          schema:
-            $ref: "#/definitions/LinkTokenRequest"
-      responses:
-        "200":
-          description: ok
-          schema:
-            $ref: "#/definitions/LinkTokenResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - customer
-        - login_identity
-
-  /link/relink:
-    post:
-      description: Update an existing link
-      operationId: relink
-      security:
-        - Oauth2: [loginIdentity:update]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Service Okay
-          schema:
-            $ref: "#/definitions/LinkResponse"
-        "400":
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: body
-          name: relinkRequest
-          description: Request body for updating Link
-          required: true
-          schema:
-            $ref: "#/definitions/RelinkRequest"
-      tags:
-        - link
-
-  /link/relink/{loginIdentityId}:
-    post:
-      description: Create a new link using an existing LIID
-      operationId: relinkV2
-      security:
-        - Oauth2: [relinkApi:create]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Service Okay
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      parameters:
-        - in: path
-          required: true
-          name: loginIdentityId
-          description: The login identity id
-          type: string
-        - in: body
-          name: apiRelinkRequest
-          description: Request body for relinking and submitting credentials
-          required: true
-          schema:
-            $ref: "#/definitions/ApiRelinkRequest"
-      tags:
-        - link
-
-  /link/action/{loginIdentityId}:
-    post:
-      description: Post the user action value
-      operationId: linkAction
-      security:
-        - Oauth2: [linkApi:update]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          required: true
-          name: loginIdentityId
-          description: The login identity id
-          type: string
-        - in: body
-          required: true
-          name: actionRequest
-          description: Request body for post link action
-          schema:
-            $ref: "#/definitions/ActionRequest"
-      responses:
-        "200":
-          description: Service Okay
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
-
-  /link/status/{loginIdentityId}:
-    get:
-      description: Check the status of a given loginIdentity
-      operationId: linkStatus
-      security:
-        - Oauth2: [linkApi:read]
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/LinkStatusResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
-
-  /link/fvlink/status/{loginIdentityId}:
-    get:
-      description: Check the status of a given login identity via FVLink
-      operationId: linkStatusNonSensitive
-      security:
-        - Oauth2: [fvLinkStatus:read]
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/NonSensitiveLinkStatusResponse"
-        "400":
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
-
-  /auth/callback:
-    get:
-      description: Callback url to get the oauth authorization token
-      operationId: authCallback
-      security: []
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Returns the redirect uri with either sucess or error
-          schema:
-            $ref: "#/definitions/RedirectUriResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        "422":
-          description: Unprocessable Entity
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: query
-          name: state
-          description: The state of the client when oauth was initialized
-          required: true
-          type: string
-        - in: query
-          name: code
-          description: The authorization code generated by the Oauth provider
-          type: string
-        - in: query
-          name: error
-          description: error
-          type: string
-        - in: query
-          name: error_description
-          description: error description
-          type: string
-        - in: query
-          name: error_details
-          description: error details
-          type: string
-      tags:
-        - public
-
-  /auth/token:
-    post:
-      description: Exchange authorization code for token
-      operationId: token
-      security:
-        - Oauth2: [loginIdentity:token]
-      consumes:
-        - application/x-www-form-urlencoded
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Service Okay
-          schema:
-            $ref: "#/definitions/AccessTokenResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: formData
-          name: grant_type
-          required: true
-          type: string
-          enum: ["authorization_code"]
-        - in: formData
-          name: code
-          required: true
-          type: string
-        - in: formData
-          name: client_id
-          required: true
-          type: string
-        - in: formData
-          name: redirect_uri
-          required: true
-          type: string
-      tags:
-        - link
-
-  /auth/token/refresh:
-    post:
-      description: Refresh an access token
-      operationId: refreshToken
-      security:
-        - Oauth2: [loginIdentity:token]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: refreshRequest
-          description: "The refresh token"
-          schema:
-            $ref: "#/definitions/RefreshRequest"
-          required: true
-      responses:
-        200:
-          description: New refresh, access token
-          schema:
-            $ref: "#/definitions/AccessTokenResponse"
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - customer
-
-  /login_identity/{loginIdentityId}:
-    get:
-      description: Get a specific loginIdentity
-      operationId: getLoginIdentityById
-      security:
-        - Oauth2: [loginIdentity:get]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /login_identity/{loginIdentityId}/history:
-    get:
-      description: Get a history of events for a specific loginIdentity
-      operationId: getLoginIdentityHistory
-      security:
-        - Oauth2: [loginIdentity:get]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetLoginIdentityHistoryResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /login_identity:
-    get:
-      description: Get a specific loginIdentity
-      operationId: getLoginIdentity
-      security:
-        - Oauth2: [loginIdentity:self]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetLoginIdentityByIdResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-    delete:
-      description: Delete a specific loginIdentity
-      operationId: deleteLoginIdentity
-      security:
-        - Oauth2: [loginIdentity:delete]
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/DeleteLoginIdentityResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-  /login_identity/refresh:
-    post:
-      description: Create a refresh job for a login identity
-      operationId: refreshLoginIdentity
-      security:
-        - Oauth2: [loginIdentity:update]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Refresh queued
-        400:
-          description: Refresh error
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        401:
-          description: Unauthorized
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-      tags:
-        - login_identity
-
-  /statements:
-    get:
-      description: Get list of available statements
-      operationId: getStatements
-      security:
-        - Oauth2: [statement:read]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetStatementsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      tags:
-        - login_identity
-
-  /statements/{statementId}:
-    get:
-      description: Download statement
-      operationId: getStatement
-      security:
-        - Oauth2: [statement:read]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetStatementLinkResponse"
-        "307":
-          description: Redirect
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: path
-          name: statementId
-          description: The statement id
-          required: true
-          type: string
-        - in: query
-          name: redirect
-          description: when true, response will be http redirect; otherwise it will be json response with the download link
-          required: false
-          type: boolean
-          default: true
-      tags:
-        - login_identity
-
-  /composite_statement:
-    get:
-      description: Download composite statement
-      operationId: getCompositeStatement
-      security:
-        - Oauth2: [composite_statement]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/CompositeStatementLink"
-        "307":
-          description: Redirect
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/BadRequestModelV2"
-      parameters:
-        - in: query
-          name: redirect
-          description: when true, response will be http redirect; otherwise it will be json response with the download link
-          required: false
-          type: boolean
-          default: true
-      tags:
-        - login_identity
-
-  /payments/jwks:
-    get:
-      description: get payment jwks
-      operationId: getPaymentsJwks
-      security: []
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetJWKSResponse"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - public
-
-  /mandates:
-    post:
-      description: CREATE Mandate
-      operationId: createMandate
-      security:
-        - Oauth2: [mandate:create]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Idempotency-Key
-          type: string
-          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
-        - in: body
-          name: createMandateRequest
-          description: request body for creating mandate
-          schema:
-            $ref: "#/definitions/CreateMandateRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/CreateMandateResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - customer
-
-  /mandates/institution_selection:
-    post:
-      description: Update InstitutionID and SenderType for Mandate
-      operationId: setMandateInstitution
-      security:
-        - Oauth2: [mandate_auth:update]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: updateRequest
-          description: request body for updating mandate institutionId and senderType
-          schema:
-            $ref: "#/definitions/SetMandateInstitutionRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/SetMandateInstitutionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - customer
-
-  /mandates/{mandateId}:
-    get:
-      description: Get Mandate details by mandate_id
-      operationId: getMandate
-      security:
-        - Oauth2: [mandate:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetMandateResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      parameters:
-        - in: path
-          name: mandateId
-          description: mandate id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /mandates/link:
-    post:
-      description: Get link to launch FV Link UI in mandate authorization mode
-      operationId: getMandateAuthLink
-      security:
-        - Oauth2: [mandate:create]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetMandateAuthLinkResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      parameters:
-        - in: body
-          name: getMandateAuthLinkRequest
-          description: request body for mandate authorization link
-          schema:
-            $ref: "#/definitions/GetMandateAuthLinkRequest"
-          required: true
-      tags:
-        - customer
-
-  /payments:
-    post:
-      description: Create new Payment
-      operationId: createPayment
-      security:
-        - Oauth2: [payment:create]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Idempotency-Key
-          type: string
-          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
-        - in: body
-          name: createPaymentRequest
-          description: request body for creating payment
-          schema:
-            $ref: "#/definitions/CreatePaymentRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/PaymentResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - customer
-
-  /payments/{paymentId}:
-    get:
-      description: Get Payment details by payment_id
-      operationId: getPayment
-      security:
-        - Oauth2: [payment:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/PaymentResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      parameters:
-        - in: path
-          name: paymentId
-          description: payment id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /mandates/auth:
-    get:
-      description: Get Mandate Authorization by mandate id
-      operationId: getMandateAuth
-      # Need to update this to the proper scope
-      security:
-        - Oauth2: [mandate_auth:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetMandateAuthResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - customer
-
-    post:
-      description: Submit authorization checklist items
-      operationId: submitAuthChecklist
-      # Need to update this to the proper scope
-      security:
-        - Oauth2: [mandate_auth:update]
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: submitAuthChecklistRequest
-          description: request body for submitting auth checklist
-          schema:
-            $ref: "#/definitions/SubmitAuthChecklistRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/SubmitAuthChecklistResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - customer
-
-  /payments/instruction:
-    post:
-      description: Create a new payment instruction to be used when linking to perform new payment
-      operationId: createPaymentInstruction
-      security:
-        - Oauth2: [payment:create]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/CreatePaymentInstructionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: body
-          name: paymentInstruction
-          description: Request body for starting a new Link
-          required: true
-          schema:
-            $ref: "#/definitions/CustomerPaymentInstruction"
-      tags:
-        - customer
-
-  /payments/instruction/{paymentInstructionId}:
-    get:
-      description: Get payment instructions by payment_instruction_id
-      operationId: getPaymentInstruction
-      security:
-        - Oauth2: [payment:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetPaymentInstructionsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: path
-          name: paymentInstructionId
-          description: The id of a payment instruction
-          required: true
-          type: string
-      tags:
-        - customer
-
 definitions:
   ErrorResponse:
     type: object
@@ -3882,3 +2488,1398 @@ definitions:
       - initialization_vector
       - message_authentication_code
       - ciphertext
+
+paths:
+  /jwks:
+    get:
+      description: get jwks
+      operationId: getCredSubmitJwks
+      security: []
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: ok
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - public
+
+  /auth/customer/token:
+    post:
+      description: generate an access_token
+      operationId: generateCustomerAccessToken
+      security: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: tokenRequest
+          description: token request
+          schema:
+            $ref: "#/definitions/TokenRequest"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/TokenResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - public
+
+  /accounts/{accountId}:
+    get:
+      description: Get a specific account's information
+      operationId: getAccount
+      security:
+        - Oauth2: [account]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetAccountResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: accountId
+          description: The account id
+          required: true
+          type: string
+      tags:
+        - login_identity
+
+  /accounts:
+    get:
+      description: Get a list of accounts for a login identity
+      operationId: listAccounts
+      security:
+        - Oauth2: [account]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListAccountsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /account_numbers/{accountId}:
+    get:
+      description: Get the account number for a specific account
+      operationId: getAccountNumber
+      security:
+        - Oauth2: [account_number]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetAccountNumberResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: accountId
+          description: The account id
+          required: true
+          type: string
+      tags:
+        - login_identity
+
+  /balance_history/{accountId}:
+    get:
+      description: Get the balance history for a specific account
+      operationId: getBalanceHistory
+      security:
+        - Oauth2: [balance_history]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetBalanceHistoryResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: accountId
+          description: The account id
+          required: true
+          type: string
+        - in: query
+          name: source
+          description: The source will determine what type of balance history will be returned
+          type: string
+          enum: [INSTITUTION, COMPUTED]
+      tags:
+        - login_identity
+
+  /transactions/{accountId}:
+    get:
+      description: Get a list of transactions for a particular account. The transactions are returned in sorted order, with the most recent one appearing first.
+      operationId: listTransactionsByAccountId
+      security:
+        - Oauth2: [transaction]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListTransactionsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: accountId
+          description: The account id (ULID, example - 01EP4A1MZDHKETZFRPF0K62S6S)
+          required: true
+          type: string
+        - in: query
+          name: offset
+          description: default is 0
+          required: false
+          type: integer
+          default: 0
+          minimum: 0
+        - in: query
+          name: limit
+          description: default is 500, max is 1000
+          required: false
+          type: integer
+          default: 500
+          minimum: 1
+          maximum: 1000
+        - in: query
+          name: enrichments
+          description: when true, response will be enriched transactions; otherwise it will be raw transactions
+          required: false
+          type: boolean
+          default: false
+      tags:
+        - login_identity
+
+  /transactions:
+    get:
+      description: Get a list of transactions for a login identity. The transactions are returned in sorted order, with the most recent one appearing first.
+      operationId: listTransactionsByLoginIdentityId
+      security:
+        - Oauth2: [transaction]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListTransactionsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: query
+          name: offset
+          description: default is 0
+          required: false
+          type: integer
+          default: 0
+          minimum: 0
+        - in: query
+          name: limit
+          description: default is 500, max is 1000
+          required: false
+          type: integer
+          default: 500
+          minimum: 1
+          maximum: 1000
+        - in: query
+          name: enrichments
+          description: when true, response will be enriched transactions; otherwise it will be raw transactions
+          required: false
+          type: boolean
+          default: false
+      tags:
+        - login_identity
+
+  /income:
+    get:
+      description: Get income figures for a login identity
+      operationId: getIncomeEstimateByLoginIdentityId
+      security:
+        - Oauth2: [income:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/IncomeResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /institutions/{institutionId}:
+    get:
+      description: Get a specific institution by institutionId
+      operationId: getInstitution
+      security:
+        - Oauth2: [institution]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/Institution"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: institutionId
+          description: The institution id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /institutions:
+    get:
+      description: Get a list of institutions
+      operationId: listInstitutions
+      security:
+        - Oauth2: [institution]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListInstitutionsResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        # Probably we want to remove the filtering options since we do not want it
+        - in: query
+          name: country
+          description: (Deprecated) The country the institution belongs to
+          required: false
+          type: string
+        - in: query
+          name: countries
+          description: The countries the institution belongs to
+          required: false
+          type: array
+          items:
+            type: string
+        - in: query
+          name: products_supported
+          description: The products that this institution supports
+          required: false
+          type: string
+        - in: query
+          name: institution_type
+          description: The type of institution
+          required: false
+          type: string
+          enum: [BANK, WALLET, TEST]
+      tags:
+        - customer
+        - link
+
+  /identity:
+    get:
+      description: \[BETA] Get a list of identity data for a given login identity
+      operationId: getIdentity
+      security:
+        - Oauth2: [identity]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetIdentityResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /link:
+    post:
+      description: Create a new link and submit credentials
+      operationId: createLink
+      security:
+        - Oauth2: [linkApi:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: apiLinkRequest
+          description: Request body for creating a new link and submitting credentials
+          required: true
+          schema:
+            $ref: "#/definitions/ApiLinkRequest"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - link
+
+  /link/woauth:
+    post:
+      description: Creates a new link
+      operationId: createLinkWoauth
+      security:
+        - Oauth2: [link]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/LinkResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: linkRequest
+          description: Request body for starting a new Link
+          required: true
+          schema:
+            $ref: "#/definitions/LinkRequest"
+      tags:
+        - link
+
+  /link/token:
+    post:
+      description: generate a link token that can be used to create link
+      operationId: generateLinkToken
+      security:
+        - Oauth2: [link:token]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: linkTokenRequest
+          description: token request
+          required: true
+          schema:
+            $ref: "#/definitions/LinkTokenRequest"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/LinkTokenResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - customer
+        - login_identity
+
+  /link/relink:
+    post:
+      description: Update an existing link
+      operationId: relink
+      security:
+        - Oauth2: [loginIdentity:update]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/LinkResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: relinkRequest
+          description: Request body for updating Link
+          required: true
+          schema:
+            $ref: "#/definitions/RelinkRequest"
+      tags:
+        - link
+
+  /link/relink/{loginIdentityId}:
+    post:
+      description: Create a new link using an existing LIID
+      operationId: relinkV2
+      security:
+        - Oauth2: [relinkApi:create]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          required: true
+          name: loginIdentityId
+          description: The login identity id
+          type: string
+        - in: body
+          name: apiRelinkRequest
+          description: Request body for relinking and submitting credentials
+          required: true
+          schema:
+            $ref: "#/definitions/ApiRelinkRequest"
+      tags:
+        - link
+
+  /link/action/{loginIdentityId}:
+    post:
+      description: Post the user action value
+      operationId: linkAction
+      security:
+        - Oauth2: [linkApi:update]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: loginIdentityId
+          description: The login identity id
+          type: string
+        - in: body
+          required: true
+          name: actionRequest
+          description: Request body for post link action
+          schema:
+            $ref: "#/definitions/ActionRequest"
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - link
+
+  /link/status/{loginIdentityId}:
+    get:
+      description: Check the status of a given loginIdentity
+      operationId: linkStatus
+      security:
+        - Oauth2: [linkApi:read]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/LinkStatusResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - link
+
+  /link/fvlink/status/{loginIdentityId}:
+    get:
+      description: Check the status of a given login identity via FVLink
+      operationId: linkStatusNonSensitive
+      security:
+        - Oauth2: [fvLinkStatus:read]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/NonSensitiveLinkStatusResponse"
+        "400":
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - link
+
+  /auth/callback:
+    get:
+      description: Callback url to get the oauth authorization token
+      operationId: authCallback
+      security: []
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Returns the redirect uri with either sucess or error
+          schema:
+            $ref: "#/definitions/RedirectUriResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: query
+          name: state
+          description: The state of the client when oauth was initialized
+          required: true
+          type: string
+        - in: query
+          name: code
+          description: The authorization code generated by the Oauth provider
+          type: string
+        - in: query
+          name: error
+          description: error
+          type: string
+        - in: query
+          name: error_description
+          description: error description
+          type: string
+        - in: query
+          name: error_details
+          description: error details
+          type: string
+      tags:
+        - public
+
+  /auth/token:
+    post:
+      description: Exchange authorization code for token
+      operationId: token
+      security:
+        - Oauth2: [loginIdentity:token]
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Service Okay
+          schema:
+            $ref: "#/definitions/AccessTokenResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: formData
+          name: grant_type
+          required: true
+          type: string
+          enum: ["authorization_code"]
+        - in: formData
+          name: code
+          required: true
+          type: string
+        - in: formData
+          name: client_id
+          required: true
+          type: string
+        - in: formData
+          name: redirect_uri
+          required: true
+          type: string
+      tags:
+        - link
+
+  /auth/token/refresh:
+    post:
+      description: Refresh an access token
+      operationId: refreshToken
+      security:
+        - Oauth2: [loginIdentity:token]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: refreshRequest
+          description: "The refresh token"
+          schema:
+            $ref: "#/definitions/RefreshRequest"
+          required: true
+      responses:
+        200:
+          description: New refresh, access token
+          schema:
+            $ref: "#/definitions/AccessTokenResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - customer
+
+  /login_identity/{loginIdentityId}:
+    get:
+      description: Get a specific loginIdentity
+      operationId: getLoginIdentityById
+      security:
+        - Oauth2: [loginIdentity:get]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /login_identity/{loginIdentityId}/history:
+    get:
+      description: Get a history of events for a specific loginIdentity
+      operationId: getLoginIdentityHistory
+      security:
+        - Oauth2: [loginIdentity:get]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetLoginIdentityHistoryResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: loginIdentityId
+          description: The login identity id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /login_identity:
+    get:
+      description: Get a specific loginIdentity
+      operationId: getLoginIdentity
+      security:
+        - Oauth2: [loginIdentity:self]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetLoginIdentityByIdResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+    delete:
+      description: Delete a specific loginIdentity
+      operationId: deleteLoginIdentity
+      security:
+        - Oauth2: [loginIdentity:delete]
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/DeleteLoginIdentityResponse"
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /login_identity/refresh:
+    post:
+      description: Create a refresh job for a login identity
+      operationId: refreshLoginIdentity
+      security:
+        - Oauth2: [loginIdentity:update]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Refresh queued
+        400:
+          description: Refresh error
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+      tags:
+        - login_identity
+
+  /statements:
+    get:
+      description: Get list of available statements
+      operationId: getStatements
+      security:
+        - Oauth2: [statement:read]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetStatementsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /statements/{statementId}:
+    get:
+      description: Download statement
+      operationId: getStatement
+      security:
+        - Oauth2: [statement:read]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetStatementLinkResponse"
+        "307":
+          description: Redirect
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: path
+          name: statementId
+          description: The statement id
+          required: true
+          type: string
+        - in: query
+          name: redirect
+          description: when true, response will be http redirect; otherwise it will be json response with the download link
+          required: false
+          type: boolean
+          default: true
+      tags:
+        - login_identity
+
+  /composite_statement:
+    get:
+      description: Download composite statement
+      operationId: getCompositeStatement
+      security:
+        - Oauth2: [composite_statement]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CompositeStatementLink"
+        "307":
+          description: Redirect
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      parameters:
+        - in: query
+          name: redirect
+          description: when true, response will be http redirect; otherwise it will be json response with the download link
+          required: false
+          type: boolean
+          default: true
+      tags:
+        - login_identity
+
+  /payments/jwks:
+    get:
+      description: get payment jwks
+      operationId: getPaymentsJwks
+      security: []
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetJWKSResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - public
+
+  /mandates:
+    post:
+      description: CREATE Mandate
+      operationId: createMandate
+      security:
+        - Oauth2: [mandate:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createMandateRequest
+          description: request body for creating mandate
+          schema:
+            $ref: "#/definitions/CreateMandateRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreateMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /mandates/institution_selection:
+    post:
+      description: Update InstitutionID and SenderType for Mandate
+      operationId: setMandateInstitution
+      security:
+        - Oauth2: [mandate_auth:update]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: updateRequest
+          description: request body for updating mandate institutionId and senderType
+          schema:
+            $ref: "#/definitions/SetMandateInstitutionRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SetMandateInstitutionResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /mandates/{mandateId}:
+    get:
+      description: Get Mandate details by mandate_id
+      operationId: getMandate
+      security:
+        - Oauth2: [mandate:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: mandateId
+          description: mandate id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /mandates/link:
+    post:
+      description: Get link to launch FV Link UI in mandate authorization mode
+      operationId: getMandateAuthLink
+      security:
+        - Oauth2: [mandate:create]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateAuthLinkResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: body
+          name: getMandateAuthLinkRequest
+          description: request body for mandate authorization link
+          schema:
+            $ref: "#/definitions/GetMandateAuthLinkRequest"
+          required: true
+      tags:
+        - customer
+
+  /payments:
+    post:
+      description: Create new Payment
+      operationId: createPayment
+      security:
+        - Oauth2: [payment:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createPaymentRequest
+          description: request body for creating payment
+          schema:
+            $ref: "#/definitions/CreatePaymentRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /payments/{paymentId}:
+    get:
+      description: Get Payment details by payment_id
+      operationId: getPayment
+      security:
+        - Oauth2: [payment:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: paymentId
+          description: payment id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /mandates/auth:
+    get:
+      description: Get Mandate Authorization by mandate id
+      operationId: getMandateAuth
+      # Need to update this to the proper scope
+      security:
+        - Oauth2: [mandate_auth:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetMandateAuthResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+    post:
+      description: Submit authorization checklist items
+      operationId: submitAuthChecklist
+      # Need to update this to the proper scope
+      security:
+        - Oauth2: [mandate_auth:update]
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: submitAuthChecklistRequest
+          description: request body for submitting auth checklist
+          schema:
+            $ref: "#/definitions/SubmitAuthChecklistRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SubmitAuthChecklistResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /payments/instruction:
+    post:
+      description: Create a new payment instruction to be used when linking to perform new payment
+      operationId: createPaymentInstruction
+      security:
+        - Oauth2: [payment:create]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreatePaymentInstructionResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: body
+          name: paymentInstruction
+          description: Request body for starting a new Link
+          required: true
+          schema:
+            $ref: "#/definitions/CustomerPaymentInstruction"
+      tags:
+        - customer
+
+  /payments/instruction/{paymentInstructionId}:
+    get:
+      description: Get payment instructions by payment_instruction_id
+      operationId: getPaymentInstruction
+      security:
+        - Oauth2: [payment:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetPaymentInstructionsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: path
+          name: paymentInstructionId
+          description: The id of a payment instruction
+          required: true
+          type: string
+      tags:
+        - customer
+
