@@ -3418,13 +3418,13 @@ paths:
         400:
           description: Refresh error
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
         401:
           description: Unauthorized
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/BadRequestModelV2"
       tags:
         - login_identity
 
