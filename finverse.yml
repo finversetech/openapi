@@ -1793,7 +1793,7 @@ definitions:
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: ["MANDATE", "SINGLE"]
+        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE"]
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PaymentDetails2"
@@ -1833,7 +1833,7 @@ definitions:
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: ["MANDATE", "SINGLE"]
+        enum: *PAYMENT_TYPE
       last_update:
         type: string
         format: date-time
@@ -1867,6 +1867,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/PaymentResponse'
+      total_payments:
+        type: integer
+    required:
+      - total_payments            
 
   CreatePaymentInstructionResponse:
     properties:
@@ -2128,6 +2132,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/GetMandateResponse'
+      total_mandates:
+        type: integer
+    required:
+      - total_mandates          
 
   MandateRecipient:
     properties:
@@ -3618,10 +3626,12 @@ paths:
           format: date
           description: ISO format (YYYY-MM-DD)
         - in: query
-          name: status
-          type: string
-          description: The mandate status to query for
-          enum: *MANDATE_STATUS
+          name: statuses
+          type: array
+          items:
+            type: string
+            enum: *MANDATE_STATUS
+          description: The mandate statuses to filter for, comma separated
         - in: query
           name: sender_type
           type: string
@@ -3834,10 +3844,12 @@ paths:
           format: date
           description: ISO format (YYYY-MM-DD)
         - in: query
-          name: status
-          type: string
-          description: The payment status to query for
-          enum: *PAYMENT_STATUS
+          name: statuses
+          type: array
+          items:
+            type: string
+            enum: *PAYMENT_STATUS
+          description: The payment statuses to filter for, comma separated
         - in: query
           name: sender_type
           type: string
@@ -3854,6 +3866,7 @@ paths:
         - in: query
           name: payment_type
           type: string
+          enum: *PAYMENT_TYPE
           description: The type of payment
         - in: query
           name: mandate_id
