@@ -3802,7 +3802,7 @@ paths:
       description: List Payments
       operationId: listPayments
       security:
-        - Oauth2: [payments:list]
+        - Oauth2: [payment:list]
       produces:
         - application/json
       responses:
