@@ -1841,8 +1841,8 @@ definitions:
       status:
         type: string
         description: Possible values - CREATED, AUTHORIZED, SUBMITTED, EXECUTED, FAILED, REJECTED, CANCELLED.
-        enum: &PAYMENT_STATUS
-          [
+        enum:
+          &PAYMENT_STATUS [
             "AUTHORIZATION_REQUIRED",
             "AUTHORIZING",
             "PROCESSING",
@@ -1858,6 +1858,11 @@ definitions:
         $ref: "#/definitions/MandateRecipient"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      transaction_date:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+        x-nullable: true
       error:
         $ref: "#/definitions/FvErrorModel"
 
@@ -1866,11 +1871,11 @@ definitions:
       payments:
         type: array
         items:
-          $ref: '#/definitions/PaymentResponse'
+          $ref: "#/definitions/PaymentResponse"
       total_payments:
         type: integer
     required:
-      - total_payments            
+      - total_payments
 
   CreatePaymentInstructionResponse:
     properties:
@@ -2046,8 +2051,8 @@ definitions:
       status:
         type: string
         description: Mandate status
-        enum: &MANDATE_STATUS
-          [
+        enum:
+          &MANDATE_STATUS [
             "AUTHORIZATION_REQUIRED",
             "AUTHORIZING",
             "PROCESSING",
@@ -2131,11 +2136,11 @@ definitions:
       mandates:
         type: array
         items:
-          $ref: '#/definitions/GetMandateResponse'
+          $ref: "#/definitions/GetMandateResponse"
       total_mandates:
         type: integer
     required:
-      - total_mandates          
+      - total_mandates
 
   MandateRecipient:
     properties:
@@ -3601,7 +3606,7 @@ paths:
         200:
           description: Successful
           schema:
-            $ref: '#/definitions/ListMandatesResponse'
+            $ref: "#/definitions/ListMandatesResponse"
         400:
           description: Invalid Request
           schema:
@@ -3613,7 +3618,7 @@ paths:
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel" 
+            $ref: "#/definitions/ErrBodyModel"
       parameters:
         - in: query
           name: date_from
@@ -3660,7 +3665,6 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
-
 
   /mandates/institution_selection:
     post:
@@ -3818,8 +3822,8 @@ paths:
       responses:
         200:
           description: Successful
-          schema: 
-            $ref: '#/definitions/ListPaymentsResponse'
+          schema:
+            $ref: "#/definitions/ListPaymentsResponse"
         400:
           description: Invalid Request
           schema:
@@ -3890,8 +3894,7 @@ paths:
           type: integer
           default: 500
           minimum: 1
-          maximum: 1000               
-
+          maximum: 1000
 
   /payments/{paymentId}:
     get:
@@ -4059,4 +4062,3 @@ paths:
           type: string
       tags:
         - customer
-
