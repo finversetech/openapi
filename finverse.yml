@@ -375,8 +375,9 @@ definitions:
           type: string
         example: ["TRANSFER"]
       category_details:
-        type: object
-        $ref: "#/definitions/categoryDetails"
+        type: array
+        items:
+          $ref: "#/definitions/categoryDetails"
     required:
       - is_pending
 
