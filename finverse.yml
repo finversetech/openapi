@@ -2197,6 +2197,9 @@ definitions:
       sender_reference_id:
         type: string
         description: Customer App's reference ID, representing the sender's account or billing reference number.
+      institution_id:
+        type: string
+        description: Finverse Institution ID. 
       sender_account:
         $ref: "#/definitions/PaymentAccount"
         description: Details on the sender's bank account linked with the Mandate (during Mandate authorization)
