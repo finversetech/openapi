@@ -2662,7 +2662,7 @@ definitions:
       - type
       - number
 
-  CreateRecipientResponse:
+  RecipientResponse:
     type: object
     properties:
       recipient_account_id:
@@ -2689,6 +2689,18 @@ definitions:
     required:
       - name
       - recipient_account
+
+  CreateRecipientResponse:
+    type: object
+    properties:
+      recipient:
+        $ref: "#/definitions/RecipientResponse"
+
+  GetRecipientResponse:
+    type: object
+    properties:
+      recipient:
+        $ref: "#/definitions/RecipientResponse"
 
 paths:
   /jwks:
@@ -4376,6 +4388,71 @@ paths:
         - in: path
           name: payoutInstructionId
           description: payout instruction id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /recipients/{recipientAccountId}:
+    get:
+      description: Get Recipient
+      operationId: getRecipient
+      security:
+        - Oauth2: [recipient_account:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetRecipientResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: recipientAccountId
+          description: The institution id
+          required: true
+          type: string
+      tags:
+        - customer
+
+    delete:
+      description: Delete Recipient
+      operationId: deleteRecipient
+      security:
+        - Oauth2: [recipient_account:delete]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: recipientAccountId
+          description: The institution id
           required: true
           type: string
       tags:
