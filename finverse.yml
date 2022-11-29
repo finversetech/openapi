@@ -1881,6 +1881,58 @@ definitions:
     required:
       - total_payments
 
+  CreatePayoutInstructionRequest:
+    properties:
+      mandate_id:
+        type: string
+        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
+      recipient_account_id:
+        type: string
+        description: The recipient account to receive the payment
+      amount:
+        type: integer
+        example: 100
+        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      date:
+        type: string
+        format: date
+        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
+      description:
+        type: string
+        description: A description for the payment (that will appear as the transaction description on bank statements)
+      currency:
+        type: string
+        example: HKD
+        description: The currency code as defined in ISO 4217.
+    required:
+      - mandate_id
+      - recipient_account_id
+      - amount
+      - date
+      - currency
+
+  PayoutInstructionResponse:
+    properties:
+      payout_instruction_id:
+        type: string
+        description: Finverse Payout Instruction ID
+      status:
+        type: string
+        description: Possible values - CREATED, PROCESSING, EXECUTED, CANCELLED, FAILED.
+        enum:
+          &PAYOUT_INSTRUCTION_STATUS [
+            "CREATED",
+            "PROCESSING",
+            "EXECUTED",
+            "CANCELLED",
+            "FAILED",
+          ]
+      error:
+        $ref: "#/definitions/FvErrorModel"
+    required:
+      - payout_instruction_id
+      - status
+
   CreatePaymentInstructionResponse:
     properties:
       payment_instruction_id:
@@ -2563,7 +2615,7 @@ definitions:
         items:
           type: string
         description: "List of currencies supported by the recipient account"
-        example: ["HKD","SGD"]
+        example: ["HKD", "SGD"]
       institution_id:
         type: string
         description: "Finverse Institution ID for the recipient’s institution."
@@ -2574,7 +2626,7 @@ definitions:
       - account_type
       - currencies
       - institution_id
-  
+
   RecipientAccountNumber:
     type: object
     properties:
@@ -2592,7 +2644,7 @@ definitions:
   CreateRecipientResponse:
     type: object
     properties:
-      recipient_account_id: 
+      recipient_account_id:
         type: string
         description: A unique identifier generated after creating recipient
       name:
@@ -4186,6 +4238,47 @@ paths:
           description: Successful
           schema:
             $ref: "#/definitions/CreateRecipientResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /payout_instruction:
+    post:
+      description: Create new Payout instruction
+      operationId: createPayoutInstruction
+      security:
+        - Oauth2: [payoutInstruction:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payout. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createPayoutInstructionRequest
+          description: request body for creating payout instruction
+          schema:
+            $ref: "#/definitions/CreatePayoutInstructionRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PayoutInstructionResponse"
         400:
           description: Invalid Request
           schema:
