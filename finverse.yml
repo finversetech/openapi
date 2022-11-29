@@ -4293,3 +4293,69 @@ paths:
             $ref: "#/definitions/ErrBodyModel"
       tags:
         - customer
+
+  /payout_instruction/{payoutInstructionId}:
+    get:
+      description: Get Payout Instruction details by payout_instruction_id
+      operationId: getPayoutInstruction
+      security:
+        - Oauth2: [payoutInstruction:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PayoutInstructionResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: payoutInstructionId
+          description: payout instruction id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /payout_instruction/{payoutInstructionId}/cancel:
+    post:
+      description: Cancel Payout Instruction by payout_instruction_id
+      operationId: cancelPayoutInstruction
+      security:
+        - Oauth2: [payoutInstruction:cancel]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: payoutInstructionId
+          description: payout instruction id
+          required: true
+          type: string
+      tags:
+        - customer
