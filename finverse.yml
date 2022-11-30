@@ -4254,7 +4254,7 @@ paths:
       description: Create Recipients
       operationId: createRecipient
       security:
-        - Oauth2: [recipient_account:create]
+        - Oauth2: [recipientAccount:create]
       consumes:
         - application/json
       produces:
@@ -4398,7 +4398,7 @@ paths:
       description: Get Recipient
       operationId: getRecipient
       security:
-        - Oauth2: [recipient_account:get]
+        - Oauth2: [recipientAccount:get]
       produces:
         - application/json
       responses:
@@ -4431,7 +4431,7 @@ paths:
       description: Delete Recipient
       operationId: deleteRecipient
       security:
-        - Oauth2: [recipient_account:delete]
+        - Oauth2: [recipientAccount:delete]
       produces:
         - application/json
       responses:
