@@ -4373,6 +4373,8 @@ paths:
       responses:
         200:
           description: Successful
+          schema:
+            $ref: "#/definitions/PayoutInstructionResponse"
         400:
           description: Invalid Request
           schema:
