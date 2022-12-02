@@ -2644,7 +2644,7 @@ definitions:
         example: "hsbc-hk"
     required:
       - accountholder_name
-      # - account_number
+      - account_number
       - account_type
       - currencies
       - institution_id
