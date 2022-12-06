@@ -1838,7 +1838,7 @@ definitions:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
         enum: *PAYMENT_TYPE
-      last_update:
+      updated_at:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
@@ -1862,6 +1862,10 @@ definitions:
         $ref: "#/definitions/MandateRecipient"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       transaction_date:
         type: string
         format: date-time
@@ -2118,7 +2122,7 @@ definitions:
 
   CreateMandateResponse:
     properties:
-      last_update:
+      updated_at:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
@@ -2147,7 +2151,7 @@ definitions:
       error:
         $ref: "#/definitions/FvErrorModel"
     required:
-      - last_update
+      - updated_at
       - mandate_id
       - status
       - recipient
@@ -2172,7 +2176,7 @@ definitions:
 
   GetMandateResponse:
     properties:
-      last_update:
+      updated_at:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
@@ -2201,7 +2205,7 @@ definitions:
       error:
         $ref: "#/definitions/FvErrorModel"
     required:
-      - last_update
+      - updated_at
       - mandate_id
       - status
       - recipient
