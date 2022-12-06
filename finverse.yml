@@ -2624,6 +2624,9 @@ definitions:
   RecipientAccount:
     type: object
     properties:
+      recipient_account_id:
+        type: string
+        description: A unique identifier generated after creating recipient
       accountholder_name:
         type: string
         description: "Accountholder name of the recipient's account"
@@ -2670,9 +2673,6 @@ definitions:
   RecipientResponse:
     type: object
     properties:
-      recipient_account_id:
-        type: string
-        description: A unique identifier generated after creating recipient
       name:
         type: string
         description: "Recipient's name/nickname (note: this does not need to match the actual accountholder name of the recipient's account)"
