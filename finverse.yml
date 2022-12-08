@@ -2687,25 +2687,17 @@ definitions:
       metadata:
         type: object
         description: "Additional attributes of the recipient in key:value format (e.g. employer_name: Apple Inc for a payroll case where recipient is an employee)"
-      last_update:
+      created_at:
         type: string
         format: date-time
-        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+        description: Timestamp of when the recipient was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the recipient was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
     required:
       - name
       - recipient_account
-
-  CreateRecipientResponse:
-    type: object
-    properties:
-      recipient:
-        $ref: "#/definitions/RecipientResponse"
-
-  GetRecipientResponse:
-    type: object
-    properties:
-      recipient:
-        $ref: "#/definitions/RecipientResponse"
 
 paths:
   /jwks:
@@ -4275,7 +4267,7 @@ paths:
         200:
           description: Successful
           schema:
-            $ref: "#/definitions/CreateRecipientResponse"
+            $ref: "#/definitions/RecipientResponse"
         400:
           description: Invalid Request
           schema:
@@ -4412,7 +4404,7 @@ paths:
         200:
           description: Successful
           schema:
-            $ref: "#/definitions/GetRecipientResponse"
+            $ref: "#/definitions/RecipientResponse"
         400:
           description: Invalid Request
           schema:
