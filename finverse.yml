@@ -2607,7 +2607,7 @@ definitions:
         maxLength: 15
       recipient_account:
         description: "Details of the recipient’s institution and account (for receiving payouts). See below."
-        $ref: "#/definitions/RecipientAccount"
+        $ref: "#/definitions/CreateRecipientAccount"
       user_id:
         type: string
         description: "Customer App's internal ID for the recipient"
@@ -2620,13 +2620,11 @@ definitions:
     required:
       - name
       - recipient_account
+      - user_id
 
-  RecipientAccount:
+  CreateRecipientAccount:
     type: object
     properties:
-      recipient_account_id:
-        type: string
-        description: A unique identifier generated after creating recipient
       accountholder_name:
         type: string
         description: "Accountholder name of the recipient's account"
@@ -2656,6 +2654,35 @@ definitions:
       - currencies
       - institution_id
 
+  RecipientAccountResponse:
+    type: object
+    properties:
+      recipient_account_id:
+        type: string
+        description: A unique identifier generated after creating recipient
+      accountholder_name:
+        type: string
+        description: "Accountholder name of the recipient's account"
+        example: "Chan Li Pak"
+      account_number:
+        $ref: "#/definitions/RecipientAccountNumber"
+        description: "Account number of the recipient’s account. See below."
+      account_type:
+        type: string
+        description: "Type of recipient account."
+        example: "EXTERNAL_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT,SETTLEMENT_ACCOUNT]
+      currencies:
+        type: array
+        items:
+          type: string
+        description: "List of currencies supported by the recipient account"
+        example: ["HKD", "SGD"]
+      institution_id:
+        type: string
+        description: "Finverse Institution ID for the recipient’s institution."
+        example: "hsbc-hk"
+
   RecipientAccountNumber:
     type: object
     properties:
@@ -2679,7 +2706,7 @@ definitions:
         example: "James Chan"
       recipient_account:
         description: "Details of the recipient’s institution and account (for receiving payouts). See below."
-        $ref: "#/definitions/RecipientAccount"
+        $ref: "#/definitions/RecipientAccountResponse"
       user_id:
         type: string
         description: "Customer App's internal ID for the recipient"
@@ -2732,6 +2759,8 @@ definitions:
         description: "Additional attributes of the sender in key:value format (e.g. employer_name: Apple Inc for a payroll case where sender is an employee)"
     required:
       - name
+      - sender_type
+      - user_id
 
   SenderResponse:
     type: object
@@ -2775,9 +2804,6 @@ definitions:
         type: string
         format: date-time
         description: Timestamp of when the sender was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-    required:
-      - sender_id
-      - name
 
 paths:
   /jwks:
