@@ -2699,6 +2699,86 @@ definitions:
       - name
       - recipient_account
 
+  CreateSenderRequest:
+    type: object
+    properties:
+      name:
+        type: string
+        description: "Sender’s name/nickname (note: this does not need to match the actual accountholder name of the sender’s account)"
+        example: "James Chan"
+        maxLength: 15
+      user_id:
+        type: string
+        description: "Customer App's internal ID for the sender"
+        example: "user_id_1"
+      sender_details:
+        description: Sender details which will be used for fraud checking.
+        type: array
+        maxItems: 10
+        items:
+          $ref: "#/definitions/SenderDetail"
+      sender_reference_id:
+        type: string
+        description: "Customer reference for the sender"
+        example: "Account123456"
+      sender_type:
+        type: string
+        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
+        enum: ["INDIVIDUAL", "BUSINESS"]
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the sender in key:value format (e.g. employer_name: Apple Inc for a payroll case where sender is an employee)"
+    required:
+      - name
+
+  SenderResponse:
+    type: object
+    properties:
+      sender_id:
+        type: string
+        description: A unique identifier generated after creating sender
+      user_id:
+        type: string
+        description: "Customer App's internal ID for the sender"
+        example: "user_id_1"
+      name:
+        type: string
+        description: "Sender’s name/nickname (note: this does not need to match the actual accountholder name of the sender’s account)"
+        example: "James Chan"
+        maxLength: 15
+      sender_details:
+        description: Sender details which will be used for fraud checking.
+        type: array
+        maxItems: 10
+        items:
+          $ref: "#/definitions/SenderDetail"
+      sender_reference_id:
+        type: string
+        description: "Customer reference for the sender"
+        example: "Account123456"
+      sender_type:
+        type: string
+        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
+        enum: ["INDIVIDUAL", "BUSINESS"]
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the sender in key:value format (e.g. employer_name: Apple Inc for a payroll case where sender is an employee)"
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the sender was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the sender was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+    required:
+      - sender_id
+      - name
+
 paths:
   /jwks:
     get:
@@ -4452,6 +4532,77 @@ paths:
         - in: path
           name: recipientAccountId
           description: The institution id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /senders:
+    post:
+      description: Create Sender
+      operationId: createSender
+      security:
+        - Oauth2: [sender:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createSenderRequest
+          description: request body for creating sender
+          schema:
+            $ref: "#/definitions/CreateSenderRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SenderResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      tags:
+        - customer
+
+  /senders/{senderId}:
+    get:
+      description: Get Sender
+      operationId: getSender
+      security:
+        - Oauth2: [sender:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SenderResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModel"
+      parameters:
+        - in: path
+          name: senderId
+          description: The sender id
           required: true
           type: string
       tags:
