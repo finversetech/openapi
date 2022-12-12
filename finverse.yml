@@ -2855,17 +2855,12 @@ definitions:
         type: string
         description: "A unique identifier generated after creating sender"
         example: "sender_id"
-      user_id:
-        type: string
-        description: "Customer App's internal ID for the recipient"
-        example: "user_id"
     required:
       - accountholder_name
       - account_number
       - account_type
       - institution_id
       - sender_id
-      - user_id
 
   SenderAccountsResponse:
     type: object
@@ -2902,10 +2897,6 @@ definitions:
         type: string
         description: "A unique identifier generated after creating sender"
         example: "sender_id"
-      user_id:
-        type: string
-        description: "Customer App's internal ID for the recipient"
-        example: "user_id"
       created_at:
         type: string
         format: date-time
