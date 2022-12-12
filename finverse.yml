@@ -2832,6 +2832,89 @@ definitions:
         format: date-time
         description: Timestamp of when the sender was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
 
+  CreateSenderAccountRequest:
+    type: object
+    properties:
+      accountholder_name:
+        type: string
+        description: "Accountholder name of the sender's account"
+        example: "Chan Li Pak"
+      account_number:
+        $ref: "#/definitions/RecipientAccountNumber"
+        description: "Account number of the sender’s account. See below."
+      account_type:
+        type: string
+        description: "Type of sender account."
+        example: "EXTERNAL_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT]
+      institution_id:
+        type: string
+        description: "Finverse Institution ID for the sender’s institution."
+        example: "hsbc-hk"
+      sender_id:
+        type: string
+        description: "A unique identifier generated after creating sender"
+        example: "sender_id"
+      user_id:
+        type: string
+        description: "Customer App's internal ID for the recipient"
+        example: "user_id"
+    required:
+      - accountholder_name
+      - account_number
+      - account_type
+      - institution_id
+      - sender_id
+      - user_id
+
+  SenderAccountsResponse:
+    type: object
+    properties:
+      sender_accounts:
+        type: array
+        items:
+          $ref: "#/definitions/SenderAccountResponse"
+
+  SenderAccountResponse:
+    type: object
+    properties:
+      sender_account_id:
+        type: string
+        description: "A unique identifier generated after creating sender account"
+        example: "sender_account_id"
+      accountholder_name:
+        type: string
+        description: "Accountholder name of the sender's account"
+        example: "Chan Li Pak"
+      account_number:
+        $ref: "#/definitions/RecipientAccountNumber"
+        description: "Account number of the sender’s account. See below."
+      account_type:
+        type: string
+        description: "Type of sender account."
+        example: "EXTERNAL_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT]
+      institution_id:
+        type: string
+        description: "Finverse Institution ID for the sender’s institution."
+        example: "hsbc-hk"
+      sender_id:
+        type: string
+        description: "A unique identifier generated after creating sender"
+        example: "sender_id"
+      user_id:
+        type: string
+        description: "Customer App's internal ID for the recipient"
+        example: "user_id"
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the sender was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the sender was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+
 paths:
   /jwks:
     get:
@@ -4656,6 +4739,109 @@ paths:
         - in: path
           name: senderId
           description: The sender id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /sender_accounts:
+    post:
+      description: Create Sender Account
+      operationId: createSenderAccount
+      security:
+        - Oauth2: [senderAccount:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createSenderAccountRequest
+          description: request body for creating senderAccount
+          schema:
+            $ref: "#/definitions/CreateSenderAccountRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SenderAccountResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - customer
+
+  /senders/{senderId}/sender_accounts:
+    get:
+      description: Get Sender Accounts associated with a senderId
+      operationId: getSenderAccounts
+      security:
+        - Oauth2: [senderAccount:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SenderAccountsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: senderId
+          description: The sender id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /sender_accounts/{senderAccountId}:
+    delete:
+      description: Delete Sender Account 
+      operationId: deleteSenderAccount
+      security:
+        - Oauth2: [senderAccount:delete]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: senderAccountId
+          description: The sender account id
           required: true
           type: string
       tags:
