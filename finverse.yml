@@ -1701,6 +1701,12 @@ definitions:
         type: object
         $ref: "#/definitions/FvErrorModel"
 
+  ErrBodyModelV2:
+    properties:
+      error:
+        type: object
+        $ref: "#/definitions/FvErrorModelV2"
+
   SwaggerErrBodyModel:
     properties:
       code:
@@ -1734,6 +1740,30 @@ definitions:
     required:
       - type
       - code
+      - error_code
+      - message
+      - details
+      - request_id
+
+  FvErrorModelV2:
+    properties:
+      type:
+        type: string
+        enum: [LINK_ERROR, API_ERROR]
+        description: The error type
+        example: LINKING_ERROR
+      error_code:
+        type: string
+        example: CREDENTIALS_INVALID
+      message:
+        type: string
+      details:
+        type: string
+      request_id:
+        type: string
+        description: The request_id provided in the request header
+    required:
+      - type
       - error_code
       - message
       - details
@@ -1872,7 +1902,7 @@ definitions:
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
         x-nullable: true
       error:
-        $ref: "#/definitions/FvErrorModel"
+        $ref: "#/definitions/FvErrorModelV2"
 
   ListPaymentsResponse:
     properties:
@@ -1953,7 +1983,7 @@ definitions:
         example: HKD
         description: The currency code as defined in ISO 4217.
       error:
-        $ref: "#/definitions/FvErrorModel"
+        $ref: "#/definitions/FvErrorModelV2"
     required:
       - payout_instruction_id
       - status
@@ -2149,7 +2179,7 @@ definitions:
       mandate_details:
         $ref: "#/definitions/MandateDetails"
       error:
-        $ref: "#/definitions/FvErrorModel"
+        $ref: "#/definitions/FvErrorModelV2"
     required:
       - updated_at
       - mandate_id
@@ -2203,7 +2233,7 @@ definitions:
       mandate_details:
         $ref: "#/definitions/MandateDetails"
       error:
-        $ref: "#/definitions/FvErrorModel"
+        $ref: "#/definitions/FvErrorModelV2"
     required:
       - updated_at
       - mandate_id
@@ -2481,7 +2511,7 @@ definitions:
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       error:
-        $ref: "#/definitions/FvErrorModel"
+        $ref: "#/definitions/FvErrorModelV2"
     required:
       - mandate_id
       - mandate_status
@@ -2671,7 +2701,7 @@ definitions:
         type: string
         description: "Type of recipient account."
         example: "EXTERNAL_ACCOUNT"
-        enum: [EXTERNAL_ACCOUNT,SETTLEMENT_ACCOUNT]
+        enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
       currencies:
         type: array
         items:
@@ -3837,7 +3867,7 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - public
 
@@ -3870,15 +3900,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
     get:
@@ -3896,15 +3926,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: query
           name: date_from
@@ -3977,15 +4007,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4005,15 +4035,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: mandateId
@@ -4039,15 +4069,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: body
           name: getMandateAuthLinkRequest
@@ -4087,15 +4117,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
     get:
@@ -4113,15 +4143,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: query
           name: date_from
@@ -4198,15 +4228,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: paymentId
@@ -4233,15 +4263,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4268,15 +4298,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4374,15 +4404,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4415,15 +4445,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4443,15 +4473,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: payoutInstructionId
@@ -4477,15 +4507,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: payoutInstructionId
@@ -4511,15 +4541,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: recipientAccountId
@@ -4542,15 +4572,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: recipientAccountId
@@ -4585,15 +4615,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
@@ -4613,15 +4643,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModel"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: senderId
