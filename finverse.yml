@@ -1917,36 +1917,43 @@ definitions:
 
   CreatePayoutInstructionRequest:
     properties:
-      mandate_id:
-        type: string
-        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
-      recipient_account_id:
-        type: string
-        description: The recipient account to receive the payment
       amount:
         type: integer
         example: 100
         description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
-      date:
-        type: string
-        format: date
-        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
-      description:
-        type: string
-        description: A description for the payment (that will appear as the transaction description on bank statements)
       currency:
         type: string
         example: HKD
         description: The currency code as defined in ISO 4217.
+      payment_details:
+        description: Additional details required for each payment type.
+        $ref: "#/definitions/PayoutDetails"
+      recipient:
+        $ref: "#/definitions/MandateRecipientRequest"
+        description: Information about the accountholder receiving the payment. See below.
     required:
-      - mandate_id
-      - recipient_account_id
+      - payment_details
+      - recipient
       - amount
-      - date
       - currency
 
   PayoutInstructionResponse:
     properties:
+      amount:
+        type: integer
+        example: 100
+        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      currency:
+        type: string
+        example: HKD
+        description: The currency code as defined in ISO 4217.
+      payment_details:
+        description: Additional details required for each payment type.
+        $ref: "#/definitions/PayoutDetails"
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
+      sender:
+        $ref: "#/definitions/PayoutSender"
       payout_instruction_id:
         type: string
         description: Finverse Payout Instruction ID
@@ -1961,32 +1968,40 @@ definitions:
             "CANCELLED",
             "FAILED",
           ]
-      mandate_id:
+      created_at:
         type: string
-        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
-      recipient_account_id:
+        format: date-time
+        description: Timestamp of when the recipient was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
         type: string
-        description: The recipient account to receive the payment
-      amount:
-        type: integer
-        example: 100
-        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
-      date:
-        type: string
-        format: date
-        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
-      description:
-        type: string
-        description: A description for the payment (that will appear as the transaction description on bank statements)
-      currency:
-        type: string
-        example: HKD
-        description: The currency code as defined in ISO 4217.
+        format: date-time
+        description: Timestamp of when the recipient was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       error:
         $ref: "#/definitions/FvErrorModelV2"
     required:
       - payout_instruction_id
       - status
+
+  PayoutSender:
+    properties:
+      name:
+        type: string
+
+  PayoutDetails:
+    properties:
+      mandate_id:
+        type: string
+        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
+      description:
+        type: string
+        description: A description for the payment (that will appear as the transaction description on bank statements)
+      scheduled_date:
+        type: string
+        format: date
+        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
+    required:
+      - mandate_id
+      - scheduled_date
 
   CreatePaymentInstructionResponse:
     properties:
@@ -4808,7 +4823,7 @@ paths:
 
   /sender_accounts/{senderAccountId}:
     delete:
-      description: Delete Sender Account 
+      description: Delete Sender Account
       operationId: deleteSenderAccount
       security:
         - Oauth2: [senderAccount:delete]
