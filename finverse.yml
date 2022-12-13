@@ -1949,9 +1949,9 @@ definitions:
         description: The currency code as defined in ISO 4217.
       payment_details:
         description: Additional details required for each payment type.
-        $ref: "#/definitions/PayoutDetails"
+        $ref: "#/definitions/PayoutDetailsResponse"
       recipient:
-        $ref: "#/definitions/MandateRecipient"
+        $ref: "#/definitions/PayoutRecipient"
       sender:
         $ref: "#/definitions/PayoutSender"
       payout_instruction_id:
@@ -1978,9 +1978,15 @@ definitions:
         description: Timestamp of when the recipient was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       error:
         $ref: "#/definitions/FvErrorModelV2"
-    required:
-      - payout_instruction_id
-      - status
+
+  PayoutRecipient:
+    properties:
+      name:
+        type: string
+        description: Merchant account name
+      recipient_account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
 
   PayoutSender:
     properties:
@@ -2002,6 +2008,19 @@ definitions:
     required:
       - mandate_id
       - scheduled_date
+
+  PayoutDetailsResponse:
+    properties:
+      mandate_id:
+        type: string
+        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
+      description:
+        type: string
+        description: A description for the payment (that will appear as the transaction description on bank statements)
+      scheduled_date:
+        type: string
+        format: date
+        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
 
   CreatePaymentInstructionResponse:
     properties:
