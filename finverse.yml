@@ -2368,6 +2368,9 @@ definitions:
 
   GetMandateSender:
     properties:
+      sender_id:
+        type: string
+        description: A unique identifier generated after creating sender
       name:
         type: string
       user_id:
@@ -2389,6 +2392,7 @@ definitions:
         items:
           $ref: "#/definitions/SenderDetail"
     required:
+      - sender_id
       - user_id
       - sender_account
       - sender_type
