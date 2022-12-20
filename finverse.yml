@@ -2928,6 +2928,11 @@ definitions:
         type: string
         description: "A unique identifier generated after creating sender"
         example: "sender_id"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - accountholder_name
       - account_number
@@ -2970,6 +2975,11 @@ definitions:
         type: string
         description: "A unique identifier generated after creating sender"
         example: "sender_id"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
       created_at:
         type: string
         format: date-time
