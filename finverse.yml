@@ -2294,6 +2294,8 @@ definitions:
         $ref: "#/definitions/MandateRecipient"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      sender_account:
+        $ref: "#/definitions/SenderAccountResponse"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
       error:
