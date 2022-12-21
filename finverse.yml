@@ -2295,7 +2295,7 @@ definitions:
       sender:
         $ref: "#/definitions/GetMandateSender"
       sender_account:
-        $ref: "#/definitions/SenderAccountResponse"
+        $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
       error:
@@ -2990,6 +2990,39 @@ definitions:
         type: string
         format: date-time
         description: Timestamp of when the sender was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+
+  MandateSenderAccount:
+    type: object
+    properties:
+      sender_account_id:
+        type: string
+        description: "A unique identifier generated after creating sender account"
+        example: "sender_account_id"
+      accountholder_name:
+        type: string
+        description: "Accountholder name of the sender's account"
+        example: "Chan Li Pak"
+      account_number:
+        $ref: "#/definitions/RecipientAccountNumber"
+        description: "Account number of the sender’s account. See below."
+      account_type:
+        type: string
+        description: "Type of sender account."
+        example: "EXTERNAL_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT]
+      institution_id:
+        type: string
+        description: "Finverse Institution ID for the sender’s institution."
+        example: "hsbc-hk"
+      sender_id:
+        type: string
+        description: "A unique identifier generated after creating sender"
+        example: "sender_id"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
 
 paths:
   /jwks:
