@@ -2196,6 +2196,9 @@ definitions:
       sender:
         $ref: "#/definitions/CreateMandateSender"
         description: Information about the accountholder sending the payment. See below.
+      sender_account:
+        $ref: "#/definitions/CreateMandateSenderAccount"
+        description: Information about the account sending the payment. See below.
       mandate_details:
         $ref: "#/definitions/MandateDetails"
         description: Additional details on the mandate. See below.
@@ -2235,6 +2238,8 @@ definitions:
         $ref: "#/definitions/MandateRecipient"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      sender_account:
+        $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
       metadata:
@@ -2346,6 +2351,9 @@ definitions:
 
   CreateMandateSender:
     properties:
+      sender_id:
+        type: string
+        description: A unique identifier generated after creating sender
       name:
         type: string
       user_id:
@@ -2364,9 +2372,12 @@ definitions:
         maxItems: 10
         items:
           $ref: "#/definitions/SenderDetail"
-    required:
-      - user_id
-      - sender_type
+
+  CreateMandateSenderAccount:
+    properties:
+      sender_account_id:
+        type: string
+        description: A unique identifier generated after creating sender account
 
   GetMandateSender:
     properties:
