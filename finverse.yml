@@ -352,10 +352,6 @@ definitions:
         type: string
         description: YYYY-MM-DD
         example: 2020-10-10
-      transaction_date:
-        type: string
-        description: YYYY-MM-DD
-        example: 2020-10-08
       amount:
         type: object
         $ref: "#/definitions/CurrencyAmount"
@@ -1901,11 +1897,6 @@ definitions:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-      transaction_date:
-        type: string
-        format: date-time
-        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-        x-nullable: true
       metadata:
         type: object
         additionalProperties:
