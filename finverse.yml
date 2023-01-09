@@ -2785,6 +2785,14 @@ definitions:
         type: string
         description: "Finverse Institution ID for the recipient’s institution."
         example: "hsbc-hk"
+      bank_code:
+        type: string
+        description: "3-digit code associated with bank"
+        example: "004"
+      branch_code:
+        type: string
+        description: "3-digit code used to identify specific bank branch"
+        example: "123"
 
   RecipientAccountNumber:
     type: object
