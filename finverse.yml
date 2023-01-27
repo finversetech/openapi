@@ -50,25 +50,6 @@ tags:
     name: link
 
 definitions:
-  ErrorResponse:
-    type: object
-    properties:
-      err:
-        type: string
-      http_status_code:
-        type: number
-        format: int
-      status_text:
-        type: string
-      app_code:
-        type: number
-        format: int64
-      error_category:
-        type: string
-      error_text:
-        type: string
-      request_id:
-        type: string
 
   Principal:
     type: object
@@ -937,6 +918,14 @@ definitions:
       - institution_id
       - store_credential
 
+  ConfirmPaymentResponse:
+    properties:
+      success:
+        type: boolean
+        example: true
+    required:
+      - success
+
   ApiLinkRequest:
     properties:
       institution_id:
@@ -1203,55 +1192,6 @@ definitions:
       - expires_in
       - refresh_token
       - issued_at
-
-  BadRequestModel:
-    properties:
-      error:
-        type: object
-        properties:
-          code:
-            type: number
-            example: 40004
-          name:
-            type: string
-            example: CREDENTIAL_NOT_STORED
-          message:
-            type: string
-            example: Credential for this LoginIdentity is not stored. Please relink.
-          link:
-            type: string
-            description: A link to visit for further action
-            example: link.finverse.com
-
-  BadRequestModelV2:
-    properties:
-      error:
-        type: object
-        properties:
-          type:
-            type: string
-            enum: [LINK_ERROR, API_ERROR]
-            description: The error type
-            example: LINKING_ERROR
-          error_code:
-            type: string
-            example: CREDENTIALS_INVALID
-          code:
-            type: number
-            example: 40004
-          message:
-            type: string
-          details:
-            type: string
-          request_id:
-            type: string
-            description: The request_id provided in the request header
-        required:
-          - type
-          - code
-          - error_code
-          - message
-          - request_id
 
   GetStatementsResponse:
     properties:
@@ -1691,18 +1631,54 @@ definitions:
       - label
       - value
 
+  # This is target error we should be using for all new endpoints
+  ErrBodyModelV2:
+    properties:
+      error:
+        type: object
+        $ref: "#/definitions/FvErrorModelV2"      
+
+  # DONOTUSE
+  # This is the inner part of ErrBodyModelV2 and should not be used directly
+  FvErrorModelV2:
+    properties:
+      type:
+        type: string
+        enum: [LINK_ERROR, API_ERROR]
+        description: The error type
+        example: LINKING_ERROR
+      error_code:
+        type: string
+        example: CREDENTIALS_INVALID
+      message:
+        type: string
+      details:
+        type: string
+      request_id:
+        type: string
+        description: The request_id provided in the request header
+    required:
+      - type
+      - error_code
+      - message
+      - details
+      - request_id
+
+  # DONOTUSE
+  # This is a backward compatible version of V2, since
+  # The inner object has "code" of type "string"
+  # (legacy)
   ErrBodyModel:
     properties:
       error:
         type: object
         $ref: "#/definitions/FvErrorModel"
 
-  ErrBodyModelV2:
-    properties:
-      error:
-        type: object
-        $ref: "#/definitions/FvErrorModelV2"
 
+
+  # DONOTUSE
+  # This is an old model, only kept for backward compatibility
+  # (legacy)
   SwaggerErrBodyModel:
     properties:
       code:
@@ -1713,6 +1689,10 @@ definitions:
         type: object
         $ref: "#/definitions/FvErrorModel"
 
+  # DONOTUSE
+  # This is the inner part of ErrBodyModel, and should not be used directly
+  # This is only present for backward compatibility on the "code" field
+  # (legacy)
   FvErrorModel:
     properties:
       type:
@@ -1741,29 +1721,83 @@ definitions:
       - details
       - request_id
 
-  FvErrorModelV2:
+  # DONOTUSE
+  # This is only kept for backward compatibility
+  # (legacy)
+  ErrorResponse:
+    type: object
     properties:
-      type:
+      err:
         type: string
-        enum: [LINK_ERROR, API_ERROR]
-        description: The error type
-        example: LINKING_ERROR
-      error_code:
+      http_status_code:
+        type: number
+        format: int
+      status_text:
         type: string
-        example: CREDENTIALS_INVALID
-      message:
+      app_code:
+        type: number
+        format: int64
+      error_category:
         type: string
-      details:
+      error_text:
         type: string
       request_id:
-        type: string
-        description: The request_id provided in the request header
-    required:
-      - type
-      - error_code
-      - message
-      - details
-      - request_id
+        type: string      
+
+  # DONOTUSE
+  # Only kept for backward compatibility
+  # (legacy)  
+  BadRequestModel:
+    properties:
+      error:
+        type: object
+        properties:
+          code:
+            type: number
+            example: 40004
+          name:
+            type: string
+            example: CREDENTIAL_NOT_STORED
+          message:
+            type: string
+            example: Credential for this LoginIdentity is not stored. Please relink.
+          link:
+            type: string
+            description: A link to visit for further action
+            example: link.finverse.com
+
+  # DONOTUSE
+  # Only kept for backward compatibility
+  # (legacy)
+  BadRequestModelV2:
+    properties:
+      error:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [LINK_ERROR, API_ERROR]
+            description: The error type
+            example: LINKING_ERROR
+          error_code:
+            type: string
+            example: CREDENTIALS_INVALID
+          code:
+            type: number
+            example: 40004
+          message:
+            type: string
+          details:
+            type: string
+          request_id:
+            type: string
+            description: The request_id provided in the request header
+        required:
+          - type
+          - code
+          - error_code
+          - message
+          - request_id        
 
   PaymentInfo:
     properties:
@@ -3422,6 +3456,30 @@ paths:
             $ref: "#/definitions/BadRequestModelV2"
       tags:
         - login_identity
+
+  /payments/confirm:
+    post:
+      description: Confirm a payment against a payment Link
+      operationId: confirmPayment
+      security:
+        - Oauth2: [payment:confirm] # This scope will be set by payment-link svc in the mandate token
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Successful
+          schema:
+            $ref: '#/definitions/ConfirmPaymentResponse'
+        "400":
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"            
+      
+      
 
   /link:
     post:
