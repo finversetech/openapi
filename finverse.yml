@@ -50,7 +50,6 @@ tags:
     name: link
 
 definitions:
-
   Principal:
     type: object
     properties:
@@ -78,7 +77,7 @@ definitions:
       expires_in:
         type: number
         example: 3600
-      invoice_id: # This will be populated if its a token for payment link 
+      invoice_id: # This will be populated if its a token for payment link
         type: string
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       scopes:
@@ -929,6 +928,47 @@ definitions:
     required:
       - success
 
+  CreatePaymentLinkMandateRequest:
+    properties:
+      invoice_id:
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+        type: string
+      sender_type:
+        type: string
+        description: The sender type of the mandate
+        enum: ["INDIVIDUAL", "BUSINESS"]
+    required:
+      - invoice_id
+      - sender_type
+
+  CreatePaymentLinkMandateResponse:
+    properties:
+      mandate_link_token:
+        $ref: "#/definitions/PaymentLinkTokenResponse"
+    required:
+      - mandate_link_token
+
+  PaymentLinkTokenResponse:
+    properties:
+      access_token:
+        type: string
+        description: Short-lived access-token to interact with Finverse Link
+      expires_in:
+        type: integer
+        format: int64
+        description: Access token validity duration (in seconds)
+      link_url:
+        type: string
+        description: URL to launch Finverse Link to authorize the mandate
+      token_type:
+        type: string
+        enum: ["Bearer"]
+    required:
+      - access_token
+      - expires_in
+      - link_url
+      - token_type
+
   ApiLinkRequest:
     properties:
       institution_id:
@@ -1639,7 +1679,7 @@ definitions:
     properties:
       error:
         type: object
-        $ref: "#/definitions/FvErrorModelV2"      
+        $ref: "#/definitions/FvErrorModelV2"
 
   # DONOTUSE
   # This is the inner part of ErrBodyModelV2 and should not be used directly
@@ -1676,8 +1716,6 @@ definitions:
       error:
         type: object
         $ref: "#/definitions/FvErrorModel"
-
-
 
   # DONOTUSE
   # This is an old model, only kept for backward compatibility
@@ -1745,11 +1783,11 @@ definitions:
       error_text:
         type: string
       request_id:
-        type: string      
+        type: string
 
   # DONOTUSE
   # Only kept for backward compatibility
-  # (legacy)  
+  # (legacy)
   BadRequestModel:
     properties:
       error:
@@ -1800,7 +1838,7 @@ definitions:
           - code
           - error_code
           - message
-          - request_id        
+          - request_id
 
   PaymentInfo:
     properties:
@@ -3460,7 +3498,7 @@ paths:
       tags:
         - login_identity
 
-  /payments/confirm:
+  /payment-link/confirm:
     post:
       description: Confirm a payment against a payment Link
       operationId: confirmPayment
@@ -3472,7 +3510,7 @@ paths:
         "200":
           description: Successful
           schema:
-            $ref: '#/definitions/ConfirmPaymentResponse'
+            $ref: "#/definitions/ConfirmPaymentResponse"
         "400":
           description: Invalid Request
           schema:
@@ -3480,9 +3518,42 @@ paths:
         "500":
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModelV2"            
-      
-      
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment-link/mandates:
+    post:
+      description: CREATE Mandate for payment link
+      operationId: createPaymentLinkMandate
+      security:
+        - Oauth2: [paymentlink:mandate:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createPaymentLinkMandateRequest
+          description: request body for creating mandate for payment-link
+          schema:
+            $ref: "#/definitions/CreatePaymentLinkMandateRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreatePaymentLinkMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
 
   /link:
     post:
