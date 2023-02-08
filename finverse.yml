@@ -3498,7 +3498,7 @@ paths:
       tags:
         - login_identity
 
-  /payment-link/confirm:
+  /payment_link/confirm:
     post:
       description: Confirm a payment against a payment Link
       operationId: confirmPayment
@@ -3520,7 +3520,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
-  /payment-link/mandates:
+  /payment_link/mandates:
     post:
       description: CREATE Mandate for payment link
       operationId: createPaymentLinkMandate
