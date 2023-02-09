@@ -2660,6 +2660,10 @@ definitions:
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       error:
         $ref: "#/definitions/FvErrorModelV2"
+      mandate_details:
+        $ref: "#/definitions/MandateDetails"
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
     required:
       - mandate_id
       - mandate_status
