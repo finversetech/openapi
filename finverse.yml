@@ -353,14 +353,14 @@ definitions:
         items:
           type: string
         example: ["TRANSFER"]
-      category_details:
+      category_predictions:
         type: array
         items:
-          $ref: "#/definitions/categoryDetails"
+          $ref: "#/definitions/categoryPredictions"
     required:
       - is_pending
 
-  categoryDetails:
+  categoryPredictions:
     type: object
     properties:
       categories:
