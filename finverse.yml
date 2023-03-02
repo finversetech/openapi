@@ -1966,6 +1966,8 @@ definitions:
         $ref: "#/definitions/PaymentDetails2"
       recipient:
         $ref: "#/definitions/MandateRecipient"
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
       created_at:
@@ -2299,6 +2301,8 @@ definitions:
           ]
       recipient:
         $ref: "#/definitions/MandateRecipient"
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
       sender_account:
@@ -2360,6 +2364,8 @@ definitions:
           ]
       recipient:
         $ref: "#/definitions/MandateRecipient"
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
       sender_account:
@@ -2397,12 +2403,22 @@ definitions:
       name:
         type: string
         description: Merchant account name
-      recipient_account_id:
-        type: string
-        description: Merchant account ID assigned by Finverse
     required:
       - name
-      - recipient_account_id
+
+  MandateRecipientAccount:
+    properties:
+      account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
+      account_type:
+        type: string
+        description: "Type of recipient account."
+        example: "SETTLEMENT_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+    required:
+      - account_id
+      - account_type
 
   MandateRecipientRequest:
     properties:
@@ -2847,7 +2863,7 @@ definitions:
   MandateSenderAccount:
     type: object
     properties:
-      sender_account_id:
+      account_id:
         type: string
         description: "A unique identifier generated after creating sender account"
         example: "sender_account_id"
