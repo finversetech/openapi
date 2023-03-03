@@ -2072,7 +2072,7 @@ definitions:
       name:
         type: string
         description: Merchant account name
-      recipient_account_id:
+      account_id:
         type: string
         description: Merchant account ID assigned by Finverse
 
@@ -2422,11 +2422,11 @@ definitions:
 
   MandateRecipientRequest:
     properties:
-      recipient_account_id:
+      account_id:
         type: string
         description: Merchant account ID assigned by Finverse
     required:
-      - recipient_account_id
+      - account_id
 
   CreateMandateSender:
     properties:
@@ -2435,11 +2435,11 @@ definitions:
       user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
-      sender_type:
+      user_type:
         type: string
         description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
         enum: &SENDER_TYPE ["INDIVIDUAL", "BUSINESS"]
-      sender_details:
+      user_details:
         description: Sender details which will be used for fraud checking.
         type: array
         maxItems: 10
@@ -2456,11 +2456,11 @@ definitions:
       user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
-      sender_type:
+      user_type:
         type: string
         description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
         enum: ["INDIVIDUAL", "BUSINESS"]
-      sender_details:
+      user_details:
         description: Sender details which will be used for fraud checking.
         type: array
         items:
@@ -2468,7 +2468,7 @@ definitions:
     required:
       - sender_id
       - user_id
-      - sender_type
+      - user_type
 
   MandateDetails:
     properties:
