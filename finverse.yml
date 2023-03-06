@@ -2006,7 +2006,7 @@ definitions:
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PayoutDetails"
-      recipient:
+      recipient_account:
         $ref: "#/definitions/MandateRecipientRequest"
         description: Information about the accountholder receiving the payment. See below.
       metadata:
@@ -2016,7 +2016,7 @@ definitions:
         description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - payment_details
-      - recipient
+      - recipient_account
       - amount
       - currency
 
@@ -2258,7 +2258,7 @@ definitions:
 
   CreateMandateRequest:
     properties:
-      recipient:
+      recipient_account:
         $ref: "#/definitions/MandateRecipientRequest"
         description: Information about the accountholder receiving the payment. See below.
       sender:
@@ -2273,7 +2273,7 @@ definitions:
           type: string
         description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
-      - recipient
+      - recipient_account
       - sender
       - mandate_details
 
