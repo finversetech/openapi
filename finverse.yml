@@ -2893,6 +2893,30 @@ definitions:
           type: string
         description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
 
+  GetPaymentUserResponse:
+    type: object
+    properties:
+      payment_user_id:
+        type: string
+      customer_app_id:
+        type: string
+      # Should not have name and other details here because that would allow a link token holder 
+      # to use response data and bypass the fraud check
+      autopay_consent:
+        type: boolean
+    required:
+      - payment_user_id
+      - customer_app_id
+      - autopay_consent
+
+  SetAutopayConsentRequest:
+    type: object
+    properties:
+      autopay_consent:
+        type: boolean
+    required:
+      - autopay_consent
+
 paths:
   /jwks:
     get:
@@ -4205,6 +4229,50 @@ paths:
           required: true
       tags:
         - customer
+
+  /mandates/payment_user/sender:
+    get:
+      description: Get sender payment user for mandate
+      operationId: getSenderPaymentUser
+      security:
+        - Oauth2: [mandates:payment_user:get] # Will be set in payment link token (in payment links svc)
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetPaymentUserResponse"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /mandates/payment_user/autopay:
+    post:
+      description: Set autopay consent for payment user
+      operationId: setAutopayConsent
+      security:
+        - Oauth2: [mandates:payment_user:set] # Will be set in payment link token (in payment links svc)
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: setAutopayConsentRequest
+          required: true
+          schema:
+            $ref: "#/definitions/SetAutopayConsentRequest"
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
 
   /payments:
     post:
