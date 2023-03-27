@@ -1970,6 +1970,10 @@ definitions:
         $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      fees:
+        type: array
+        items:
+          $ref: "#/definitions/Fee"
       created_at:
         type: string
         format: date-time
@@ -2309,6 +2313,10 @@ definitions:
         $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
+      fees:
+        type: array
+        items:
+          $ref: "#/definitions/Fee"
       metadata:
         type: object
         additionalProperties:
@@ -2323,6 +2331,23 @@ definitions:
       - recipient
       - sender
       - mandate_details
+
+  Fee:
+    properties:
+      amount:
+        type: number
+        example: 69.00
+      currency:
+        type: string
+        example: HKD
+      paid_by:
+        type: string
+        example: RECIPIENT
+        enum: [RECIPIENT, SENDER]
+      paid_by_account_id:
+        type: string
+        description: The payment account Id
+        example: The payment account ID
 
   SetMandateInstitutionRequest:
     properties:
@@ -2372,6 +2397,10 @@ definitions:
         $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
         $ref: "#/definitions/MandateDetails"
+      fees:
+        type: array
+        items:
+          $ref: "#/definitions/Fee"
       error:
         $ref: "#/definitions/FvErrorModelV2"
       metadata:
@@ -2900,7 +2929,7 @@ definitions:
         type: string
       customer_app_id:
         type: string
-      # Should not have name and other details here because that would allow a link token holder 
+      # Should not have name and other details here because that would allow a link token holder
       # to use response data and bypass the fraud check
       autopay_consent:
         type: boolean
