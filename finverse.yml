@@ -2335,8 +2335,9 @@ definitions:
   Fee:
     properties:
       amount:
-        type: number
-        example: 69.00
+        type: integer
+        example: 100
+        description: The amount of fee for a single transaction. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
       currency:
         type: string
         example: HKD
