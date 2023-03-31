@@ -2528,6 +2528,9 @@ definitions:
       description:
         type: string
         description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+      mandate_bank_reference:
+        type: string
+        description: A bank specific reference, what the end user may see
     required:
       - currency
 
