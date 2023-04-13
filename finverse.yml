@@ -2464,7 +2464,7 @@ definitions:
     properties:
       name:
         type: string
-      user_id:
+      external_user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
       user_type:
@@ -2480,12 +2480,12 @@ definitions:
 
   GetMandateSender:
     properties:
-      sender_id:
+      user_id:
         type: string
         description: A unique identifier generated after creating sender
       name:
         type: string
-      user_id:
+      external_user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
       user_type:
@@ -2498,8 +2498,8 @@ definitions:
         items:
           $ref: "#/definitions/SenderDetail"
     required:
-      - sender_id
       - user_id
+      - external_user_id
       - user_type
 
   MandateDetails:
