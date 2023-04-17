@@ -2952,6 +2952,19 @@ definitions:
     required:
       - autopay_consent
 
+  ManualPaymentConfirmationRequest:
+    type: object
+    properties:
+      accountholder_name:
+        type: string
+      account_number_last4:
+        type: string
+        minLength: 4
+        maxLength: 4
+    required:
+      - accountholder_name
+      - account_number_last4
+
 paths:
   /jwks:
     get:
@@ -4600,6 +4613,33 @@ paths:
       tags:
         - customer
 
+  /payments/manual_payment:
+    post:
+      description: Submit manual payment confirmation
+      operationId: confirmManualPayment
+      security:
+        - Oauth2: [manual_payment:confirm] #this scope will be in manual payment token
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: manualPaymentIdentifiers
+          description: Request body containing information to identify manual payment
+          required: true
+          schema:
+            $ref: "#/definitions/ManualPaymentConfirmationRequest"
+      responses:
+        200:
+          description: ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+  
   /payout_instructions:
     post:
       description: Create new Payout instruction
