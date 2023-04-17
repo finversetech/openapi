@@ -2918,10 +2918,10 @@ definitions:
         type: string
         description: "Finverse Institution ID for the sender’s institution."
         example: "hsbc-hk"
-      sender_id:
+      user_id:
         type: string
-        description: "A unique identifier generated after creating sender"
-        example: "sender_id"
+        description: "A unique identifier generated after creating sender (Finverse Payment User ID)"
+        example: "01GY6H0JA7BS8EVGY56NSHFX2E"
       metadata:
         type: object
         additionalProperties:
