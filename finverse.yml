@@ -948,6 +948,21 @@ definitions:
     required:
       - mandate_link_token
 
+  CreateFpsTokenRequest:
+    properties:
+      invoice_id:
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+        type: string
+    required:
+      - invoice_id
+
+  CreateFpsTokenResponse:
+    properties:
+      fps_token:
+        $ref: "#/definitions/PaymentLinkTokenResponse"
+    required:
+      - fps_token
+
   PaymentLinkTokenResponse:
     properties:
       access_token:
@@ -3408,6 +3423,41 @@ paths:
           description: Successful
           schema:
             $ref: "#/definitions/CreatePaymentLinkMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_links/fps/token:
+    post:
+      description: Create token for fps flow
+      operationId: createFpsToken
+      security:
+        - Oauth2: [paymentlink:fps:token]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createFpsTokenRequest
+          description: request body for creating fps token for payment-link
+          schema:
+            $ref: "#/definitions/CreateFpsTokenRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreateFpsTokenResponse"
         400:
           description: Invalid Request
           schema:
