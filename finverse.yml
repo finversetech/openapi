@@ -948,14 +948,6 @@ definitions:
     required:
       - mandate_link_token
 
-  CreateFpsTokenRequest:
-    properties:
-      invoice_id:
-        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
-        type: string
-    required:
-      - invoice_id
-
   CreateFpsTokenResponse:
     properties:
       fps_token:
@@ -3446,13 +3438,6 @@ paths:
         - application/json
       produces:
         - application/json
-      parameters:
-        - in: body
-          name: createFpsTokenRequest
-          description: request body for creating fps token for payment-link
-          schema:
-            $ref: "#/definitions/CreateFpsTokenRequest"
-          required: true
       responses:
         200:
           description: Successful
