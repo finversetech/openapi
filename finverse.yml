@@ -2965,6 +2965,12 @@ definitions:
       - accountholder_name
       - account_number_last4
 
+  ManualPaymentConfirmationResponse:
+    type: object
+    properties:
+      payment_id:
+        type: string
+
 paths:
   /jwks:
     get:
@@ -4631,6 +4637,8 @@ paths:
       responses:
         200:
           description: ok
+          schema:
+            $ref: "#/definitions/ManualPaymentConfirmationResponse"
         400:
           description: Bad Request
           schema:
