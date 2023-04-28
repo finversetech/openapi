@@ -948,6 +948,14 @@ definitions:
     required:
       - mandate_link_token
 
+  CreatePaymentLinkCreditCardPaymentResponse:
+    properties:
+      cc_processor_redirect_uri:
+        type: string
+        description: URL to redirect to for making the CC payment (e.g. Stripe)
+    required:
+      - cc_processor_redirect_uri
+
   CreateFpsTokenResponse:
     properties:
       fps_token:
@@ -3427,6 +3435,32 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_links/credit_card:
+    post:
+      description: Initiate CC Payment for a Payment Link
+      operationId: createPaymentLinkCreditCardPayment
+      security:
+        - Oauth2: [paymentlink:cc:create]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/CreatePaymentLinkCreditCardPaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"            
 
   /payment_links/fps/token:
     post:
