@@ -953,6 +953,9 @@ definitions:
       card_processor_redirect_uri:
         type: string
         description: URL to redirect to for making the card payment (e.g. Stripe)
+      payment_id:
+        type: string
+        description: Finverse Payment ID
     required:
       - card_processor_redirect_uri
 
