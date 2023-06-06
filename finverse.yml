@@ -2779,6 +2779,9 @@ definitions:
         type: string
         description: Indicates who submitted the authorization factor to Finverse. Possible values are CUSTOMER_APP, FINVERSE_LINK
         enum: ["CUSTOMER_APP", "FINVERSE_LINK"]
+      redirect_url:
+        type: string
+        description: Redirect to bank for authentication
     required:
       - name
 
