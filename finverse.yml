@@ -930,7 +930,7 @@ definitions:
 
   CreatePaymentLinkMandateRequest:
     properties:
-      invoice_id:
+      payment_attempt_id:
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
         type: string
       sender_type:
@@ -938,7 +938,7 @@ definitions:
         description: The sender type of the mandate
         enum: ["INDIVIDUAL", "BUSINESS"]
     required:
-      - invoice_id
+      - payment_attempt_id
       - sender_type
 
   CreatePaymentLinkMandateResponse:
