@@ -77,7 +77,7 @@ definitions:
       expires_in:
         type: number
         example: 3600
-      invoice_id: # This will be populated if its a token for payment link
+      payment_attempt_id: # This will be populated if its a token for payment link
         type: string
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       scopes:
