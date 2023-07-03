@@ -3743,34 +3743,6 @@ paths:
             $ref: "#/definitions/ErrBodyModel"
       tags:
         - link
-    post:
-      description: Check the status of a given loginIdentity
-      operationId: postLinkStatus
-      security:
-        - Oauth2: [linkApi:read]
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/LinkStatusResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
 
   /link/fvlink/status/{loginIdentityId}:
     get:
