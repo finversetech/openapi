@@ -2350,6 +2350,89 @@ definitions:
       - sender
       - mandate_details
 
+  CreatePaymentLinkRequest:
+    properties:
+      amount:
+        type: integer
+        example: 100
+        description: The amount of the payment. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+      currency:
+        type: string
+        example: HKD
+      language:
+        type: string
+        example: zh
+        description: Specifies language to be used in Finverse UI
+      mode:
+        type: string
+        enum: [PAYMENT]
+        description: The payment link mode
+        example: PAYMENT
+      payment_details:
+        type: object
+        $ref: "#/definitions/PaymentLinkDetails"
+      recipient_account:
+        type: object
+        $ref: "#/definitions/PaymentLinkRecipientAccount"
+      sender:
+        type: object
+        $ref: "#/definitions/PaymentLinkSender"
+      unique_reference_id:
+        type: string
+        description: Unique reference id to identifying the payment to be collected.
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+    required:
+      - amount
+      - currency
+      - mode
+      - payment_details
+      - recipient_account
+      - sender
+      - unique_reference_id
+
+  PaymentLinkDetails:
+    properties:
+      description:
+        type: string
+      external_invoice_id:
+        type: string
+        description: For external invoice reference
+
+  PaymentLinkRecipientAccount:
+    properties:
+      recipient_account_id:
+        type: string
+        description: Merchant account ID assigned by Finverse
+    required:
+      - recipient_account_id
+
+  PaymentLinkSender:
+    properties:
+      email:
+        type: string
+      external_user_id:
+        type: string
+        description: Customer App's user ID, representing the end-user making the payment.
+      name:
+        type: string
+        description: "Accountholder name of the sender's account"
+        example: "Chan Li Pak"
+    required:
+      - external_user_id
+      - name
+
+  CreatePaymentLinkResponse:
+    properties:
+      payment_link_url:
+        type: string
+        description: The URL for payment link
+    required:
+      - payment_link_url
+
   Fee:
     properties:
       amount:
@@ -3492,6 +3575,33 @@ paths:
             $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_links:
+    post:
+      description: Create payment link
+      operationId: CreatePaymentLink
+      security:
+        - Oauth2: [paymentlink:create]
+      parameters:
+        - in: body
+          name: createPaymentLinkRequest
+          description: Parameters required to create a payment link
+          schema:
+            $ref: "#/definitions/CreatePaymentLinkRequest"
+          required: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CreatePaymentLinkResponse"
+        400:
+          description: Bad Request
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
         500:
