@@ -2356,9 +2356,12 @@ definitions:
         type: integer
         example: 100
         description: The amount of the payment. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        minimum: 1
       currency:
         type: string
         example: HKD
+        minLength: 3
+        maxLength: 3
       language:
         type: string
         example: zh
@@ -2380,6 +2383,7 @@ definitions:
       unique_reference_id:
         type: string
         description: Unique reference id to identifying the payment to be collected.
+        minLength: 1
       metadata:
         type: object
         additionalProperties:
@@ -2389,7 +2393,6 @@ definitions:
       - amount
       - currency
       - mode
-      - payment_details
       - recipient_account
       - sender
       - unique_reference_id
@@ -2407,6 +2410,7 @@ definitions:
       recipient_account_id:
         type: string
         description: Merchant account ID assigned by Finverse
+        minLength: 1
     required:
       - recipient_account_id
 
@@ -2417,10 +2421,12 @@ definitions:
       external_user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
+        minLength: 1
       name:
         type: string
         description: "Accountholder name of the sender's account"
         example: "Chan Li Pak"
+        minLength: 1
     required:
       - external_user_id
       - name
@@ -2430,8 +2436,6 @@ definitions:
       payment_link_url:
         type: string
         description: The URL for payment link
-    required:
-      - payment_link_url
 
   Fee:
     properties:
