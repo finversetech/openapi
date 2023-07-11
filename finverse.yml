@@ -2432,11 +2432,96 @@ definitions:
       - external_user_id
       - name
 
-  CreatePaymentLinkResponse:
+  # this will be used by POST and GET Payment link api, since they have the same response
+  PaymentLinkResponse:
     properties:
-      payment_link_url:
+      payment_link_id:
+        type: string
+        description: Finverse Payment Link ID
+      amount:
+        type: integer
+        example: 100
+        description: The amount of the payment. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+      currency:
+        type: string
+        example: HKD
+      language:
+        type: string
+        example: zh
+        description: Specifies language to be used in Finverse UI
+      mode:
+        type: string
+        enum: [PAYMENT]
+        description: The payment link mode
+        example: PAYMENT
+      payment_details:
+        type: object
+        $ref: "#/definitions/PaymentLinkDetails"
+      unique_reference_id:
+        type: string
+        description: Unique reference id to identifying the payment to be collected.
+        minLength: 1
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+      url:
         type: string
         description: The URL for payment link
+      status:
+        type: string
+        enum: [CREATED, PAID, EXPIRED]
+        description: The status of payment link
+      expires_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the payment link was or will expired in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the payment link was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp of when the payment link was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      mandate:
+        type: object
+        $ref: "#/definitions/GetMandateResponse"
+      payment:
+        type: object
+        $ref: "#/definitions/PaymentResponse"
+      # yes, recipient, recipient_account and sender are the same as the one inside mandate, it's product requirement that they should also be in this level to be consistent.
+      # if we couldnt get value from mandate, these will contain empty value.
+      recipient:
+        type: object
+        $ref: "#/definitions/MandateRecipient"
+      recipient_account:
+        type: object
+        $ref: "#/definitions/MandateRecipientAccount"
+      sender:
+        type: object
+        $ref: "#/definitions/PaymentLinkSenderResponse"
+
+  # basically same as PaymentLinkSender but it also contain the user_id
+  # MandateSender obj has no email, so creating new definition here
+  PaymentLinkSenderResponse:
+    properties:
+      email:
+        type: string
+        format: email
+      external_user_id:
+        type: string
+        description: Customer App's user ID, representing the end-user making the payment.
+        minLength: 1
+      name:
+        type: string
+        description: "Accountholder name of the sender's account"
+        example: "Chan Li Pak"
+        minLength: 1
+      user_id:
+        type: string
+        description: A unique identifier generated after creating sender
 
   Fee:
     properties:
@@ -3604,7 +3689,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/CreatePaymentLinkResponse"
+            $ref: "#/definitions/PaymentLinkResponse"
         400:
           description: Bad Request
           schema:
