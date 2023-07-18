@@ -2407,12 +2407,12 @@ definitions:
 
   PaymentLinkRecipientAccount:
     properties:
-      recipient_account_id:
+      account_id:
         type: string
         description: Merchant account ID assigned by Finverse
         minLength: 1
     required:
-      - recipient_account_id
+      - account_id
 
   PaymentLinkSender:
     properties:
