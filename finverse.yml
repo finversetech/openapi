@@ -2374,9 +2374,6 @@ definitions:
       payment_details:
         type: object
         $ref: "#/definitions/PaymentLinkDetails"
-      recipient_account:
-        type: object
-        $ref: "#/definitions/PaymentLinkRecipientAccount"
       sender:
         type: object
         $ref: "#/definitions/PaymentLinkSender"
@@ -2393,7 +2390,6 @@ definitions:
       - amount
       - currency
       - mode
-      - recipient_account
       - sender
       - unique_reference_id
 
@@ -2404,15 +2400,6 @@ definitions:
       external_invoice_id:
         type: string
         description: For external invoice reference
-
-  PaymentLinkRecipientAccount:
-    properties:
-      account_id:
-        type: string
-        description: Merchant account ID assigned by Finverse
-        minLength: 1
-    required:
-      - account_id
 
   PaymentLinkSender:
     properties:
@@ -2493,12 +2480,6 @@ definitions:
         $ref: "#/definitions/PaymentResponse"
       # yes, recipient, recipient_account and sender are the same as the one inside mandate, it's product requirement that they should also be in this level to be consistent.
       # if we couldnt get value from mandate, these will contain empty value.
-      recipient:
-        type: object
-        $ref: "#/definitions/MandateRecipient"
-      recipient_account:
-        type: object
-        $ref: "#/definitions/MandateRecipientAccount"
       sender:
         type: object
         $ref: "#/definitions/PaymentLinkSenderResponse"
