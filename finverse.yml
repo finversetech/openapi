@@ -2397,7 +2397,7 @@ definitions:
     properties:
       description:
         type: string
-      external_invoice_id:
+      external_invoice_number:
         type: string
         description: For external invoice reference
 
