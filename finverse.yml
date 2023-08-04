@@ -3709,6 +3709,35 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
+  /payment_links/{paymentLinkId}/cancel:
+    post:
+      description: Cancel a payment link
+      operationId: CancelPaymentLink
+      security:
+        - Oauth2: [paymentlink:cancel]
+      parameters:
+        - in: path
+          required: true
+          name: paymentLinkId
+          description: The payment link id
+          type: string
+          minLength: 1
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PaymentLinkResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+  
   /link:
     post:
       description: Create a new link and submit credentials
