@@ -802,7 +802,7 @@ definitions:
       ui_mode:
         type: string
         enum: [iframe, redirect, auto_redirect, standalone]
-        description: The UI mode link is intended to be used in - "iframe" (default), "auto_redirect" or "redirect" or "standalone"
+        description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
         example: "redirect"
       language:
         type: string
@@ -2362,10 +2362,8 @@ definitions:
         example: HKD
         minLength: 3
         maxLength: 3
-      language:
-        type: string
-        example: zh
-        description: Specifies language to be used in Finverse UI
+      link_customizations:
+        $ref: "#/definitions/PaymentLinkCustomizations"
       mode:
         type: string
         enum: [PAYMENT]
@@ -2432,10 +2430,8 @@ definitions:
       currency:
         type: string
         example: HKD
-      language:
-        type: string
-        example: zh
-        description: Specifies language to be used in Finverse UI
+      link_customizations:
+        $ref: "#/definitions/PaymentLinkCustomizations"
       mode:
         type: string
         enum: [PAYMENT]
@@ -2787,6 +2783,20 @@ definitions:
       - mandate_id
       - link_customizations
 
+  # This guy is a subset and only has certain customizations enabled at the moment
+  # See: https://www.notion.so/finverse/Finverse-Link-support-iFrame-option-for-Payment-Links-83231ea3946242008acbf9d24c08feda?pvs=4#8bf44dbe4f1540448880873f74d41074
+  PaymentLinkCustomizations:
+    properties:
+      language:
+        type: string
+        description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
+        example: en
+      ui_mode:
+        type: string
+        enum: [iframe, redirect, auto_redirect, standalone]
+        description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
+        example: "redirect"
+
   MandateAuthLinkCustomizations:
     properties:
       countries:
@@ -2820,7 +2830,7 @@ definitions:
       ui_mode:
         type: string
         enum: [iframe, redirect, auto_redirect, standalone]
-        description: The UI mode link is intended to be used in - "iframe" (default), "auto_redirect" or "redirect" or "standalone"
+        description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
         example: "redirect"
       redirect_uri:
         type: string
