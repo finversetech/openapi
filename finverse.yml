@@ -2384,6 +2384,9 @@ definitions:
         additionalProperties:
           type: string
         description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+      redirect_uri:
+        type: string
+        description: URI to redirect to. Only needed if ui_mode = redirect
     required:
       - amount
       - currency
@@ -2479,6 +2482,8 @@ definitions:
       sender:
         type: object
         $ref: "#/definitions/PaymentLinkSenderResponse"
+      redirect_uri:
+        type: string
 
   # basically same as PaymentLinkSender but it also contain the user_id
   # MandateSender obj has no email, so creating new definition here
