@@ -90,6 +90,14 @@ definitions:
         example: ["link", "transaction"]
       link_token_request:
         $ref: "#/definitions/LinkTokenRequest"
+      
+      # Some Payment Link specific stuffs
+      redirect_uri:
+        type: string
+      payment_link_id:
+        type: string
+      unique_reference_id:
+        type: string
 
     required:
       - "customer_app_id"
