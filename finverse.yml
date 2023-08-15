@@ -3534,6 +3534,28 @@ paths:
         - customer
         - link
 
+  /institutions/customer:
+    get:
+      description: Get a customer-specific list of institutions for Finverse Link
+      operationId: getInstitutionsForCustomer
+      security:
+        - Oauth2: [institution:link]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ListInstitutionsResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"  
+  
   /identity:
     get:
       description: \[BETA] Get a list of identity data for a given login identity
