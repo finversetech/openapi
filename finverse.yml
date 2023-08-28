@@ -92,6 +92,8 @@ definitions:
         $ref: "#/definitions/LinkTokenRequest"
       get_mandate_auth_link_request:
         $ref: "#/definitions/GetMandateAuthLinkRequest"
+      currency:
+        type: string
 
       # Some Payment Link specific stuffs
       redirect_uri:
@@ -5155,15 +5157,15 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
           schema:
-            $ref: "#/definitions/BadRequestModel"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/ErrBodyModelV2"
       parameters:
         - in: path
           name: paymentType
