@@ -92,7 +92,7 @@ definitions:
         $ref: "#/definitions/LinkTokenRequest"
       get_mandate_auth_link_request:
         $ref: "#/definitions/GetMandateAuthLinkRequest"
-      
+
       # Some Payment Link specific stuffs
       redirect_uri:
         type: string
@@ -2533,6 +2533,24 @@ definitions:
     required:
       - amount
 
+  GetLineItemsForDisplayResponse:
+    properties:
+      line_items:
+        type: array
+        items:
+          $ref: "#/definitions/LineItem"
+
+  LineItem:
+    properties:
+      currency:
+        type: string
+      amount:
+        type: string
+        description: The amount in decimal
+      item_type:
+        type: string
+        enum: [AMOUNT_DUE, SURCHARGE, TOTAL]
+
   SetMandateInstitutionRequest:
     properties:
       institution_id:
@@ -3564,8 +3582,8 @@ paths:
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/ErrBodyModelV2"  
-  
+            $ref: "#/definitions/ErrBodyModelV2"
+
   /identity:
     get:
       description: \[BETA] Get a list of identity data for a given login identity
@@ -3785,7 +3803,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-  
+
   /link:
     post:
       description: Create a new link and submit credentials
@@ -5118,6 +5136,40 @@ paths:
           name: payoutInstructionId
           description: payout instruction id
           required: true
+          type: string
+      tags:
+        - customer
+  /calculate/line_items/{paymentType}:
+    get:
+      description: Get line items for display
+      operationId: getLineItemsForDisplay
+      security:
+        - Oauth2: [line_items:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetLineItemsForDisplayResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/BadRequestModel"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      parameters:
+        - in: path
+          name: paymentType
+          description: The payment type
+          required: true
+          enum: [MANDATE, MANUAL]
           type: string
       tags:
         - customer
