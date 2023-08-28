@@ -2003,6 +2003,8 @@ definitions:
         $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
+      sender_account:
+        $ref: "#/definitions/MandateSenderAccount"
       fees:
         type: array
         items:
@@ -3133,6 +3135,9 @@ definitions:
       account_number:
         $ref: "#/definitions/RecipientAccountNumber"
         description: "Account number of the sender’s account. See below."
+      account_number_masked:
+        type: string
+        description: "Masked Account number of the sender’s account"
       account_type:
         type: string
         description: "Type of sender account."
