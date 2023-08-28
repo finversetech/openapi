@@ -90,6 +90,8 @@ definitions:
         example: ["link", "transaction"]
       link_token_request:
         $ref: "#/definitions/LinkTokenRequest"
+      get_mandate_auth_link_request:
+        $ref: "#/definitions/GetMandateAuthLinkRequest"
       
       # Some Payment Link specific stuffs
       redirect_uri:
