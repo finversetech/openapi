@@ -5247,7 +5247,7 @@ paths:
   /payment_users/{paymentUserId}/payment_accounts:
     get:
       description: Get payment account by user id
-      operationId: listPaymentAccount
+      operationId: listPaymentAccounts
       security:
         - Oauth2: [payment_account:get]
       produces:
