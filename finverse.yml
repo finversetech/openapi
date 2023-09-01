@@ -3303,6 +3303,57 @@ definitions:
       - institution_id
       - user_id
 
+  CreatePaymentUserRequest:
+    properties:
+      name:
+        type: string
+      external_user_id:
+        type: string
+      user_type:
+        type: string
+        enum: *SENDER_TYPE
+      email:
+        type: string
+      user_details:
+        type: array
+        items:
+          $ref: "#/definitions/SenderDetail"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+    required:
+      - name
+      - external_user_id
+
+  PaymentUser:
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      email:
+        type: string
+      external_user_id: 
+        type: string
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+      name:
+        type: string
+      user_details:
+        type: array
+        items:
+          $ref: "#/definitions/SenderDetail"
+      updated_at:
+        type: string
+        format: date-time
+      user_id:
+        type: string
+      user_type:
+        type: string
+        enum: *SENDER_TYPE
+
 paths:
   /jwks:
     get:
@@ -5382,5 +5433,73 @@ paths:
           description: The payment account id
           required: true
           type: string
+      tags:
+        - customer
+
+  /payment_users:
+    post:
+      description: Create a payment user
+      operationId: createPaymentUser
+      security:
+        - Oauth2: [payment_user:create]
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createPaymentAccountRequest
+          description: request body for creating payment account
+          schema:
+            $ref: "#/definitions/CreatePaymentUserRequest"
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/PaymentUser"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - customer
+
+  /payment_users/{paymentUserId}:
+    get:
+      description: Get a payment user
+      operationId: getPaymentUser
+      security:
+        - Oauth2: [payment_user:get]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentUserId
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/PaymentUser"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
