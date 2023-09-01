@@ -3263,6 +3263,46 @@ definitions:
         format: date-time
         description: Timestamp of when the payment link was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
 
+  CreatePaymentAccountRequest:
+    properties:
+      account_number:
+        $ref: "#/definitions/RecipientAccountNumber"
+        description: Account number of the payment account
+      account_type:
+        type: string
+        description: "Type of payment account. Currently only allow creating external account."
+        example: "EXTERNAL_ACCOUNT"
+        enum: [EXTERNAL_ACCOUNT]
+      accountholder_name:
+        type: string
+        description: "Accountholder name of the payment account"
+        example: "Chan Li Pak"
+      currencies:
+        type: array
+        items:
+          type: string
+        description: "List of currencies supported by the payment account"
+        example: ["HKD", "SGD"]
+      institution_id:
+        type: string
+        description: "Finverse Institution ID for the payment institution."
+        example: "hsbc-hk"
+      user_id:
+        type: string
+        description: "A unique identifier generated after creating user (Finverse Payment User ID)"
+        example: "01GY6H0JA7BS8EVGY56NSHFX2E"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+    required:
+      - account_number
+      - account_type
+      - accountholder_name
+      - institution_id
+      - user_id
+
 paths:
   /jwks:
     get:
@@ -5273,6 +5313,73 @@ paths:
         - in: path
           name: paymentUserId
           description: The payment user id
+          required: true
+          type: string
+      tags:
+        - customer
+
+  /payment_accounts:
+    post:
+      description: create payment account
+      operationId: createPaymentAccount
+      security:
+        - Oauth2: [payment_account:create]
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createPaymentAccountRequest
+          description: request body for creating payment account
+          schema:
+            $ref: "#/definitions/CreatePaymentAccountRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentAccountDetails"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - customer
+
+  /payment_accounts/{paymentAccountId}:
+    delete:
+      description: delete payment account
+      operationId: deletePaymentAccount
+      security:
+        - Oauth2: [payment_account:delete]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: paymentAccountId
+          description: The payment account id
           required: true
           type: string
       tags:
