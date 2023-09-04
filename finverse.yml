@@ -5446,8 +5446,8 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: createPaymentAccountRequest
-          description: request body for creating payment account
+          name: createPaymentUserRequest
+          description: request body for creating payment user
           schema:
             $ref: "#/definitions/CreatePaymentUserRequest"
           required: true
