@@ -118,6 +118,15 @@ definitions:
       institution:
         $ref: "#/definitions/InstitutionShort"
 
+  ListCardsDetailsResponse:
+    properties:
+      login_identity:
+        $ref: "#/definitions/LoginIdentityShort"
+      institution:
+        $ref: "#/definitions/InstitutionShort"
+      card_details:
+        $ref: "#/definitions/CardDetails"
+
   GetAccountNumberResponse:
     properties:
       account_number:
@@ -294,6 +303,20 @@ definitions:
     required:
       - account_id
       - raw
+
+  RewardsPointsBalance:
+    properties:
+      currency:
+        type: string
+        example: "UNI$"
+      balance:
+        type: number
+        example: 69.00
+      raw:
+        type: string
+        example: "69.00"
+    required:
+      - balance
 
   CurrencyAmount:
     properties:
@@ -1359,6 +1382,81 @@ definitions:
         format: date-time
         example: "2021-02-01T10:01:02.333Z"
         x-nullable: true
+
+  CardDetails:
+    properties:
+      card_accounts:
+        type: array
+        items:
+          $ref: "#/definitions/CardAccount"
+      card_total:
+        $ref: "#/definitions/CommonCardDetails"
+
+  CardAccount:
+    allOf:
+      - $ref: "#/definitions/CommonCardDetails"
+      - type: object
+        properties:
+          account_id:
+            type: string
+            description: Account this card is associated with
+            example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+          account_name:
+            type: string
+            example: HKD Visa
+          account_number_masked:
+            type: string
+            description: "Masked Account number of the card account"
+          account_type:
+            $ref: "#/definitions/AccountType"
+            description: "Account Type"
+          statement_payment_due_date:
+            type: string
+            description: "The statement payment due date"
+            example: "2021-02-01"
+          next_payment_due_date:
+            type: string
+            description: "The next payment due date"
+            example: "2021-02-01"
+          statement_date:
+            type: string
+            example: "2021-10-27"
+            description: "The statement date"
+          last_payment_date:
+            type: string
+            example: "2021-10-27"
+            description: "The date of the last payment"
+          last_payment_amount:
+            type: object
+            $ref: "#/definitions/CurrencyAmount"
+
+  CommonCardDetails:
+    properties:
+      current_balance:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      payment_due_amount:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      statement_due_amount:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      total_credit_limit:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      available_credit_limit:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      minimum_payment_due:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      rewards_points_balance:
+        type: object
+        $ref: "#/definitions/RewardsPointsBalance"
+      last_update:
+        type: string
+        format: date-time
+        example: "2021-02-01T10:01:02.333Z"
 
   PaymentDetails:
     properties:
@@ -3450,6 +3548,30 @@ paths:
           description: Successful
           schema:
             $ref: "#/definitions/ListAccountsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/BadRequestModelV2"
+      tags:
+        - login_identity
+
+  /card_details:
+    get:
+      description: Get a list of card details for a login identity
+      operationId: listCardDetails
+      security:
+        - Oauth2: [card:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListCardsDetailsResponse"
         400:
           description: Invalid Request
           schema:
