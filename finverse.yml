@@ -310,7 +310,7 @@ definitions:
         type: string
         example: "UNI$"
       balance:
-        type: number
+        type: integer
         example: 69.00
       raw:
         type: string
@@ -3575,11 +3575,11 @@ paths:
         400:
           description: Invalid Request
           schema:
-            $ref: "#/definitions/BadRequestModelV2"
+            $ref: "#/definitions/ErrBodyModelV2"
         500:
           description: Internal Server Error
           schema:
-            $ref: "#/definitions/BadRequestModelV2"
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - login_identity
 
