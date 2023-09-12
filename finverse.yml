@@ -1361,6 +1361,8 @@ definitions:
         $ref: "#/definitions/ProductStatus"
       income_estimation:
         $ref: "#/definitions/ProductStatus"
+      card_details:
+        $ref: "#/definitions/ProductStatus"
 
   ProductStatus:
     properties:
