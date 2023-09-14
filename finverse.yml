@@ -310,7 +310,7 @@ definitions:
         type: string
         example: "UNI$"
       balance:
-        type: integer
+        type: number
         example: 69.00
       raw:
         type: string
