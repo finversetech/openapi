@@ -1455,7 +1455,7 @@ definitions:
       rewards_points_balance:
         type: object
         $ref: "#/definitions/RewardsPointsBalance"
-      last_update:
+      updated_at:
         type: string
         format: date-time
         example: "2021-02-01T10:01:02.333Z"
