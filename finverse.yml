@@ -306,7 +306,7 @@ definitions:
 
   RewardsPointsBalance:
     properties:
-      currency:
+      unit:
         type: string
         example: "UNI$"
       balance:
