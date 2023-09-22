@@ -304,19 +304,19 @@ definitions:
       - account_id
       - raw
 
-  RewardsPointsBalance:
+  GenericAmount:
     properties:
       unit:
         type: string
         example: "UNI$"
-      balance:
+      value:
         type: number
         example: 69.00
       raw:
         type: string
         example: "69.00"
     required:
-      - balance
+      - value
 
   CurrencyAmount:
     properties:
@@ -1392,47 +1392,69 @@ definitions:
         items:
           $ref: "#/definitions/CardAccount"
       card_total:
-        $ref: "#/definitions/CommonCardDetails"
+        $ref: "#/definitions/CardTotal"
 
   CardAccount:
-    allOf:
-      - $ref: "#/definitions/CommonCardDetails"
-      - type: object
-        properties:
-          account_id:
-            type: string
-            description: Account this card is associated with
-            example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
-          account_name:
-            type: string
-            example: HKD Visa
-          account_number_masked:
-            type: string
-            description: "Masked Account number of the card account"
-          account_type:
-            $ref: "#/definitions/AccountType"
-            description: "Account Type"
-          statement_payment_due_date:
-            type: string
-            description: "The statement payment due date"
-            example: "2021-02-01"
-          next_payment_due_date:
-            type: string
-            description: "The next payment due date"
-            example: "2021-02-01"
-          statement_date:
-            type: string
-            example: "2021-10-27"
-            description: "The statement date"
-          last_payment_date:
-            type: string
-            example: "2021-10-27"
-            description: "The date of the last payment"
-          last_payment_amount:
-            type: object
-            $ref: "#/definitions/CurrencyAmount"
+    properties:
+      account_id:
+        type: string
+        description: Account this card is associated with
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      account_name:
+        type: string
+        example: HKD Visa
+      account_number_masked:
+        type: string
+        description: "Masked Account number of the card account"
+      account_type:
+        $ref: "#/definitions/AccountType"
+        description: "Account Type"
+      statement_payment_due_date:
+        type: string
+        description: "The statement payment due date"
+        example: "2021-02-01"
+      next_payment_due_date:
+        type: string
+        description: "The next payment due date"
+        example: "2021-02-01"
+      statement_date:
+        type: string
+        example: "2021-10-27"
+        description: "The statement date"
+      last_payment_date:
+        type: string
+        example: "2021-10-27"
+        description: "The date of the last payment"
+      last_payment_amount:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      current_balance:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      payment_due_amount:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      statement_due_amount:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      total_credit_limit:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      available_credit_limit:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      minimum_payment_due:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
+      rewards_points_balance:
+        type: object
+        $ref: "#/definitions/GenericAmount"
+      updated_at:
+        type: string
+        format: date-time
+        example: "2021-02-01T10:01:02.333Z"
 
-  CommonCardDetails:
+  CardTotal:
     properties:
       current_balance:
         type: object
@@ -1454,7 +1476,7 @@ definitions:
         $ref: "#/definitions/CurrencyAmount"
       rewards_points_balance:
         type: object
-        $ref: "#/definitions/RewardsPointsBalance"
+        $ref: "#/definitions/GenericAmount"
       updated_at:
         type: string
         format: date-time
