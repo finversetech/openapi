@@ -5018,6 +5018,50 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
+  /mandates/sender_account/{senderAccountId}:
+    post:
+      description: Create mandate for an existing sender account
+      operationId: createMandateForExistingSender
+      security:
+        - Oauth2: [mandate:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+        - in: body
+          name: createMandateRequest
+          description: request body for creating mandate
+          schema:
+            $ref: "#/definitions/CreateMandateRequest"
+          required: true
+        - in: path
+          name: senderAccountId
+          type: string
+          description: The Finverse ID of the sender account
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/CreateMandateResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+  
   /payments:
     post:
       description: Create new Payment
