@@ -2438,6 +2438,27 @@ definitions:
       - sender
       - mandate_details
 
+  CreateMandateWithSenderAccountRequest:
+    properties:
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientRequest"
+        description: Information about the accountholder receiving the payment. See below.
+      sender_account:
+        $ref: "#/definitions/MandateSenderAccountRequest"
+        description: Information about the accountholder sending the payment. See below.
+      mandate_details:
+        $ref: "#/definitions/MandateDetails"
+        description: Additional details on the mandate. See below.
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+    required:
+      - recipient_account
+      - sender_account
+      - mandate_details
+
   CreateMandateResponse:
     properties:
       updated_at:
@@ -2782,6 +2803,14 @@ definitions:
       account_id:
         type: string
         description: Merchant account ID assigned by Finverse
+    required:
+      - account_id
+
+  MandateSenderAccountRequest:
+    properties:
+      account_id:
+        type: string
+        description: account ID assigned by Finverse
     required:
       - account_id
 
@@ -5018,7 +5047,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
-  /mandates/sender_account/{senderAccountId}:
+  /mandates/sender_account:
     post:
       description: Create mandate for an existing sender account
       operationId: createMandateForExistingSender
@@ -5037,12 +5066,7 @@ paths:
           name: createMandateRequest
           description: request body for creating mandate
           schema:
-            $ref: "#/definitions/CreateMandateRequest"
-          required: true
-        - in: path
-          name: senderAccountId
-          type: string
-          description: The Finverse ID of the sender account
+            $ref: "#/definitions/CreateMandateWithSenderAccountRequest"
           required: true
       responses:
         200:
