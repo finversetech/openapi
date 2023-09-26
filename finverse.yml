@@ -5062,6 +5062,7 @@ paths:
           name: Idempotency-Key
           type: string
           description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+          required: true
         - in: body
           name: createMandateRequest
           description: request body for creating mandate
