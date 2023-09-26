@@ -3165,6 +3165,14 @@ definitions:
       - mandate_status
       - last_update
 
+  AuthorizeMandateRequest:
+    properties:
+      enduser_consent :
+        type: boolean
+        description: Whether a consent was provided by the enduser to authorize a mandate
+    required:
+      - enduser_consent 
+
   SubmitAuthChecklistRequest:
     properties:
       key_id:
@@ -5288,6 +5296,47 @@ paths:
           description: request body for submitting auth checklist
           schema:
             $ref: "#/definitions/SubmitAuthChecklistRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SubmitAuthChecklistResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - customer
+
+  /mandates/{mandateId}/authorize:
+    post:
+      description: Allows a customer to authorize a specific mandate
+      operationId: authorizeMandate
+      # Need to update this to the proper scope
+      security:
+        - Oauth2: [mandates:authorize]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: mandateId
+          description: The mandate_id that is being authorized
+          required: true
+          type: string
+        - in: body
+          name: authorizeMandateRequest
+          description: request body for authorizing a mandate
+          schema:
+            $ref: "#/definitions/AuthorizeMandateRequest"
           required: true
       responses:
         200:
