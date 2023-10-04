@@ -5342,7 +5342,7 @@ paths:
         200:
           description: Successful
           schema:
-            $ref: "#/definitions/SubmitAuthChecklistResponse"
+            $ref: "#/definitions/GetMandateResponse"
         400:
           description: Invalid Request
           schema:
