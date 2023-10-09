@@ -3350,6 +3350,9 @@ definitions:
         type: string
         minLength: 4
         maxLength: 4
+      accountholder_name:
+        type: string
+        maxLength: 1024
     required:
       - account_number_last4
 
