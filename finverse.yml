@@ -3346,13 +3346,11 @@ definitions:
   ManualPaymentConfirmationRequest:
     type: object
     properties:
-      account_number_last4:
-        type: string
-        minLength: 4
-        maxLength: 4
       accountholder_name:
         type: string
         maxLength: 1024
+    required:
+      - accountholder_name 
 
   ManualPaymentConfirmationResponse:
     type: object
