@@ -1449,9 +1449,10 @@ definitions:
       minimum_payment_due:
         type: object
         $ref: "#/definitions/CurrencyAmount"
-      rewards_points_balance:
-        type: object
-        $ref: "#/definitions/GenericAmount"
+      rewards_balances:
+        type: array
+        items:
+          $ref: "#/definitions/GenericAmount"
       updated_at:
         type: string
         format: date-time
@@ -1477,9 +1478,10 @@ definitions:
       minimum_payment_due:
         type: object
         $ref: "#/definitions/CurrencyAmount"
-      rewards_points_balance:
-        type: object
-        $ref: "#/definitions/GenericAmount"
+      rewards_balances:
+        type: array
+        items:
+          $ref: "#/definitions/GenericAmount"
       updated_at:
         type: string
         format: date-time
