@@ -2159,7 +2159,7 @@ definitions:
     required:
       - total_payments
 
-  CreatePayoutInstructionRequest:
+  CreateScheduledPayoutRequest:
     properties:
       amount:
         type: integer
@@ -2233,6 +2233,60 @@ definitions:
       error:
         $ref: "#/definitions/FvErrorModelV2"
 
+  PayoutSnapshotResponse:
+    properties:
+      payout_id:
+        type: string
+      transaction_reference_id:
+        type: string
+      status:
+        type: string
+      payout_type:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      scheduled_date:
+        type: string
+        format: date-time
+      transaction_date:
+        type: string
+      payout_details:
+        $ref: "#/definitions/PayoutSnapshotDetails"
+      amount:
+        type: integer
+      currency:
+        type: string
+      description:
+        type: string
+      recipient:
+        $ref: "#/definitions/PayoutSnapshotPaymentAccount"
+      sender:
+        $ref: "#/definitions/PayoutSnapshotPaymentAccount"
+
+  PayoutSnapshotDetails:
+    properties:
+      description:
+        type: string
+      transaction_reference_id:
+        type: string
+      mandate_id:
+        type: string
+
+  PayoutSnapshotPaymentAccount:
+    properties:
+      payment_user_id:
+        type: string
+      payment_account_id:
+        type: string
+      name:
+        type: string
+      institution_id:
+        type: string
+  
   PayoutRecipient:
     properties:
       name:
@@ -5457,47 +5511,6 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
-  /payout_instructions:
-    post:
-      description: Create new Payout instruction
-      operationId: createPayoutInstruction
-      security:
-        - Oauth2: [payoutInstruction:create]
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Idempotency-Key
-          type: string
-          description: A random key provided by the customer, per unique payout. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
-        - in: body
-          name: createPayoutInstructionRequest
-          description: request body for creating payout instruction
-          schema:
-            $ref: "#/definitions/CreatePayoutInstructionRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/PayoutInstructionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-      tags:
-        - customer
-
   /payout_instructions/{payoutInstructionId}:
     get:
       description: Get Payout Instruction details by payout_instruction_id
@@ -5565,6 +5578,36 @@ paths:
           type: string
       tags:
         - customer
+  
+  /payouts/scheduled:
+    post:
+      description: Create a scheduled payout
+      operationId: createScheduledPayout
+      security:
+        - Oauth2: [payout:create]
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: createScheduledPayoutRequest
+          description: Request body containing information to create scheduled payout
+          required: true
+          schema:
+            $ref: "#/definitions/CreateScheduledPayoutRequest"
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/PayoutSnapshotResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+  
   /calculate/line_items/{paymentType}:
     get:
       description: Get line items for display
