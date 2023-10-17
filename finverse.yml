@@ -2186,53 +2186,6 @@ definitions:
       - amount
       - currency
 
-  PayoutInstructionResponse:
-    properties:
-      amount:
-        type: integer
-        example: 100
-        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
-      currency:
-        type: string
-        example: HKD
-        description: The currency code as defined in ISO 4217.
-      payment_details:
-        description: Additional details required for each payment type.
-        $ref: "#/definitions/PayoutDetailsResponse"
-      recipient:
-        $ref: "#/definitions/PayoutRecipient"
-      sender:
-        $ref: "#/definitions/PayoutSender"
-      payout_instruction_id:
-        type: string
-        description: Finverse Payout Instruction ID
-      status:
-        type: string
-        description: Possible values - CREATED, PROCESSING, EXECUTED, CANCELLED, FAILED.
-        enum:
-          &PAYOUT_INSTRUCTION_STATUS [
-            "CREATED",
-            "PROCESSING",
-            "EXECUTED",
-            "CANCELLED",
-            "FAILED",
-          ]
-      metadata:
-        type: object
-        additionalProperties:
-          type: string
-        description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
-      created_at:
-        type: string
-        format: date-time
-        description: Timestamp of when the recipient was created in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-      updated_at:
-        type: string
-        format: date-time
-        description: Timestamp of when the recipient was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-      error:
-        $ref: "#/definitions/FvErrorModelV2"
-
   PayoutSnapshotResponse:
     properties:
       payout_id:
@@ -2282,20 +2235,6 @@ definitions:
         type: string
       institution_id:
         type: string
-  
-  PayoutRecipient:
-    properties:
-      name:
-        type: string
-        description: Merchant account name
-      account_id:
-        type: string
-        description: Merchant account ID assigned by Finverse
-
-  PayoutSender:
-    properties:
-      name:
-        type: string
 
   PayoutDetails:
     properties:
@@ -2312,19 +2251,6 @@ definitions:
     required:
       - mandate_id
       - scheduled_date
-
-  PayoutDetailsResponse:
-    properties:
-      mandate_id:
-        type: string
-        description: The mandate used to execute payments for this payout instruction. Currency for the mandate must be supported by the recipient account
-      description:
-        type: string
-        description: A description for the payment (that will appear as the transaction description on bank statements)
-      scheduled_date:
-        type: string
-        format: date
-        description: YYYY-MM-DD, date (in UTC) to execute the payment, must be 1 day later than current date
 
   CreatePaymentInstructionResponse:
     properties:
@@ -5506,74 +5432,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-
-  /payout_instructions/{payoutInstructionId}:
-    get:
-      description: Get Payout Instruction details by payout_instruction_id
-      operationId: getPayoutInstruction
-      security:
-        - Oauth2: [payoutInstruction:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/PayoutInstructionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-      parameters:
-        - in: path
-          name: payoutInstructionId
-          description: payout instruction id
-          required: true
-          type: string
-      tags:
-        - customer
-
-  /payout_instructions/{payoutInstructionId}/cancel:
-    post:
-      description: Cancel Payout Instruction by payout_instruction_id
-      operationId: cancelPayoutInstruction
-      security:
-        - Oauth2: [payoutInstruction:cancel]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/PayoutInstructionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-      parameters:
-        - in: path
-          name: payoutInstructionId
-          description: payout instruction id
-          required: true
-          type: string
-      tags:
-        - customer
   
   /payouts/scheduled:
     post:
@@ -5608,6 +5466,38 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+  
+  /payouts/{payoutId}/cancel:
+    post:
+      description: Cancel Payout by payout_id
+      operationId: cancelPayout
+      security:
+        - Oauth2: [payout:cancel]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/PayoutSnapshotResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: payoutId
+          description: payout id
+          required: true
+          type: string
   
   /calculate/line_items/{paymentType}:
     get:
