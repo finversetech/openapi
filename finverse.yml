@@ -2237,8 +2237,6 @@ definitions:
     properties:
       payout_id:
         type: string
-      transaction_reference_id:
-        type: string
       status:
         type: string
       payout_type:
@@ -2259,8 +2257,6 @@ definitions:
       amount:
         type: integer
       currency:
-        type: string
-      description:
         type: string
       recipient:
         $ref: "#/definitions/PayoutSnapshotPaymentAccount"
@@ -5588,6 +5584,11 @@ paths:
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+          required: true
         - in: body
           name: createScheduledPayoutRequest
           description: Request body containing information to create scheduled payout
