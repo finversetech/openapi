@@ -5466,6 +5466,38 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+
+  /payouts/{payoutId}:
+    get:
+      description: Get payout by payout_id
+      operationId: getPayoutById
+      security:
+        - Oauth2: [payout:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/PayoutSnapshotResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: payoutId
+          description: payout id
+          required: true
+          type: string
   
   /payouts/{payoutId}/cancel:
     post:
