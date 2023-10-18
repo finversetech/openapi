@@ -3257,6 +3257,8 @@ definitions:
       number:
         type: string
         description: "Account number value"
+        minLength: 1
+        maxLength: 100
     required:
       - type
       - number
