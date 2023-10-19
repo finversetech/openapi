@@ -2192,7 +2192,7 @@ definitions:
         type: string
       status:
         type: string
-      payout_type:
+      type:
         type: string
       created_at:
         type: string
@@ -2200,21 +2200,24 @@ definitions:
       updated_at:
         type: string
         format: date-time
-      scheduled_date:
-        type: string
-        format: date-time
       transaction_date:
         type: string
-      payout_details:
+      payment_details:
         $ref: "#/definitions/PayoutSnapshotDetails"
       amount:
         type: integer
       currency:
         type: string
-      recipient:
-        $ref: "#/definitions/PayoutSnapshotPaymentAccount"
       sender:
-        $ref: "#/definitions/PayoutSnapshotPaymentAccount"
+        $ref: "#/definitions/MandateRecipient"
+      sender_account:
+        $ref: "#/definitions/MandateRecipientAccount"
+      recipient:
+        $ref: "#/definitions/GetMandateSender"
+      recipient_account:
+        $ref: "#/definitions/MandateSenderAccount"
+      error:
+        $ref: "#/definitions/FvErrorModelV2"
 
   PayoutSnapshotDetails:
     properties:
@@ -2224,17 +2227,9 @@ definitions:
         type: string
       mandate_id:
         type: string
-
-  PayoutSnapshotPaymentAccount:
-    properties:
-      payment_user_id:
+      scheduled_date:
         type: string
-      payment_account_id:
-        type: string
-      name:
-        type: string
-      institution_id:
-        type: string
+        format: date-time
 
   PayoutDetails:
     properties:
