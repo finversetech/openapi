@@ -2204,6 +2204,10 @@ definitions:
         type: string
       payment_details:
         $ref: "#/definitions/PayoutSnapshotDetails"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
       amount:
         type: integer
       currency:
@@ -2216,6 +2220,10 @@ definitions:
         $ref: "#/definitions/GetMandateSender"
       recipient_account:
         $ref: "#/definitions/MandateSenderAccount"
+      fees:
+        type: array
+        items:
+          $ref: "#/definitions/Fee"
       error:
         $ref: "#/definitions/FvErrorModelV2"
 
@@ -3288,6 +3296,8 @@ definitions:
         type: string
         description: "A unique identifier generated after creating sender (Finverse Payment User ID)"
         example: "01GY6H0JA7BS8EVGY56NSHFX2E"
+      bank_code:
+        type: string
       metadata:
         type: object
         additionalProperties:
