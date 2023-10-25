@@ -2224,8 +2224,13 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Fee"
+      live :
+        type: boolean
+        description: Whether this payout is live or not
       error:
         $ref: "#/definitions/FvErrorModelV2"
+    required:
+      - live
 
   PayoutSnapshotDetails:
     properties:
