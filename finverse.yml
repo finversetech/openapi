@@ -2450,6 +2450,10 @@ definitions:
 
   CreateMandateResponse:
     properties:
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       updated_at:
         type: string
         format: date-time
@@ -2705,6 +2709,10 @@ definitions:
 
   GetMandateResponse:
     properties:
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       updated_at:
         type: string
         format: date-time
