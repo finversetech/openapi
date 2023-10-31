@@ -778,6 +778,7 @@ definitions:
         maxLength: 80 # Prefix w/ unix timestamp upto the year ~2275
       grant_type:
         type: string
+        maxLength: 100
         description: support only client_credentials
     required:
       - client_id
@@ -808,35 +809,44 @@ definitions:
       grant_type:
         type: string
         description: support only client_credentials
+        maxLength: 100
       response_type:
         type: string
         example: code
+        maxLength: 100
       response_mode:
         type: string
         example: form_post
+        maxLength: 100
       user_id:
         type: string
         description: required when creating new Link, ignored when updating existing Link
         example: 01BX5ZZKBKACTAV9WEVGEMMVRY
         minLength: 4
+        maxLength: 100
       client_id:
         type: string
         example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
         minLength: 4
+        maxLength: 100
       redirect_uri:
         type: string
         example: https://example.com/callback
         minLength: 4
+        maxLength: 500
       state:
         type: string
         example: user-state-passed
+        maxLength: 100
       scope:
         type: string
         example: comma,separated,scopes
+        maxLength: 500
       link_mode:
         type: string
         description: Space separated list of the tags of the institutions to view.
         example: real
+        maxLength: 100
       ui_mode:
         type: string
         enum: [iframe, redirect, auto_redirect, standalone]
@@ -846,60 +856,73 @@ definitions:
         type: string
         description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
         example: en
+        maxLength: 3
       code_challenge:
         type: string
         example: code-challenge
+        maxLength: 100
       code_challenge_method:
         type: string
         example: code-challenge-method
+        maxLength: 100
       login_identity_id:
         type: string
         description: use this to update a specific login identity
         example: uhdasidasodaso
+        maxLength: 100
       customization_id:
         type: string
         description: The customization id if the customer wishes to embed it into link token for spawning link with their choice of stuffs
         example: AULIDGOESHERE
+        maxLength: 100
       institution_id:
         type: string
         description: Institution to preselect
         example: hsbc-hk
+        maxLength: 100
       countries:
         type: array
         items:
           type: string
+          maxLength: 3
         description: institution's country filter
         example: ["HKG", "SGP"]
       user_type:
         type: array
         items:
           type: string
+          maxLength: 100
         description: institution's supported user_type filter
         example: ["PERSONAL"]
       products_supported:
         type: array
         items:
           type: string
+          maxLength: 100
         description: institution's supported product filter
         example: ["ACCOUNTS", "TRANSACTIONS"]
       products_requested:
         type: array
         items:
           type: string
+          maxLength: 100
         description: products that is requested
         example: ["ACCOUNTS", "TRANSACTIONS", "PAYMENTS"]
       payment_instruction_id:
         type: string
         description: The identifier returned after creating payment instruction
         example: payment_instruction_id
+        maxLength: 100
       automatic_data_refresh:
         type: string
         description: Controls the behavior of the automatic data refresh checkbox
         enum: ["ON", "OFF", "FORCED_ON"]
+        maxLength: 100
       institution_status:
         type: string
         description: institution's status filter
         example: "alpha beta supported"
+        maxLength: 100
     required:
       - grant_type
       - response_type
@@ -936,6 +959,7 @@ definitions:
         type: string
         example: ez-bank
         minLength: 2
+        maxLength: 100
       store_credential:
         type: boolean
         example: true
@@ -948,12 +972,14 @@ definitions:
         type: array
         items:
           type: string
+          maxLength: 100
         description: products that is requested
         example: ["ACCOUNTS", "TRANSACTIONS", "PAYMENTS"]
       payment_instruction_id:
         type: string
         description: The identifier returned after creating payment instruction
         example: payment_instruction_id
+        maxLength: 100
     required:
       - institution_id
       - store_credential
@@ -971,6 +997,7 @@ definitions:
       payment_attempt_id:
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
         type: string
+        maxLength: 100
       sender_type:
         type: string
         description: The sender type of the mandate
@@ -1034,9 +1061,11 @@ definitions:
         type: string
         example: ez-bank
         minLength: 2
+        maxLength: 100
       user_id:
         type: string
         description: "Identifier for end user"
+        maxLength: 100
       consent:
         type: boolean
         example: true
@@ -1046,6 +1075,7 @@ definitions:
         type: array
         items:
           type: string
+          maxLength: 100
         description: products that are requested
         example: ["ACCOUNTS", "TRANSACTIONS", "PAYMENTS"]
       store_credentials:
@@ -1055,6 +1085,7 @@ definitions:
         $ref: "#/definitions/EncryptedPayload"
       payment_instruction_id:
         type: string
+        maxLength: 100
     required:
       - institution_id
       - user_id
@@ -1096,6 +1127,7 @@ definitions:
         type: string
         description: The action id
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+        maxLength: 100
     required:
       - encrypted_credentials
       - action_id
@@ -2055,6 +2087,7 @@ definitions:
         type: string
         example: HKD
         description: The currency code as defined in ISO 4217.
+        maxLength: 3
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
@@ -2064,9 +2097,9 @@ definitions:
         $ref: "#/definitions/PaymentDetails2"
       metadata:
         type: object
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
         additionalProperties:
           type: string
-        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - payment_details
       - amount
@@ -2169,6 +2202,7 @@ definitions:
         type: string
         example: HKD
         description: The currency code as defined in ISO 4217.
+        maxLength: 3
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PayoutDetails"
@@ -2179,6 +2213,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
         description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - payment_details
@@ -2421,6 +2456,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
         description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - recipient_account
@@ -2442,6 +2478,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
         description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - recipient_account
@@ -2536,6 +2573,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
         description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - amount
@@ -2696,6 +2734,7 @@ definitions:
       institution_id:
         type: string
         description: Finverse Institution ID
+        maxLength: 100
     required:
       - institution_id
 
@@ -2800,6 +2839,7 @@ definitions:
       account_id:
         type: string
         description: Merchant account ID assigned by Finverse
+        maxLength: 100
     required:
       - account_id
 
@@ -2808,6 +2848,7 @@ definitions:
       account_id:
         type: string
         description: account ID assigned by Finverse
+        maxLength: 100
     required:
       - account_id
 
@@ -2960,6 +3001,7 @@ definitions:
       mandate_id:
         type: string
         description: Mandate ID
+        maxLength: 100
       link_customizations:
         $ref: "#/definitions/MandateAuthLinkCustomizations"
     required:
@@ -3175,15 +3217,19 @@ definitions:
       key_id:
         type: string
         description: The key_id that was used to encrypt the envelope key
+        maxLength: 100
       envelope_encryption_key:
         type: string
         description: The encrypted envelope key
+        maxLength: 1000
       initialization_vector:
         type: string
         description: The initialization vector used for enncrypting the payload
+        maxLength: 100
       message_authentication_code:
         type: string
         description: The authentication code is used to authenticate the origin of the message
+        maxLength: 100
       ciphertext:
         type: string
         description: The encrypted payload that contains auth checklist items
@@ -3437,20 +3483,24 @@ definitions:
         type: array
         items:
           type: string
+          maxLength: 3
         description: "List of currencies supported by the payment account"
         example: ["HKD", "SGD"]
       institution_id:
         type: string
         description: "Finverse Institution ID for the payment institution."
         example: "hsbc-hk"
+        maxLength: 100
       user_id:
         type: string
         description: "A unique identifier generated after creating user (Finverse Payment User ID)"
         example: "01GY6H0JA7BS8EVGY56NSHFX2E"
+        maxLength: 100
       metadata:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
         description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
     required:
       - account_number
@@ -3463,13 +3513,16 @@ definitions:
     properties:
       name:
         type: string
+        maxLength: 100
       external_user_id:
         type: string
+        maxLength: 100
       user_type:
         type: string
         enum: *SENDER_TYPE
       email:
         type: string
+        maxLength: 256 # is max as specified in RFC 5321
       user_details:
         type: array
         items:
@@ -3478,6 +3531,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
+          maxLength: 100
     required:
       - name
       - external_user_id
