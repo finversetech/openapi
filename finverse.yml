@@ -2569,6 +2569,10 @@ definitions:
         type: string
         description: Unique reference id to identifying the payment to be collected.
         minLength: 1
+      payment_setup_options:
+        type: object
+        description: Optional field indicating if mandatory AUTOPAY should be set 
+        $ref: "#/definitions/PaymentSetupOptions"
       metadata:
         type: object
         additionalProperties:
@@ -2607,6 +2611,15 @@ definitions:
     required:
       - external_user_id
       - name
+  
+  PaymentSetupOptions:
+    properties:
+      future_payments:
+        type: string
+        description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
+        enum: [AUTOPAY,CLICK_TO_PAY]
+    required:
+      - future_payments 
 
   # this will be used by POST and GET Payment link api, since they have the same response
   PaymentLinkResponse:
@@ -2635,6 +2648,10 @@ definitions:
         type: string
         description: Unique reference id to identifying the payment to be collected.
         minLength: 1
+      payment_setup_options:
+        type: object
+        description: Optional field indicating if mandatory AUTOPAY should be set 
+        $ref: "#/definitions/PaymentSetupOptions"
       metadata:
         type: object
         additionalProperties:
