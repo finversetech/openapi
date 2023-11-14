@@ -103,6 +103,11 @@ definitions:
       unique_reference_id:
         type: string
 
+      # Some FPS token specific stuffs
+      qr_code_text:
+        type: string
+        description: The qrCode text to be used to generate the image
+
     required:
       - "customer_app_id"
       - "login_identity_id"
@@ -3404,6 +3409,15 @@ definitions:
     required:
       - autopay_consent
 
+  FpsQrCodeResponse:
+    type: object
+    properties:
+      qr_code:
+        type: string
+        description: The FPS QR code in base64
+    required:
+      - qr_code
+
   ManualPaymentConfirmationRequest:
     type: object
     properties:
@@ -5622,6 +5636,32 @@ paths:
           required: true
           type: string
   
+  /payment_links/fps/qr_code:
+    get:
+      description: Get the FPS QR code
+      operationId: getFpsQrCode
+      security:
+        - Oauth2: [qr_code:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/FpsQrCodeResponse'
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
   /calculate/line_items/{paymentType}:
     get:
       description: Get line items for display
