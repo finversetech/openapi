@@ -3598,6 +3598,12 @@ definitions:
       user_type:
         type: string
         enum: *SENDER_TYPE
+      autopay_consent:
+        type: boolean
+        example: false
+        description: Whether the user has given consent for autopay
+    required:
+      - autopay_consent 
 
 paths:
   /jwks:
