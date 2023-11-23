@@ -2696,6 +2696,8 @@ definitions:
       sender:
         type: object
         $ref: "#/definitions/PaymentLinkSenderResponse"
+      payment_method:
+        $ref: "#/definitions/PaymentMethodResponse"
 
   # basically same as PaymentLinkSender but it also contain the user_id
   # MandateSender obj has no email, so creating new definition here
@@ -3604,6 +3606,27 @@ definitions:
         description: Whether the user has given consent for autopay
     required:
       - autopay_consent 
+
+  PaymentMethodResponse:
+    properties:
+      payment_method_id:
+        type: string
+      customer_app_id:
+        type: string
+      payment_user_id:
+        type: string
+      currency:
+        type: string
+      payment_method_type:
+        type: string
+      mandate:
+        $ref: "#/definitions/GetMandateResponse"
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
 
 paths:
   /jwks:
