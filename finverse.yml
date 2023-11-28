@@ -3399,6 +3399,7 @@ definitions:
       # to use response data and bypass the fraud check
       autopay_consent:
         type: boolean
+        description: "This indicates the value that the user's pre-set selection should be. If this is a new user, the value will be set to true by default, else it will be the user's current autopay value."
     required:
       - payment_user_id
       - customer_app_id
