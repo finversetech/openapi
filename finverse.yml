@@ -2685,9 +2685,6 @@ definitions:
         type: string
         format: date-time
         description: Timestamp of when the payment link was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-      mandate:
-        type: object
-        $ref: "#/definitions/GetMandateResponse"
       payment:
         type: object
         $ref: "#/definitions/PaymentResponse"
