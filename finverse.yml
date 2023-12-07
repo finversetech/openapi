@@ -5119,6 +5119,8 @@ paths:
       tags:
         - customer
 
+
+  # deprecated endpoint, should use payment_link/fvlink/payment_user/sender instead
   /mandates/payment_user/sender:
     get:
       description: Get sender payment user for mandate
@@ -5137,6 +5139,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
+  # deprecated endpoint, should use /payment_link/fvlink/payment_user/autopay instead
   /mandates/payment_user/autopay:
     post:
       description: Set autopay consent for payment user
@@ -5891,3 +5894,55 @@ paths:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
+
+  /payment_link/fvlink/payment_user/sender:
+    get:
+      description: Get sender payment user in payment link flow
+      operationId: getSenderPaymentUserPaymentLink
+      security:
+        - Oauth2: [payment_links:payment_user:get] # Will be set in payment link token (in payment links svc)
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetPaymentUserResponse"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+  
+  /payment_link/fvlink/payment_user/autopay:
+    post:
+      description: Set autopay consent for payment user
+      operationId: setAutopayConsentPaymentLink
+      security:
+        - Oauth2: [payment_links:payment_user:set] # Will be set in payment link token (in payment links svc)
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: setAutopayConsentRequest
+          required: true
+          schema:
+            $ref: "#/definitions/SetAutopayConsentRequest"
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
