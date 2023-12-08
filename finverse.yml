@@ -3642,7 +3642,9 @@ definitions:
         $ref: "#/definitions/MandateRecipient"
       sender_account:
         $ref: "#/definitions/SenderAccountFvLinkResponse"
-      
+      error:
+        $ref: "#/definitions/FvErrorModelV2"      
+  
   SenderAccountFvLinkResponse:
     properties:
       account_number_masked:
