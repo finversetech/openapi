@@ -3621,6 +3621,37 @@ definitions:
       mandate:
         $ref: "#/definitions/GetMandateResponse"
 
+  # Payment method that is safe to return to the front end (i.e. non-sensitive fields)
+  PaymentMethodFvLinkResponse:
+    properties:
+      payment_method_id:
+        type: string
+      payment_method_type:
+        type: string
+      mandate:
+        $ref: "#/definitions/MandateFvLinkResponse"
+
+  MandateFvLinkResponse:
+    properties:
+      mandate_id:
+        type: string
+      institution_id:
+        type: string
+      mandate_status:
+        type: string
+      recipient:
+        $ref: "#/definitions/MandateRecipient"
+      sender_account:
+        $ref: "#/definitions/SenderAccountFvLinkResponse"
+      
+  SenderAccountFvLinkResponse:
+    properties:
+      account_number_masked:
+        type: string
+      institution_id:
+        type: string
+      
+
 paths:
   /jwks:
     get:
@@ -5891,6 +5922,28 @@ paths:
           description: Bad Request
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_link/fvlink/payment_method:
+    get:
+      description: Get payment method in payment link flow
+      operationId: getPaymentMethodPaymentLink
+      security:
+        - Oauth2: [payment_links:payment_method:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentMethodFvLinkResponse"
         401:
           description: Unauthorized
           schema:
