@@ -2628,8 +2628,8 @@ definitions:
         type: string
         description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
         enum: [AUTOPAY,CLICK_TO_PAY]
-    required:
-      - future_payments 
+      mandate_details:
+        $ref: "#/definitions/MandateDetailsForPaymentLink"
 
   # this will be used by POST and GET Payment link api, since they have the same response
   PaymentLinkResponse:
@@ -2951,6 +2951,29 @@ definitions:
         description: A bank specific reference, what the end user may see
     required:
       - currency
+
+  MandateDetailsForPaymentLink:
+    properties:
+      start_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than or the same as the date of creation. If unspecified, default to the date of creation.
+      end_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than the date of creation.
+      transaction_limits:
+        $ref: "#/definitions/TransactionLimits"
+        x-nullable: true
+        description: Pre-set limits on the frequency and amounts of payments under this mandate.
+      description:
+        type: string
+        description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+      mandate_bank_reference:
+        type: string
+        description: A bank specific reference, what the end user may see
 
   SenderDetail:
     properties:
