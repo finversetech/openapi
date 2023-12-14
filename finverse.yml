@@ -3010,17 +3010,22 @@ definitions:
       max_period_amount:
         type: integer
         description: Maximum amount of money that can be paid during the reference period (across any number of transactions). Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        minimum: 1
       max_period_count:
         type: integer
         description: Maximum number of transactions (of any amount) that can be executed during the reference period.
+        minimum: 1
       max_transaction_amount:
         type: integer
         description: The maximum amount of money that can be transferred in a single transaction under this mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        minimum: 1
       period:
         type: string
         x-nullable: true
         description: Reference calendar periods for the payment limits. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
         enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
+    required:
+      - max_transaction_amount
 
   GetMandateAuthLinkResponse:
     properties:
