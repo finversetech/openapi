@@ -2125,11 +2125,12 @@ definitions:
       mandate_id:
         type: string
         description: ID of the mandate this pament is referring to.
+      payment_method_id:
+        type: string
+        description: ID of the payment method this pament is referring to.
       transaction_reference_id:
         type: string
         description: Customer's ID for this transaction
-    required:
-      - mandate_id
 
   PaymentResponse:
     properties:
