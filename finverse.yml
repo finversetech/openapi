@@ -2604,9 +2604,12 @@ definitions:
     properties:
       description:
         type: string
-      external_invoice_number:
+      external_transaction_reference:
         type: string
-        description: For external invoice reference
+        description: For external invoice/transaction reference
+    required:
+      - description
+      - external_transaction_reference
 
   PaymentLinkSender:
     properties:
