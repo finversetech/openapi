@@ -2510,6 +2510,9 @@ definitions:
       mandate_id:
         type: string
         description: Finverse Mandate ID (ULID)
+      payment_method_id:
+        type: string
+        description: Finverse Payment Method ID (ULID)
       status:
         type: string
         description: Mandate status
@@ -2786,6 +2789,9 @@ definitions:
       mandate_id:
         type: string
         description: Finverse Mandate ID (ULID)
+      payment_method_id:
+        type: string
+        description: Finverse Payment Method ID (ULID)
       status:
         type: string
         description: Mandate Status
