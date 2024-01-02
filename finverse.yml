@@ -2779,6 +2779,20 @@ definitions:
     required:
       - mandate_id
 
+  FVCard:
+    properties:
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      card_id:
+        type: string
+        description: Finverse Card ID (ULID)
+
   GetMandateResponse:
     properties:
       created_at:
@@ -3654,6 +3668,8 @@ definitions:
         type: string
       mandate:
         $ref: "#/definitions/GetMandateResponse"
+      card:
+        $ref: "#/definitions/FVCard"
 
   # Payment method that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentMethodFvLinkResponse:
