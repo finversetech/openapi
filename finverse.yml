@@ -2794,6 +2794,15 @@ definitions:
       card_id:
         type: string
         description: Finverse Card ID (ULID)
+      status:
+        type: string
+        description: Card Status
+        enum:
+          [
+            "UNKNOWN",
+            "PROCESSING",
+            "SUCCEEDED"
+          ]
 
   GetMandateResponse:
     properties:
