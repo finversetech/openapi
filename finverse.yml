@@ -2791,9 +2791,6 @@ definitions:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-      card_id:
-        type: string
-        description: Finverse Card ID (ULID)
       status:
         type: string
         description: Card Status
