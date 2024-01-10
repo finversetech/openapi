@@ -2099,10 +2099,6 @@ definitions:
         example: HKD
         description: The currency code as defined in ISO 4217.
         maxLength: 3
-      type:
-        type: string
-        description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE"]
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PaymentDetails2"
@@ -2115,7 +2111,6 @@ definitions:
       - payment_details
       - amount
       - currency
-      - type
 
   PaymentDetails2:
     properties:
@@ -2148,7 +2143,7 @@ definitions:
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: *PAYMENT_TYPE
+        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD"]
       updated_at:
         type: string
         format: date-time
