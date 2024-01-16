@@ -2795,6 +2795,11 @@ definitions:
             "PROCESSING",
             "SUCCEEDED"
           ]
+      card_details:
+        $ref: "#/definitions/FVCardDetails"
+
+  FVCardDetails:
+    properties:
       brand:
         type: string
         description: The credit card brand
@@ -3714,11 +3719,16 @@ definitions:
       status:
         type: string
         enum: *CARD_STATUS
+      card_details:
+        $ref: "#/definitions/CardFvLinkDetails"
+  
+  CardFvLinkDetails:
+    properties:
       brand:
         type: string
       last4:
         type: string
-  
+
   SenderAccountFvLinkResponse:
     properties:
       account_number_masked:
