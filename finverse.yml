@@ -2790,7 +2790,7 @@ definitions:
         type: string
         description: Card Status
         enum:
-          [
+          &CARD_STATUS [
             "UNKNOWN",
             "PROCESSING",
             "SUCCEEDED"
@@ -3691,6 +3691,8 @@ definitions:
         type: string
       mandate:
         $ref: "#/definitions/MandateFvLinkResponse"
+      card:
+        $ref: "#/definitions/CardFvLinkResponse"
 
   MandateFvLinkResponse:
     properties:
@@ -3706,6 +3708,16 @@ definitions:
         $ref: "#/definitions/SenderAccountFvLinkResponse"
       error:
         $ref: "#/definitions/FvErrorModelV2"      
+  
+  CardFvLinkResponse:
+    properties:
+      status:
+        type: string
+        enum: *CARD_STATUS
+      brand:
+        type: string
+      last4:
+        type: string
   
   SenderAccountFvLinkResponse:
     properties:
