@@ -2795,6 +2795,14 @@ definitions:
             "PROCESSING",
             "SUCCEEDED"
           ]
+      brand:
+        type: string
+        description: The credit card brand
+        example: VISA
+      last4:
+        type: string
+        description: Last 4 digits of the credit card number
+        example: "1234"
 
   GetMandateResponse:
     properties:
