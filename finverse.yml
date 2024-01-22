@@ -2099,6 +2099,9 @@ definitions:
         example: HKD
         description: The currency code as defined in ISO 4217.
         maxLength: 3
+      payment_method_id:
+        type: string
+        description: ID of the payment method this pament is referring to.
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PaymentDetails2"
@@ -2120,9 +2123,6 @@ definitions:
       mandate_id:
         type: string
         description: ID of the mandate this pament is referring to.
-      payment_method_id:
-        type: string
-        description: ID of the payment method this pament is referring to.
       transaction_reference_id:
         type: string
         description: Customer's ID for this transaction
@@ -2161,6 +2161,9 @@ definitions:
             "FAILED",
             "REVOKED",
           ]
+      payment_method_id:
+        type: string
+        description: ID of the payment method this pament is referring to.
       payment_details:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PaymentDetails2"
