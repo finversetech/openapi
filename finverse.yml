@@ -2889,6 +2889,12 @@ definitions:
     required:
       - name
 
+  CardRecipient:
+    properties:
+      name:
+        type: string
+        description: Merchant account name
+
   MandateRecipientAccount:
     properties:
       account_id:
@@ -3724,6 +3730,8 @@ definitions:
         enum: *CARD_STATUS
       card_details:
         $ref: "#/definitions/CardFvLinkDetails"
+      recipient:
+        $ref: "#/definitions/CardRecipient"
   
   CardFvLinkDetails:
     properties:
