@@ -2125,7 +2125,10 @@ definitions:
         description: ID of the mandate this pament is referring to.
       transaction_reference_id:
         type: string
-        description: Customer's ID for this transaction
+        description: "Deprecated: Customer's ID for this transaction"
+      external_transaction_reference:
+        type: string
+        description: Customer reference for this transaction
 
   PaymentResponse:
     properties:
