@@ -1001,7 +1001,7 @@ definitions:
         example: true
     required:
       - success
-      - skip_autopay_consent 
+      - skip_autopay_consent
 
   CreatePaymentLinkMandateRequest:
     properties:
@@ -2276,7 +2276,7 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Fee"
-      live :
+      live:
         type: boolean
         description: Whether this payout is live or not
       error:
@@ -2591,7 +2591,7 @@ definitions:
         minLength: 1
       payment_setup_options:
         type: object
-        description: Optional field indicating if mandatory AUTOPAY should be set 
+        description: Optional field indicating if mandatory AUTOPAY should be set
         $ref: "#/definitions/PaymentSetupOptions"
       metadata:
         type: object
@@ -2599,6 +2599,8 @@ definitions:
           type: string
           maxLength: 100
         description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+      integration_metadata:
+        $ref: "#/definitions/IntegrationMetadataRequest"
     required:
       - currency
       - mode
@@ -2635,13 +2637,13 @@ definitions:
     required:
       - external_user_id
       - name
-  
+
   PaymentSetupOptions:
     properties:
       future_payments:
         type: string
         description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
-        enum: [AUTOPAY,CLICK_TO_PAY]
+        enum: [AUTOPAY, CLICK_TO_PAY]
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLink"
 
@@ -2674,7 +2676,7 @@ definitions:
         minLength: 1
       payment_setup_options:
         type: object
-        description: Optional field indicating if mandatory AUTOPAY should be set 
+        description: Optional field indicating if mandatory AUTOPAY should be set
         $ref: "#/definitions/PaymentSetupOptions"
       metadata:
         type: object
@@ -2710,6 +2712,8 @@ definitions:
         $ref: "#/definitions/PaymentLinkSenderResponse"
       payment_method:
         $ref: "#/definitions/PaymentMethodResponse"
+      integration_metadata:
+        $ref: "#/definitions/IntegrationMetadataResponse"
 
   # basically same as PaymentLinkSender but it also contain the user_id
   # MandateSender obj has no email, so creating new definition here
@@ -2730,6 +2734,49 @@ definitions:
       user_id:
         type: string
         description: A unique identifier generated after creating sender
+
+  RapidstorMetadataRequest:
+    properties:
+      corp_code:
+        type: string
+      s_location_code:
+        type: string
+      tenant_id:
+        type: string
+    required:
+      - corp_code
+      - s_location_code
+      - tenant_id
+
+  RapidstorMetadataResponse:
+    properties:
+      corp_code:
+        type: string
+      s_location_code:
+        type: string
+      tenant_id:
+        type: string
+      iAnnivDays:
+        type: number
+        format: int32
+
+  IntegrationMetadataRequest:
+    properties:
+      integration_id:
+        type: string
+        enum: &INTEGRATION_ID ["RAPIDSTOR"]
+      rapidstor_metadata:
+        $ref: "#/definitions/RapidstorMetadataRequest"
+    required:
+      - integration_id
+
+  IntegrationMetadataResponse:
+    properties:
+      integration_id:
+        type: string
+        enum: *INTEGRATION_ID
+      rapidstor_metadata:
+        $ref: "#/definitions/RapidstorMetadataResponse"
 
   Fee:
     properties:
@@ -2799,12 +2846,7 @@ definitions:
       status:
         type: string
         description: Card Status
-        enum:
-          &CARD_STATUS [
-            "UNKNOWN",
-            "PROCESSING",
-            "SUCCEEDED"
-          ]
+        enum: &CARD_STATUS ["UNKNOWN", "PROCESSING", "SUCCEEDED"]
       card_details:
         $ref: "#/definitions/FVCardDetails"
 
@@ -3313,11 +3355,11 @@ definitions:
 
   AuthorizeMandateRequest:
     properties:
-      enduser_consent :
+      enduser_consent:
         type: boolean
         description: Whether a consent was provided by the enduser to authorize a mandate
     required:
-      - enduser_consent 
+      - enduser_consent
 
   SubmitAuthChecklistRequest:
     properties:
@@ -3515,7 +3557,7 @@ definitions:
         type: string
         maxLength: 1024
     required:
-      - accountholder_name 
+      - accountholder_name
 
   ManualPaymentConfirmationResponse:
     type: object
@@ -3664,7 +3706,7 @@ definitions:
         format: date-time
       email:
         type: string
-      external_user_id: 
+      external_user_id:
         type: string
       metadata:
         type: object
@@ -3688,8 +3730,10 @@ definitions:
         type: boolean
         example: false
         description: Whether the user has given consent for autopay
+      integration_metadata:
+        $ref: "#/definitions/IntegrationMetadataResponse"
     required:
-      - autopay_consent 
+      - autopay_consent
 
   # we use this model when payment method is nested
   PaymentMethodResponse:
@@ -3728,8 +3772,8 @@ definitions:
       sender_account:
         $ref: "#/definitions/SenderAccountFvLinkResponse"
       error:
-        $ref: "#/definitions/FvErrorModelV2"      
-  
+        $ref: "#/definitions/FvErrorModelV2"
+
   CardFvLinkResponse:
     properties:
       status:
@@ -3739,7 +3783,7 @@ definitions:
         $ref: "#/definitions/CardFvLinkDetails"
       recipient:
         $ref: "#/definitions/CardRecipient"
-  
+
   CardFvLinkDetails:
     properties:
       brand:
@@ -3753,7 +3797,6 @@ definitions:
         type: string
       institution_id:
         type: string
-      
 
 paths:
   /jwks:
@@ -5292,7 +5335,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-  
+
   /payments:
     post:
       description: Create new Payment
@@ -5653,7 +5696,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-  
+
   /payouts/scheduled:
     post:
       description: Create a scheduled payout
@@ -5719,7 +5762,7 @@ paths:
           description: payout id
           required: true
           type: string
-  
+
   /payouts/{payoutId}/cancel:
     post:
       description: Cancel Payout by payout_id
@@ -5751,7 +5794,7 @@ paths:
           description: payout id
           required: true
           type: string
-  
+
   /payment_links/fps/qr_code:
     get:
       description: Get the FPS QR code
@@ -5764,7 +5807,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: '#/definitions/FpsQrCodeResponse'
+            $ref: "#/definitions/FpsQrCodeResponse"
         400:
           description: Invalid Request
           schema:
@@ -6003,7 +6046,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-  
+
   /payment_link/fvlink/payment_user/autopay:
     post:
       description: Set autopay consent for payment user
