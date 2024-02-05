@@ -2756,7 +2756,7 @@ definitions:
         type: string
       tenant_id:
         type: string
-      iAnnivDays:
+      i_anniv_days:
         type: number
         format: int32
 
