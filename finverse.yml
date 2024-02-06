@@ -2759,6 +2759,8 @@ definitions:
       i_anniv_days:
         type: number
         format: int32
+      tenant_default_currency:
+        type: string
 
   IntegrationMetadataRequest:
     properties:
