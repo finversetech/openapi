@@ -3756,6 +3756,8 @@ definitions:
         type: string
       payment_method_type:
         type: string
+      recipient_entity_name:
+        type: string
       mandate:
         $ref: "#/definitions/MandateFvLinkResponse"
       card:
