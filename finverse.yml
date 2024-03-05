@@ -3802,6 +3802,11 @@ definitions:
       institution_id:
         type: string
 
+  ChangePaymentMethodFvLinkResponse:
+    properties:
+      redirect_url:
+        type: string
+
 paths:
   /jwks:
     get:
@@ -6096,6 +6101,28 @@ paths:
             $ref: "#/definitions/PaymentMethodFvLinkResponse"
         401:
           description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_link/fvlink/payment_method/change:
+    post:
+      description: Initiate change payment method from payment link front-end
+      operationId: changePaymentMethodPaymentLink
+      security:
+        - Oauth2: [payment_links:payment_method:update]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ChangePaymentMethodFvLinkResponse"
+        400:
+          description: Bad Request
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
         500:
