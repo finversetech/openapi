@@ -2743,6 +2743,11 @@ definitions:
         type: string
       tenant_id:
         type: string
+      i_anniv_days:
+        type: number
+        format: int32
+        minimum: 1
+        maximum: 31
     required:
       - corp_code
       - s_location_code
@@ -3721,6 +3726,9 @@ definitions:
         items:
           $ref: "#/definitions/SenderDetail"
       updated_at:
+        type: string
+        format: date-time
+      next_bill_update:
         type: string
         format: date-time
       user_id:
