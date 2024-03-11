@@ -3731,6 +3731,7 @@ definitions:
       next_bill_update:
         type: string
         format: date-time
+        x-nullable: true
       user_id:
         type: string
       user_type:
