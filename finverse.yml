@@ -2647,6 +2647,16 @@ definitions:
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLink"
 
+  ListPaymentMethodsResponse:
+    properties:
+      payment_methods:
+        type: array
+        items:
+          $ref: '#/definitions/PaymentMethodResponse'
+      sender:
+        $ref: '#/definitions/PaymentUser'
+
+
   # this will be used by POST and GET Payment link api, since they have the same response
   PaymentLinkResponse:
     properties:
@@ -5097,6 +5107,38 @@ paths:
       tags:
         - public
 
+  /payment_users/{paymentUserId}/payment_methods:
+    get:
+      description: List Payment Methods for a User
+      operationId: listPaymentMethods
+      security:
+        - Oauth2: [payment_method:list]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: '#/definitions/ListPaymentMethodsResponse'
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"       
+      parameters:
+        - in: path
+          name: paymentUserId
+          description: Payment User Id
+          required: true
+          type: string          
+  
   /mandates:
     post:
       description: CREATE Mandate
