@@ -383,9 +383,9 @@ definitions:
       amount:
         type: object
         $ref: "#/definitions/CurrencyAmount"
-      transfer_details:
+      transaction_details:
         type: object
-        description: (Deprecated)
+        description: Transaction Details
       created_at:
         type: string
         format: date-time
