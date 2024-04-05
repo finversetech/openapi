@@ -3487,6 +3487,12 @@ definitions:
         description: "Account number value"
         minLength: 1
         maxLength: 100
+      number_plain_text:
+        type: string
+        description: "Account number value"
+        minLength: 1
+        maxLength: 100
+        x-nullable: true
     required:
       - type
       - number
@@ -3500,8 +3506,13 @@ definitions:
         example: "sender_account_id"
       accountholder_name:
         type: string
-        description: "Accountholder name of the sender's account"
+        description: "Tokenized accountholder name of the sender's account"
+        example: "01EP4A1MZDHKETZFRPF0K62S6S"
+      accountholder_name_plain_text:
+        type: string
+        description: "Accountholder name of the sender's account in plain text"
         example: "Chan Li Pak"
+        x-nullable: true
       account_number:
         $ref: "#/definitions/RecipientAccountNumber"
         description: "Account number of the sender’s account. See below."
@@ -5249,6 +5260,79 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+
+  /mandates/details:
+    get:
+      description: List mandates details
+      operationId: listDetokenizedMandates
+      security:
+        - Oauth2: [mandate:listSensitive]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/ListMandatesResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: query
+          name: date_from
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: date_to
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: statuses
+          type: array
+          items:
+            type: string
+            enum: *MANDATE_STATUS
+          description: The mandate statuses to filter for, comma separated
+        - in: query
+          name: sender_type
+          type: string
+          description: The sender type of the mandate
+          enum: *SENDER_TYPE
+        - in: query
+          name: user_id
+          type: string
+          description: The user_id the mandate was setup for
+        - in: query
+          name: institution_id
+          type: string
+          description: The institution the mandate was executed against
+        - in: query
+          name: offset
+          description: default is 0
+          required: false
+          type: integer
+          default: 0
+          minimum: 0
+        - in: query
+          name: limit
+          description: default is 500, max is 1000
+          required: false
+          type: integer
+          default: 500
+          minimum: 1
+          maximum: 1000
+
 
   /mandates/institution_selection:
     post:
