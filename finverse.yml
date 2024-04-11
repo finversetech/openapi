@@ -3487,7 +3487,7 @@ definitions:
         description: "Account number value"
         minLength: 1
         maxLength: 100
-      number_plain_text:
+      number_plaintext:
         type: string
         description: "Account number value"
         minLength: 1
@@ -3508,7 +3508,7 @@ definitions:
         type: string
         description: "Tokenized accountholder name of the sender's account"
         example: "01EP4A1MZDHKETZFRPF0K62S6S"
-      accountholder_name_plain_text:
+      accountholder_name_plaintext:
         type: string
         description: "Accountholder name of the sender's account in plain text"
         example: "Chan Li Pak"
