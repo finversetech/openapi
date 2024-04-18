@@ -2700,6 +2700,10 @@ definitions:
         type: string
         enum: [CREATED, PAID, EXPIRED]
         description: The status of payment link
+      session_status:
+        type: string
+        enum: [OPEN,PROCESSING,COMPLETE,FAILED]
+        description: The session status of payment link
       expires_at:
         type: string
         format: date-time
