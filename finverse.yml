@@ -2148,7 +2148,7 @@ definitions:
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD"]
+        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD", "MANUAL"]
       updated_at:
         type: string
         format: date-time
@@ -2654,6 +2654,11 @@ definitions:
         enum: [AUTOPAY, CLICK_TO_PAY]
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLink"
+      payment_method_types:
+        type: array
+        items:
+          type: string
+          enum: *PAYMENT_TYPE
 
   ListPaymentMethodsResponse:
     properties:
