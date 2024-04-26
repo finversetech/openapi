@@ -2659,6 +2659,7 @@ definitions:
         items:
           type: string
           enum: *PAYMENT_TYPE
+        x-nullable: true
 
   ListPaymentMethodsResponse:
     properties:
