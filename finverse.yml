@@ -2659,7 +2659,7 @@ definitions:
         items:
           type: string
           enum: *PAYMENT_TYPE
-        x-nullable: true
+        x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
 
   ListPaymentMethodsResponse:
     properties:
