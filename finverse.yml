@@ -398,6 +398,14 @@ definitions:
         items:
           type: string
         example: ["TRANSFER"]
+      transaction_time:
+        type: string
+        format: date-time
+        description: Optional field indicating when the transaction happened
+        x-nullable: true
+      bank_reference:
+        type: string
+        description: Transaction reference provided by the bank
       category_predictions:
         type: array
         items:
