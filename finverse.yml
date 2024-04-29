@@ -403,7 +403,7 @@ definitions:
         format: date-time
         description: Optional field indicating when the transaction happened
         x-nullable: true
-      bank_reference:
+      transaction_reference:
         type: string
         description: Transaction reference provided by the bank
       category_predictions:
