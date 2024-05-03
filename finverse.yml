@@ -6333,15 +6333,7 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/RefreshPaymentAttemptResponse"
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
         401:
           description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
