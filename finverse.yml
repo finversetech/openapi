@@ -104,6 +104,12 @@ definitions:
         type: string
       payment_method_id:
         type: string
+      tpp_name:
+        type: string
+      retry_url:
+        type: string
+      onboarding_flow:
+        type: string
 
       # Some FPS token specific stuffs
       qr_code_text:
