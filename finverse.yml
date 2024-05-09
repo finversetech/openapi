@@ -2682,7 +2682,7 @@ definitions:
         items:
           $ref: '#/definitions/PaymentMethodResponse'
       sender:
-        $ref: '#/definitions/PaymentUser'
+        $ref: '#/definitions/PaymentUserWithoutEmail'
 
 
   # this will be used by POST and GET Payment link api, since they have the same response
@@ -3766,6 +3766,47 @@ definitions:
       - external_user_id
 
   PaymentUser:
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      email:
+        type: string
+      external_user_id:
+        type: string
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+      name:
+        type: string
+      user_details:
+        type: array
+        items:
+          $ref: "#/definitions/SenderDetail"
+      updated_at:
+        type: string
+        format: date-time
+      next_bill_update:
+        type: string
+        format: date-time
+        x-nullable: true
+      user_id:
+        type: string
+      user_type:
+        type: string
+        enum: *SENDER_TYPE
+      autopay_consent:
+        type: boolean
+        example: false
+        description: Whether the user has given consent for autopay
+      integration_metadata:
+        $ref: "#/definitions/IntegrationMetadataResponse"
+    required:
+      - autopay_consent
+
+  # Should return this model for all endpoints except /payment_users/{id}
+  PaymentUserWithoutEmail:
     properties:
       created_at:
         type: string
