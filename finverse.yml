@@ -3504,6 +3504,10 @@ definitions:
         type: string
         description: "Finverse Institution ID for the recipient’s institution."
         example: "hsbc-hk"
+      institution_name:
+        type: string
+        description: "Institution Name for the sender’s institution."
+        example: "HSBC"
       bank_code:
         type: string
         description: "3-digit code associated with bank"
@@ -3566,6 +3570,10 @@ definitions:
         type: string
         description: "Finverse Institution ID for the sender’s institution."
         example: "hsbc-hk"
+      institution_name:
+        type: string
+        description: "Institution Name for the sender’s institution."
+        example: "HSBC"
       user_id:
         type: string
         description: "A unique identifier generated after creating sender (Finverse Payment User ID)"
@@ -3662,6 +3670,10 @@ definitions:
         type: string
         description: "Finverse Institution ID for the payment institution."
         example: "hsbc-hk"
+      institution_name:
+        type: string
+        description: "Institution Name for the sender’s institution."
+        example: "HSBC"
       user_id:
         type: string
         description: "A unique identifier generated after creating user (Finverse Payment User ID)"
@@ -3909,6 +3921,8 @@ definitions:
       account_number_masked:
         type: string
       institution_id:
+        type: string
+      institution_name:
         type: string
 
   ChangePaymentMethodFvLinkResponse:
