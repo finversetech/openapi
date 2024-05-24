@@ -115,6 +115,9 @@ definitions:
       qr_code_text:
         type: string
         description: The qrCode text to be used to generate the image
+      manual_payment_provider:
+        type: string
+        example: ["HK_FPS", "SG_PAYNOW"]
 
     required:
       - "customer_app_id"
