@@ -3633,8 +3633,7 @@ definitions:
       accountholder_name:
         type: string
         maxLength: 1024
-    required:
-      - accountholder_name
+        description: Required if manual payment provider is HK_FPS. Not required for SG_PAYNOW
 
   ManualPaymentConfirmationResponse:
     type: object
