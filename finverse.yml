@@ -1071,9 +1071,6 @@ definitions:
       link_url:
         type: string
         description: URL to launch Finverse Link to authorize the mandate
-      qr_code:
-        type: string
-        description: The FPS QR code in base64
       token_type:
         type: string
         enum: ["Bearer"]
