@@ -3779,6 +3779,10 @@ definitions:
         additionalProperties:
           type: string
           maxLength: 100
+      autopay_consent:
+        type: boolean
+      integration_metadata:
+        $ref: "#/definitions/IntegrationMetadataRequest"
     required:
       - name
       - external_user_id
