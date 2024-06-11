@@ -3868,6 +3868,67 @@ definitions:
     required:
       - autopay_consent
 
+  CreatePaymentMethodRequest:
+    properties:
+      card:
+        type: object
+        properties:
+          card_details:
+            type: object
+            properties:
+              brand: 
+                type: string
+              last4:
+                type: string
+            required:
+              - brand
+              - last4
+          status:
+            type: string
+            enum:
+              - "SUCCEEDED"
+        required:
+          - card_details
+          - status
+      integration_metadata:
+        type: object
+        properties:
+          integration_id:
+            type: string
+            enum:
+              - "STRIPE"
+          stripe_metadata:
+            type: object
+            properties:
+              customer:
+                type: object
+                properties: 
+                  id:
+                    type: string
+                required:
+                  - id
+              payment_method:
+                type: object
+                properties: 
+                  id:
+                    type: string
+                required:
+                  - id
+            required:
+              - customer
+              - payment_method
+        required:
+          - integration_id
+          - stripe_metadata
+      payment_method_type:
+        type: string
+        enum:
+          - "CARD"
+    required:
+      - card
+      - integration_metadata
+      - payment_method_type
+
   # we use this model when payment method is nested
   PaymentMethodResponse:
     properties:
@@ -5264,7 +5325,45 @@ paths:
           name: paymentUserId
           description: Payment User Id
           required: true
-          type: string          
+          type: string
+    post:
+      description: Create a Payment Method for a user
+      operationId: createPaymentMethod
+      security:
+        - Oauth2: [paymentMethod:create]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentUserId
+          description: Payment User ID
+          required: true
+          type: string
+        - in: body
+          name: createPaymentMethodRequest
+          required: true
+          schema:
+            $ref: '#/definitions/CreatePaymentMethodRequest'
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/PaymentMethodResponse'
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"        
+      
   
   /mandates:
     post:
