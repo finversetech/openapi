@@ -3924,10 +3924,13 @@ definitions:
         type: string
         enum:
           - "CARD"
+      recipient_account_id:
+        type: string
     required:
       - card
       - integration_metadata
       - payment_method_type
+      - recipient_account_id
 
   # we use this model when payment method is nested
   PaymentMethodResponse:
