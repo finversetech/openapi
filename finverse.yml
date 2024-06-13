@@ -3891,35 +3891,7 @@ definitions:
           - card_details
           - status
       integration_metadata:
-        type: object
-        properties:
-          integration_id:
-            type: string
-            enum:
-              - "STRIPE"
-          stripe_metadata:
-            type: object
-            properties:
-              customer:
-                type: object
-                properties: 
-                  id:
-                    type: string
-                required:
-                  - id
-              payment_method:
-                type: object
-                properties: 
-                  id:
-                    type: string
-                required:
-                  - id
-            required:
-              - customer
-              - payment_method
-        required:
-          - integration_id
-          - stripe_metadata
+        $ref: '#/definitions/PaymentMethodIntegrationMetadata'
       payment_method_type:
         type: string
         enum:
@@ -3935,6 +3907,37 @@ definitions:
       - recipient_account_id
       - currency
 
+# not to be confused with FvBill/Payment Links related integration metadata
+  PaymentMethodIntegrationMetadata:
+    properties:
+      integration_id:
+        type: string
+        enum:
+          - "STRIPE"
+      stripe_metadata:
+        type: object
+        properties:
+          customer:
+            type: object
+            properties: 
+              id:
+                type: string
+            required:
+              - id
+          payment_method:
+            type: object
+            properties: 
+              id:
+                type: string
+            required:
+              - id
+        required:
+          - customer
+          - payment_method
+    required:
+      - integration_id
+      - stripe_metadata
+
   # we use this model when payment method is nested
   PaymentMethodResponse:
     properties:
@@ -3946,6 +3949,8 @@ definitions:
         $ref: "#/definitions/GetMandateResponse"
       card:
         $ref: "#/definitions/FVCard"
+      integration_metadata:
+        $ref: '#/definitions/PaymentMethodIntegrationMetadata'
 
   # Payment method that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentMethodFvLinkResponse:
