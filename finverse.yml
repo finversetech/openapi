@@ -3926,11 +3926,14 @@ definitions:
           - "CARD"
       recipient_account_id:
         type: string
+      currency:
+        type: string
     required:
       - card
       - integration_metadata
       - payment_method_type
       - recipient_account_id
+      - currency
 
   # we use this model when payment method is nested
   PaymentMethodResponse:
