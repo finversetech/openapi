@@ -3698,6 +3698,11 @@ definitions:
           type: string
         description: "List of currencies supported by the payment account"
         example: ["HKD", "SGD"]
+      business_units:
+        type: array
+        items:
+          type: string
+        description: The business units the payment account belongs to
       metadata:
         type: object
         additionalProperties:
