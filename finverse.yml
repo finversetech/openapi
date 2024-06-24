@@ -2681,6 +2681,16 @@ definitions:
           type: string
           enum: *PAYMENT_TYPE
         x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
+      recipient_account_filters:
+        $ref: '#/definitions/RecipientAccountFilters'
+
+  RecipientAccountFilters:
+    properties:
+      business_unit:
+        type: string
+        minLength: 1
+    required:
+      - business_unit # For now there is only one so we make it required. In future, we will have application logic to make sure at least one of the guys is set
 
   ListPaymentMethodsResponse:
     properties:
