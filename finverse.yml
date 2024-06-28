@@ -2813,6 +2813,9 @@ definitions:
         format: int32
         minimum: 1
         maximum: 31
+      account_token:
+        type: string
+        minimum: 1
     required:
       - corp_code
       - s_location_code
@@ -2830,6 +2833,8 @@ definitions:
         type: number
         format: int32
       tenant_default_currency:
+        type: string
+      account_token:
         type: string
 
   IntegrationMetadataRequest:
