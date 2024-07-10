@@ -3900,9 +3900,15 @@ definitions:
                 type: string
               last4:
                 type: string
+              currency:
+                type: string
             required:
               - brand
               - last4
+              - currency
+          recipient_account:
+            $ref: "#/definitions/MandateRecipientRequest"
+            description: The recipient (Settlement) account associated with this payment method
           status:
             type: string
             enum:
@@ -3910,22 +3916,17 @@ definitions:
         required:
           - card_details
           - status
+          - recipient_account
       integration_metadata:
         $ref: '#/definitions/PaymentMethodIntegrationMetadata'
       payment_method_type:
         type: string
         enum:
           - "CARD"
-      recipient_account_id:
-        type: string
-      currency:
-        type: string
     required:
       - card
       - integration_metadata
       - payment_method_type
-      - recipient_account_id
-      - currency
 
 # not to be confused with FvBill/Payment Links related integration metadata
   PaymentMethodIntegrationMetadata:
