@@ -2490,7 +2490,7 @@ definitions:
         $ref: "#/definitions/CreateMandateSender"
         description: Information about the accountholder sending the payment. See below.
       mandate_details:
-        $ref: "#/definitions/MandateDetails"
+        $ref: "#/definitions/MandateDetailsRequest"
         description: Additional details on the mandate. See below.
       metadata:
         type: object
@@ -2512,7 +2512,7 @@ definitions:
         $ref: "#/definitions/MandateSenderAccountRequest"
         description: Information about the accountholder sending the payment. See below.
       mandate_details:
-        $ref: "#/definitions/MandateDetails"
+        $ref: "#/definitions/MandateDetailsRequest"
         description: Additional details on the mandate. See below.
       metadata:
         type: object
@@ -2563,7 +2563,7 @@ definitions:
       sender_account:
         $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
-        $ref: "#/definitions/MandateDetails"
+        $ref: "#/definitions/MandateDetailsResponse"
       fees:
         type: array
         items:
@@ -2976,7 +2976,7 @@ definitions:
       sender_account:
         $ref: "#/definitions/MandateSenderAccount"
       mandate_details:
-        $ref: "#/definitions/MandateDetails"
+        $ref: "#/definitions/MandateDetailsResponse"
       fees:
         type: array
         items:
@@ -3095,7 +3095,41 @@ definitions:
       - external_user_id
       - user_type
 
-  MandateDetails:
+  # this is mandate details that is returned by READ endpoint
+  MandateDetailsResponse:
+    properties:
+      currency:
+        type: string
+        description: ISO currency code
+      start_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than or the same as the date of creation. If unspecified, default to the date of creation.
+      end_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than the date of creation.
+      payment_schedule:
+        $ref: "#/definitions/PaymentSchedule"
+        x-nullable: true
+        description: Pre-scheduled payment details (only communicated to banks which require a specific payment schedule and amount when setting up a mandate).
+      transaction_limits:
+        $ref: "#/definitions/TransactionLimits"
+        x-nullable: true
+        description: Pre-set limits on the frequency and amounts of payments under this mandate.
+      description:
+        type: string
+        description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+      mandate_bank_reference:
+        type: string
+        description: A bank specific reference, what the end user may see
+    required:
+      - currency
+
+  # this is mandate details that is passed when creating mandate
+  MandateDetailsRequest:
     properties:
       currency:
         type: string
@@ -3330,7 +3364,7 @@ definitions:
       error:
         $ref: "#/definitions/FvErrorModelV2"
       mandate_details:
-        $ref: "#/definitions/MandateDetails"
+        $ref: "#/definitions/MandateDetailsResponse"
       recipient:
         $ref: "#/definitions/MandateRecipient"
     required:
@@ -3891,32 +3925,7 @@ definitions:
   CreatePaymentMethodRequest:
     properties:
       card:
-        type: object
-        properties:
-          card_details:
-            type: object
-            properties:
-              brand: 
-                type: string
-              last4:
-                type: string
-              currency:
-                type: string
-            required:
-              - brand
-              - last4
-              - currency
-          recipient_account:
-            $ref: "#/definitions/MandateRecipientRequest"
-            description: The recipient (Settlement) account associated with this payment method
-          status:
-            type: string
-            enum:
-              - "SUCCEEDED"
-        required:
-          - card_details
-          - status
-          - recipient_account
+        $ref: "#/definitions/CreateCardRequest"
       integration_metadata:
         $ref: '#/definitions/PaymentMethodIntegrationMetadata'
       payment_method_type:
@@ -4045,6 +4054,34 @@ definitions:
     properties:
       redirect_url:
         type: string
+
+
+  CreateCardRequest:
+    properties:
+      card_details:
+        type: object
+        properties:
+          brand: 
+            type: string
+          last4:
+            type: string
+          currency:
+            type: string
+        required:
+          - brand
+          - last4
+          - currency
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientRequest"
+        description: The recipient (Settlement) account associated with this payment method
+      status:
+        type: string
+        enum:
+          - "SUCCEEDED"
+    required:
+      - card_details
+      - status
+      - recipient_account
 
 paths:
   /jwks:
