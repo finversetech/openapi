@@ -2503,6 +2503,34 @@ definitions:
       - sender
       - mandate_details
 
+  CreateMandateRequestWithDdaReference:
+    properties:
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientRequest"
+        description: Information about the accountholder receiving the payment. See below.
+      sender_account:
+        $ref: "#/definitions/MandateSenderAccountRequest"
+        description: Information about the accountholder sending the payment. See below.
+      mandate_details:
+        $ref: "#/definitions/MandateDetailsRequestWithDdaReference"
+        description: Additional details on the mandate. See below.
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+          maxLength: 100
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+      status:
+        type: string
+        enum: [SUCCEEDED]
+        description: The mandate status
+        example: SUCCEEDED 
+    required:
+      - recipient_account
+      - sender_account
+      - mandate_details
+      - status
+
   CreateMandateWithSenderAccountRequest:
     properties:
       recipient_account:
@@ -3098,6 +3126,9 @@ definitions:
   # this is mandate details that is returned by READ endpoint
   MandateDetailsResponse:
     properties:
+      dda_reference:
+        type: string
+        description: The direct debit authorization reference, if empty this will be omitted from response
       currency:
         type: string
         description: ISO currency code
@@ -3160,6 +3191,36 @@ definitions:
         description: A bank specific reference, what the end user may see
     required:
       - currency
+
+  # this is mandate details that is passed when creating mandate with dda reference
+  MandateDetailsRequestWithDdaReference:
+    properties:
+      dda_reference:
+        type: string
+        description: The direct debit authorization reference
+      currency:
+        type: string
+        description: ISO currency code
+      start_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than or the same as the date of creation. If unspecified, default to the date of creation.
+      end_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than the date of creation.
+      transaction_limits:
+        $ref: "#/definitions/TransactionLimits"
+        x-nullable: true
+        description: Pre-set limits on the frequency and amounts of payments under this mandate.
+      description:
+        type: string
+        description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+    required:
+      - currency
+      - description
 
   MandateDetailsForPaymentLink:
     properties:
@@ -3926,15 +3987,16 @@ definitions:
     properties:
       card:
         $ref: "#/definitions/CreateCardRequest"
+      mandate:
+        $ref: "#/definitions/CreateMandateRequestWithDdaReference"
       integration_metadata:
         $ref: '#/definitions/PaymentMethodIntegrationMetadata'
       payment_method_type:
         type: string
         enum:
           - "CARD"
+          - "MANDATE"
     required:
-      - card
-      - integration_metadata
       - payment_method_type
 
 # not to be confused with FvBill/Payment Links related integration metadata
