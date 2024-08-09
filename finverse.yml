@@ -2955,6 +2955,7 @@ definitions:
       card_details:
         $ref: "#/definitions/FVCardDetails"
 
+  # Card details returned for API
   FVCardDetails:
     properties:
       brand:
@@ -2965,6 +2966,14 @@ definitions:
         type: string
         description: Last 4 digits of the credit card number
         example: "1234"
+      expiry_month:
+        type: integer
+        description: The credit card expiry month
+        example: 7
+      expiry_year:
+        type: integer
+        description: The credit card expiry year
+        example: 2028
 
   GetMandateResponse:
     properties:
@@ -4083,12 +4092,26 @@ definitions:
       recipient:
         $ref: "#/definitions/CardRecipient"
 
+  # Card details returned for FE (which may be different to what is returned to BE)
   CardFvLinkDetails:
     properties:
       brand:
         type: string
+        description: The credit card brand
+        example: VISA
       last4:
         type: string
+        description: Last 4 digits of the credit card number
+        example: "1234"
+      expiry_month:
+        type: integer
+        description: The credit card expiry month
+        example: 7
+      expiry_year:
+        type: integer
+        description: The credit card expiry year
+        example: 2028
+
 
   SenderAccountFvLinkResponse:
     properties:
