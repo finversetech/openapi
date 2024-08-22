@@ -2345,6 +2345,13 @@ definitions:
       payment_instruction:
         $ref: "#/definitions/PaymentInstruction"
 
+  UpdateTestPaymentStatusRequest:
+    properties:
+      status:
+        type: string
+        description: The payment status
+        enum: ["EXECUTED"]
+
   CustomerPaymentInstruction:
     properties:
       user_id:
@@ -6144,6 +6151,40 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/CustomerPaymentInstruction"
+      tags:
+        - customer
+
+  /testing/payments/{paymentId}/status:
+    post:
+      description: Update the status of a test manual payment
+      operationId: updateTestPaymentStatus
+      security:
+        - Oauth2: [testPayment:update]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: paymentId
+          description: The test payment ID
+          required: true
+          type: string
+        - in: body
+          name: paymentStatus
+          description: Request body for updating the test manual payment status
+          required: true
+          schema:
+            $ref: "#/definitions/UpdateTestPaymentStatusRequest"
       tags:
         - customer
 
