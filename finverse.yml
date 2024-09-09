@@ -873,13 +873,14 @@ definitions:
         maxLength: 100
       ui_mode:
         type: string
-        enum: [iframe, redirect, auto_redirect, standalone]
+        enum: &UI_MODE [iframe, redirect, auto_redirect, standalone]
         description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
         example: "redirect"
       language:
         type: string
         description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
         example: en
+        enum: &LANGUAGE ["en", "vi", "zh"]
         maxLength: 3
       code_challenge:
         type: string
@@ -3353,9 +3354,10 @@ definitions:
         type: string
         description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
         example: en
+        enum: *LANGUAGE
       ui_mode:
         type: string
-        enum: [iframe, redirect, auto_redirect, standalone]
+        enum: *UI_MODE
         description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
         example: "redirect"
       redirect_uri:
@@ -3382,6 +3384,7 @@ definitions:
         type: string
         description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
         example: en
+        enum: *LANGUAGE
       link_mode:
         type: string
         description: Space separated list of the tags of the institutions to view.
@@ -3394,7 +3397,7 @@ definitions:
         example: ["ACCOUNTS", "TRANSACTIONS", "MANDATE"]
       ui_mode:
         type: string
-        enum: [iframe, redirect, auto_redirect, standalone]
+        enum: *UI_MODE
         description: The UI mode link is intended to be used in - "iframe", "auto_redirect", "redirect" or "standalone"
         example: "redirect"
       redirect_uri:
@@ -4015,7 +4018,7 @@ definitions:
     required:
       - payment_method_type
 
-# not to be confused with FvBill/Payment Links related integration metadata
+  # not to be confused with FvBill/Payment Links related integration metadata
   PaymentMethodIntegrationMetadata:
     properties:
       integration_id:
@@ -4174,6 +4177,33 @@ definitions:
       - card_details
       - status
       - recipient_account
+
+  RefreshLoginIdentityLinkCustomizations:
+    properties:
+      language:
+        type: string
+        enum: *LANGUAGE
+        description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
+        example: en
+      ui_mode:
+        type: string
+        enum: *UI_MODE
+        example: redirect
+      redirect_uri:
+        type: string
+        description: Required if ui_mode is redirect or auto_redirect
+      state:
+        type: string
+        example: user-state-passed
+        maxLength: 100
+  
+  RefreshLoginIdentityRequest:
+    properties:
+      user_present:
+        type: boolean
+        description: Indicate whether the user is present in this flow. If the user is not present, only institutions that do not require 2fa can be refreshed
+      link_customizations:
+        $ref: "#/definitions/RefreshLoginIdentityLinkCustomizations"
 
 paths:
   /jwks:
@@ -5326,9 +5356,16 @@ paths:
         - Oauth2: [loginIdentity:update]
       produces:
         - application/json
+      parameters:
+        - in: body
+          name: refreshLoginIdentityReq
+          schema:
+            $ref: "#/definitions/RefreshLoginIdentityRequest"
       responses:
         200:
           description: Refresh queued
+          schema:
+            $ref: "#/definitions/LinkTokenResponse"
         400:
           description: Refresh error
           schema:
