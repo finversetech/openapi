@@ -1772,12 +1772,25 @@ definitions:
       action:
         $ref: "#/definitions/LinkStatusActionModel"
 
+  NonSensitiveLinkStatusSuccessModel:
+    properties:
+      code:
+        type: string
+      state:
+        type: string
+      login_identity_id:
+        type: string
+  
   NonSensitiveLinkStatusResponse:
     properties:
       action:
         $ref: "#/definitions/LinkStatusActionModel"
       redirect_uri:
         type: string
+      success:
+        $ref: "#/definitions/NonSensitiveLinkStatusSuccessModel"
+      error:
+        $ref: "#/definitions/ErrBodyModelV2"
 
   LinkStatusPendingModel:
     properties:
