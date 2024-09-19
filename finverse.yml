@@ -1790,7 +1790,7 @@ definitions:
       success:
         $ref: "#/definitions/NonSensitiveLinkStatusSuccessModel"
       error:
-        $ref: "#/definitions/ErrBodyModelV2"
+        $ref: "#/definitions/FvErrorModelV2"
 
   LinkStatusPendingModel:
     properties:
