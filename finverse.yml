@@ -4218,6 +4218,14 @@ definitions:
       link_customizations:
         $ref: "#/definitions/RefreshLoginIdentityLinkCustomizations"
 
+  DownloadBalanceStatementResponse:
+    properties:
+      download_url:
+        type: string
+        description: Signed URL to download the CSV from
+    required:
+      - download_url
+
 paths:
   /jwks:
     get:
@@ -6746,3 +6754,21 @@ paths:
           description: Unauthorized
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+
+  /ledger/statement:
+    get:
+      description: Download the balance statement for the ledger (CSV)
+      operationId: downloadBalanceStatement
+      security:
+        - Oauth2: [ledger:statement]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/DownloadBalanceStatementResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"      
