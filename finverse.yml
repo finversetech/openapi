@@ -2071,6 +2071,12 @@ definitions:
           - message
           - request_id
 
+  CreateMetadata:
+    type: object
+    additionalProperties:
+      type: string
+      maxLength: 1000
+
   PaymentInfo:
     properties:
       currencies_supported:
@@ -2134,10 +2140,8 @@ definitions:
         description: Additional details required for each payment type.
         $ref: "#/definitions/PaymentDetails2"
       metadata:
-        type: object
-        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
-        additionalProperties:
-          type: string
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - payment_details
       - amount
@@ -2227,7 +2231,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       error:
         $ref: "#/definitions/FvErrorModelV2"
       payment_method:
@@ -2264,11 +2268,8 @@ definitions:
         $ref: "#/definitions/MandateRecipientRequest"
         description: Information about the accountholder receiving the payment. See below.
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - payment_details
       - recipient_account
@@ -2514,11 +2515,8 @@ definitions:
         $ref: "#/definitions/MandateDetailsRequest"
         description: Additional details on the mandate. See below.
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - recipient_account
       - sender
@@ -2536,11 +2534,8 @@ definitions:
         $ref: "#/definitions/MandateDetailsRequestWithDdaReference"
         description: Additional details on the mandate. See below.
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       status:
         type: string
         enum: [SUCCEEDED]
@@ -2564,11 +2559,8 @@ definitions:
         $ref: "#/definitions/MandateDetailsRequest"
         description: Additional details on the mandate. See below.
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - recipient_account
       - sender_account
@@ -2621,7 +2613,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       error:
         $ref: "#/definitions/FvErrorModelV2"
     required:
@@ -2666,17 +2658,11 @@ definitions:
         description: Optional field indicating if mandatory AUTOPAY should be set
         $ref: "#/definitions/PaymentSetupOptions"
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       payment_metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: Key-Value metadata to store on payments created on this Payment Link
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Key-Value metadata to store on payments created on this Payment Link. It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       integration_metadata:
         $ref: "#/definitions/IntegrationMetadataRequest"
     required:
@@ -2786,12 +2772,11 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       payment_metadata:
         type: object
         additionalProperties:
           type: string
-          maxLength: 100
         description: Key-Value metadata to store on payments created on this Payment Link
       url:
         type: string
@@ -3045,7 +3030,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - updated_at
       - mandate_id
@@ -3733,7 +3718,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
 
   GetPaymentUserResponse:
     type: object
@@ -3849,7 +3834,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       created_at:
         type: string
         format: date-time
@@ -3891,11 +3876,8 @@ definitions:
         example: "01GY6H0JA7BS8EVGY56NSHFX2E"
         maxLength: 100
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
-        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 500 characters respectively."
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
       - account_number
       - account_type
@@ -3922,10 +3904,7 @@ definitions:
         items:
           $ref: "#/definitions/SenderDetail"
       metadata:
-        type: object
-        additionalProperties:
-          type: string
-          maxLength: 100
+        $ref:  "#/definitions/CreateMetadata"
       autopay_consent:
         type: boolean
       integration_metadata:
