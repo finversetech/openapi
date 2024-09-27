@@ -978,6 +978,33 @@ definitions:
       - link_url
       - issued_at
 
+  RefreshTokenResponse:
+    properties:
+      access_token:
+        type: string
+      token_type:
+        type: string
+      expires_in:
+        type: number
+        format: int64
+        description: seconds
+      issued_at:
+        type: string
+        format: date-time
+      link_url:
+        type: string
+        example: https://link.dev.finverse.net/onboarding?token=dasdsa8erhiu7rey78r
+      login_identity_id:
+        type: string
+    required:
+      - access_token
+      - token_type
+      - expires_in
+      - link_url
+      - issued_at
+      - login_identity_id
+
+
   LinkRequest:
     properties:
       institution_id:
@@ -5365,7 +5392,7 @@ paths:
         200:
           description: Refresh queued
           schema:
-            $ref: "#/definitions/LinkTokenResponse"
+            $ref: "#/definitions/RefreshTokenResponse"
         400:
           description: Refresh error
           schema:
