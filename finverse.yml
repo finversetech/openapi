@@ -3798,6 +3798,9 @@ definitions:
     properties:
       payment_id:
         type: string
+      status:
+        type: string
+        enum: *PAYMENT_STATUS
 
   ListPaymentAccountsResponse:
     properties:
