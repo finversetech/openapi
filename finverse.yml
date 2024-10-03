@@ -4046,7 +4046,7 @@ definitions:
       integration_id:
         type: string
         enum:
-          - "STRIPE"
+          - "STRIPE" # Only support STRIPE when creating payment method but can still return CYBERSOURCE
       stripe_metadata:
         type: object
         properties:
@@ -4067,9 +4067,15 @@ definitions:
         required:
           - customer
           - payment_method
+      cybersource_metadata:
+        type: object
+        properties:
+          payment_token:
+            type: string
+        required:
+          - payment_token 
     required:
       - integration_id
-      - stripe_metadata
 
   # we use this model when payment method is nested
   PaymentMethodResponse:
