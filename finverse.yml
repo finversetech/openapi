@@ -4046,7 +4046,8 @@ definitions:
       integration_id:
         type: string
         enum:
-          - "STRIPE" # Only support STRIPE when creating payment method but can still return CYBERSOURCE
+          - "STRIPE" 
+          - "CYBERSOURCE"
       stripe_metadata:
         type: object
         properties:
