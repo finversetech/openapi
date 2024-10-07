@@ -3943,6 +3943,32 @@ definitions:
       - name
       - external_user_id
 
+  UpdatePaymentUserRequest:
+    properties:
+      autopay_consent:
+        type: boolean
+        x-nullable: true
+      email:
+        type: string
+        maxLength: 256 # is max as specified in RFC 5321
+        x-nullable: true
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        x-nullable: true
+      name:
+        type: string          
+        x-nullable: true
+      next_bill_update:
+        type: string
+        format: date-time
+        x-nullable: true        
+      user_type:
+        type: string
+        enum: *SENDER_TYPE
+        x-nullable: true        
+
   PaymentUser:
     properties:
       created_at:
@@ -6652,6 +6678,38 @@ paths:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
+    post:
+      description: Update a payment user
+      operationId: updatePaymentUser
+      security:
+        - Oauth2: [paymentUser:update]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentUserId
+          required: true
+          type: string
+        - in: body
+          name: updatePaymentUserRequest
+          description: request body for updating payment user
+          schema:
+            $ref: "#/definitions/UpdatePaymentUserRequest"
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/PaymentUser"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
 
   /payment_link/fvlink/payment_user/sender:
     get:
