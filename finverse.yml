@@ -3967,7 +3967,8 @@ definitions:
       user_type:
         type: string
         enum: *SENDER_TYPE
-        x-nullable: true        
+        x-nullable: true  
+    additionalProperties: false
 
   PaymentUser:
     properties:
