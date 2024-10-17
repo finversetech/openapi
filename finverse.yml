@@ -1939,6 +1939,27 @@ definitions:
         type: object
         $ref: "#/definitions/FvErrorModelV2"
 
+  # FvEmbeddedErrorModelV2 should only be used when we have error embedded as part of other main resources like mandate / payment etc
+  FvEmbeddedErrorModel:
+    properties:
+      type:
+        type: string
+        enum: [LINK_ERROR, API_ERROR]
+        description: The error type
+        example: LINKING_ERROR
+      error_code:
+        type: string
+        example: CREDENTIALS_INVALID
+      message:
+        type: string
+      details:
+        type: string
+    required:
+      - type
+      - error_code
+      - message
+      - details
+
   # DONOTUSE
   # This is the inner part of ErrBodyModelV2 and should not be used directly
   FvErrorModelV2:
@@ -2260,7 +2281,7 @@ definitions:
           type: string
         description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
       payment_method:
         $ref: "#/definitions/PaymentSnapshotPaymentMethod"
     required:
@@ -2345,7 +2366,7 @@ definitions:
         type: boolean
         description: Whether this payout is live or not
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
     required:
       - live
 
@@ -2642,7 +2663,7 @@ definitions:
           type: string
         description: "Additional attributes of the mandate in key:value format (e.g. mandate_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
     required:
       - updated_at
       - mandate_id
@@ -2986,7 +3007,7 @@ definitions:
         description: Card Status
         enum: &CARD_STATUS ["UNKNOWN", "PROCESSING", "SUCCEEDED"]
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
       card_details:
         $ref: "#/definitions/FVCardDetails"
 
@@ -3054,7 +3075,7 @@ definitions:
         items:
           $ref: "#/definitions/Fee"
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
       metadata:
         type: object
         additionalProperties:
@@ -3469,7 +3490,7 @@ definitions:
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
       mandate_details:
         $ref: "#/definitions/MandateDetailsResponse"
       recipient:
@@ -4148,7 +4169,7 @@ definitions:
       sender_account:
         $ref: "#/definitions/SenderAccountFvLinkResponse"
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
 
   CardFvLinkResponse:
     properties:
@@ -4160,7 +4181,7 @@ definitions:
       recipient:
         $ref: "#/definitions/CardRecipient"
       error:
-        $ref: "#/definitions/FvErrorModelV2"
+        $ref: "#/definitions/FvEmbeddedErrorModel"
 
   # Card details returned for FE (which may be different to what is returned to BE)
   CardFvLinkDetails:
