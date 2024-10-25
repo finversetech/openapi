@@ -4155,6 +4155,17 @@ definitions:
         $ref: "#/definitions/MandateFvLinkResponse"
       card:
         $ref: "#/definitions/CardFvLinkResponse"
+  
+  # Payment that is safe to return to the front end (i.e. non-sensitive fields)
+  PaymentFvLinkResponse:
+    properties:
+      payment_id:
+        type: string
+      status: 
+        type: string
+        enum: *PAYMENT_STATUS
+      error:
+        $ref: "#/definitions/FvEmbeddedErrorModel"
 
   MandateFvLinkResponse:
     properties:
@@ -6852,6 +6863,32 @@ paths:
             $ref: "#/definitions/RefreshPaymentAttemptResponse"
         401:
           description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_link/fvlink/payment:
+    get:
+      description: Get payment (if exists) on the payment link for front-end
+      operationId: getPaymentPaymentLink
+      security:
+        - Oauth2: [paymentLinks:payment:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/PaymentFvLinkResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
