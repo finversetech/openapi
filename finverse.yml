@@ -6747,7 +6747,6 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
-
   /payment_link/fvlink/payment_user/sender:
     get:
       description: Get sender payment user in payment link flow
@@ -6879,6 +6878,30 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/PaymentFvLinkResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_link/fvlink/payment/cancel:
+    post:
+      description: cancel payment on payment link
+      operationId: cancelPaymentPaymentLink
+      security:
+        - Oauth2: [paymentLinks:payment:cancel]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
         400:
           description: Bad Request
           schema:
