@@ -2228,6 +2228,14 @@ definitions:
         type: integer
         example: 100
         description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      surcharge_amount:
+        type: integer
+        example: 100
+        description: Surcharge amount in minor
+      amount_total_with_surcharge:
+        type: integer
+        example: 100
+        description: Amount with all fees and surcharges applied in minor
       currency:
         type: string
         example: HKD
@@ -2286,6 +2294,8 @@ definitions:
         $ref: "#/definitions/PaymentSnapshotPaymentMethod"
     required:
       - amount
+      - surcharge_amount
+      - amount_total_with_surcharge
 
   ListPaymentsResponse:
     properties:
