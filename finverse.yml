@@ -6757,6 +6757,37 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
 
+  /payment_methods/{paymentMethodId}:
+    get:
+      description: Get a payment method
+      operationId: getPaymentMethod
+      security:
+        - Oauth2: [paymentMethod:get]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentMethodId
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PaymentMethodResponse'
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
   /payment_link/fvlink/payment_user/sender:
     get:
       description: Get sender payment user in payment link flow
