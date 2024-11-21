@@ -2776,7 +2776,22 @@ definitions:
         x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
       recipient_account_filters:
         $ref: '#/definitions/RecipientAccountFilters'
+      autopay_enrollment_configurations:
+        $ref: "#/definitions/AutopayEnrollmentConfiguration"
 
+  AutopayEnrollmentConfiguration:
+    properties:
+      display_enrollment_screen:
+        description: Indicate whether the autopay enrollment screen should be prompted to the end user
+        type: boolean
+      enrollment_prefill_value:
+        description: Indicate what value should be prefilled on the autopay enrollment screen
+        type: string
+        enum: ["YES", "NO"]
+    required:
+      - display_enrollment_screen
+      - enrollment_prefill_value
+  
   RecipientAccountFilters:
     properties:
       business_unit:
