@@ -6830,8 +6830,7 @@ paths:
       description: Set autopay consent for payment user
       operationId: setAutopayConsent
       security:
-        # should use paymentLinks:paymentUser:setAutopayConsent for any new tokens; consider payment_links:payment_user:set to be legacy and deprecated
-        - Oauth2: [payment_links:payment_user:set, paymentLinks:paymentUser:setAutopayConsent] # Will be set in payment link token (in payment links svc)
+        - Oauth2: [payment_links:payment_user:set] # Will be set in payment link token (in payment links svc)
       produces:
         - application/json
       parameters:
