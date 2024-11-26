@@ -2776,7 +2776,7 @@ definitions:
         x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
       recipient_account_filters:
         $ref: '#/definitions/RecipientAccountFilters'
-      autopay_enrollment_configurations:
+      autopay_enrollment_configuration:
         $ref: "#/definitions/AutopayEnrollmentConfiguration"
 
   AutopayEnrollmentConfiguration:
