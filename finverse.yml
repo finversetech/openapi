@@ -3035,6 +3035,8 @@ definitions:
         $ref: "#/definitions/FvEmbeddedErrorModel"
       card_details:
         $ref: "#/definitions/FVCardDetails"
+      recipient_account:
+        $ref: "#/definitions/MandateRecipientAccount"
 
   # Card details returned for API
   FVCardDetails:
