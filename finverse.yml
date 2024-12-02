@@ -2927,6 +2927,7 @@ definitions:
       - corp_code
       - s_location_code
       - tenant_id
+      - account_token
 
   RapidstorMetadataResponse:
     properties:
