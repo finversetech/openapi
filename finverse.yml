@@ -4281,6 +4281,10 @@ definitions:
             type: string
           currency:
             type: string
+          expiry_month:
+            type: integer
+          expiry_year:
+            type: integer
         required:
           - brand
           - last4
