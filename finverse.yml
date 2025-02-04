@@ -2742,6 +2742,12 @@ definitions:
       - description
       - external_transaction_reference
 
+  UpdatePaymentRequest:
+    properties:
+      metadata:
+        $ref:  "#/definitions/CreateMetadata"
+        description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
+
   PaymentLinkSender:
     properties:
       email:
@@ -6180,6 +6186,44 @@ paths:
           description: payment id
           required: true
           type: string
+      tags:
+        - customer
+    post:
+      description: Update payment
+      operationId: updatePayment
+      security:
+        - Oauth2: [payment:update]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: paymentId
+          description: payment id
+          required: true
+          type: string
+        - in: body
+          name: updatePaymentRequest
+          description: request body for updating payment
+          schema:
+            $ref: "#/definitions/UpdatePaymentRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/PaymentResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
