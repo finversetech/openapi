@@ -2218,6 +2218,8 @@ definitions:
     properties:
       finverse_transaction_reference:
         type: string
+      dda_reference:
+        type: string
   
   PaymentResponse:
     properties:
