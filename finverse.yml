@@ -6129,7 +6129,13 @@ paths:
           name: payment_type
           type: string
           enum: *PAYMENT_TYPE
-          description: The type of payment
+          description: Deprecated - The type of payment
+        - in: query
+          name: payment_types
+          type: array
+          items:
+            type: string
+            enum: *PAYMENT_TYPE
         - in: query
           name: mandate_id
           type: string
@@ -6137,7 +6143,12 @@ paths:
         - in: query
           name: currency
           type: string
-          description: The currency the payment is made in
+          description: Deprecated - The currency the payment is made in
+        - in: query
+          name: currencies
+          type: array
+          items:
+            type: string
         - in: query
           name: offset
           description: default is 0
