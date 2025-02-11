@@ -1041,12 +1041,8 @@ definitions:
       success:
         type: boolean
         example: true
-      skip_autopay_consent:
-        type: boolean
-        example: true
     required:
       - success
-      - skip_autopay_consent
 
   CreatePaymentLinkMandateRequest:
     properties:
