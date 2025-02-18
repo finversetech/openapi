@@ -2209,6 +2209,10 @@ definitions:
         maxLength: 10
       references:
         $ref: "#/definitions/PaymentDetailsReferences"
+      processor_entity_name: 
+        type: string
+      collection_entity_name: 
+        type: string
 
   PaymentDetailsReferences:
     properties:
@@ -3063,6 +3067,10 @@ definitions:
         type: integer
         description: The credit card expiry year
         example: 2028
+      processor_entity_name: 
+        type: string
+      collection_entity_name: 
+        type: string
 
   GetMandateResponse:
     properties:
@@ -3254,6 +3262,10 @@ definitions:
       mandate_bank_reference:
         type: string
         description: A bank specific reference, what the end user may see
+      processor_entity_name:
+        type: string
+      collection_entity_name:
+        type: string
     required:
       - currency
 
