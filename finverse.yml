@@ -278,6 +278,10 @@ definitions:
       account_type:
         type: object
         $ref: "#/definitions/AccountType"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
     required:
       - is_parent
       - is_closed
@@ -285,6 +289,7 @@ definitions:
       - account_id
       - account_name
       - group_id
+      - metadata
 
   BalanceHistory:
     properties:
