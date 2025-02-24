@@ -2201,7 +2201,7 @@ definitions:
       description:
         type: string
         description: The transaction description provided to banks, which banks will show to their customers.
-        maxLength: 20
+        maxLength: 100
       mandate_id:
         type: string
         description: ID of the mandate this pament is referring to.
@@ -2740,7 +2740,7 @@ definitions:
     properties:
       description:
         type: string
-        maxLength: 20
+        maxLength: 100
       external_transaction_reference:
         type: string
         description: For external invoice/transaction reference
