@@ -4214,8 +4214,16 @@ definitions:
       status: 
         type: string
         enum: *PAYMENT_STATUS
+      payment_details:
+        $ref: "#/definitions/PaymentFvLinkDetails"
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
+
+  # Payment details that are safe to return to the front-end (i.e. non-sensitive fields)
+  PaymentFvLinkDetails:
+    properties:
+      collection_entity_name:
+        type: string
 
   MandateFvLinkResponse:
     properties:
