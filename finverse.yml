@@ -4239,6 +4239,13 @@ definitions:
         $ref: "#/definitions/SenderAccountFvLinkResponse"
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
+      mandate_details:
+        $ref: "#/definitions/MandateFvLinkDetails"
+
+  MandateFvLinkDetails:
+    properties:
+      collection_entity_name: 
+        type: string
 
   CardFvLinkResponse:
     properties:
@@ -4271,7 +4278,8 @@ definitions:
         type: integer
         description: The credit card expiry year
         example: 2028
-
+      collection_entity_name: 
+        type: string
 
   SenderAccountFvLinkResponse:
     properties:
