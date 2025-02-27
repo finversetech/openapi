@@ -2211,7 +2211,7 @@ definitions:
       external_transaction_reference:
         type: string
         description: Customer reference for this transaction
-        maxLength: 10
+        maxLength: 35
       references:
         $ref: "#/definitions/PaymentDetailsReferences"
       processor_entity_name: 
@@ -2744,7 +2744,7 @@ definitions:
       external_transaction_reference:
         type: string
         description: For external invoice/transaction reference
-        maxLength: 10
+        maxLength: 35
     required:
       - description
       - external_transaction_reference
