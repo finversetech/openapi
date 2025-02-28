@@ -663,10 +663,10 @@ definitions:
         enum: [BANK, WALLET, TEST]
       products_supported:
         type: array
-        example: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY]
+        example: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY, AUTO_DEBIT_SETUP]
         items:
           type: string
-          enum: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY]
+          enum: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY, AUTO_DEBIT_SETUP]
       parent_institution_name:
         type: string
         example: Parent Mock Bank
@@ -953,12 +953,20 @@ definitions:
         description: institution's status filter
         example: "alpha beta supported"
         maxLength: 100
+      user_configs:
+        $ref: '#/definitions/LinkTokenUserConfigs'
     required:
       - grant_type
       - response_type
       - response_mode
       - redirect_uri
       - client_id
+
+  LinkTokenUserConfigs:
+    properties:
+      ada_account_number:
+        type: string
+        description: Account Number to use for ADA setup
 
   LinkTokenResponse:
     properties:
