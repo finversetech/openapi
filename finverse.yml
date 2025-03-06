@@ -2233,6 +2233,8 @@ definitions:
         type: string
       dda_reference:
         type: string
+      bank_transaction_reference:
+        type: string
   
   PaymentResponse:
     properties:
