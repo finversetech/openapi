@@ -660,7 +660,7 @@ definitions:
       institution_type:
         type: string
         example: BANK
-        enum: [BANK, WALLET, TEST]
+        enum: &INSTITUTION_TYPE [BANK, WALLET, TEST]
       products_supported:
         type: array
         example: [ACCOUNTS, TRANSACTIONS, STATEMENTS, ACCOUNT_NUMBERS, IDENTITY, AUTO_DEBIT_SETUP]
@@ -4773,7 +4773,7 @@ paths:
           description: The type of institution
           required: false
           type: string
-          enum: [BANK, WALLET, TEST]
+          enum: *INSTITUTION_TYPE
       tags:
         - customer
         - link
