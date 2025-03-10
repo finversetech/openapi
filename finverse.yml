@@ -4776,7 +4776,6 @@ paths:
           enum: *INSTITUTION_TYPE
       tags:
         - customer
-        - link
 
   /institutions/customer:
     get:
