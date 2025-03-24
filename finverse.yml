@@ -3097,6 +3097,13 @@ definitions:
         type: string
       collection_entity_name: 
         type: string
+      country:
+        type: string
+      fingerprint:
+        type: string
+      funding:
+        type: string
+        enum: &CARD_FUNDING_TYPE ["UNKNOWN", "CREDIT", "DEBIT", "PREPAID"]
 
   GetMandateResponse:
     properties:
