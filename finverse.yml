@@ -7278,6 +7278,30 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+    
+  /payment_link/fvlink/payment_attempt/demote:
+    post:
+      description: Demote payment attempt
+      operationId: demotePaymentAttempt
+      security:
+        - Oauth2: ['paymentLinks:paymentAttempt:demote']
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
 
   /ledger/statement:
     get:
