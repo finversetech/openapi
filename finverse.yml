@@ -2405,8 +2405,11 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/PayoutSnapshotResponse'
+      total_payouts:
+        type: integer
     required:
       - payouts
+      - total_payouts
 
   PayoutSnapshotDetails:
     properties:
