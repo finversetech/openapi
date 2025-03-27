@@ -3021,31 +3021,6 @@ definitions:
     required:
       - amount
 
-  FeeRule:
-    properties:
-      min_amount:
-        type: integer
-        description: Minimum fee amount that will be charged. Actual amount multiplied by 1000
-      max_amount:
-        type: integer
-        description: Maximum fee amount that will be charged. Actual amount multiplied by 1000
-      fee_bps:
-        type: integer
-        description: The BPS amount that will be used to calculate the fee.
-      currency:
-        type: string
-        description: The currency the fee is charged in
-      fee_fixed:
-        type: integer
-        description: The fixed fee amount that will be charged on top of the calculated fee
-      fee_paid_by:
-        type: string
-        description: Whether the fee is paid by the RECIPIENT or SENDER
-        enum: [SENDER, RECIPIENT]
-    required:
-      - fee_paid_by
-      - currency
-
   GetLineItemsForDisplayResponse:
     properties:
       line_items:
@@ -3956,31 +3931,6 @@ definitions:
         payment_method_overview:
           $ref: "#/definitions/PaymentMethodOverview"
 
-  FeeRules:
-    description: Fee rule applicable to this payment account
-    type: object
-    properties:
-      mandate_rules:
-        description: Fee rule applicable to mandate
-        type: array
-        items:
-          $ref: "#/definitions/FeeRule"
-      payment_rules:
-        description: Fee rule applicable to payment
-        type: array
-        items:
-          $ref: "#/definitions/FeeRule"
-      payout_rules:
-        description: Fee rule applicable to payouts
-        type: array
-        items:
-          $ref: "#/definitions/FeeRule"
-    required:
-      - mandate_rules
-      - payment_rules
-      - payout_rules
-
-
   PaymentAccountDetails:
     properties:
       account_id:
@@ -4045,8 +3995,6 @@ definitions:
         additionalProperties:
           type: string
         description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
-      fee_rules:
-        $ref: "#/definitions/FeeRules"
       created_at:
         type: string
         format: date-time
@@ -4082,6 +4030,8 @@ definitions:
         description: Shows which currencies are supported
         items:
           type: string
+    required:
+      - live_mode
 
 
   CreatePaymentAccountRequest:
