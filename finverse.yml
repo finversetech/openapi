@@ -2277,6 +2277,8 @@ definitions:
             "EXECUTED",
             "FAILED",
             "REVOKED",
+            "CANCELLED",
+            "CREATED"
           ]
       payment_method_id:
         type: string
@@ -2683,6 +2685,9 @@ definitions:
             "SUCCEEDED",
             "FAILED",
             "REVOKED",
+            "READY_TO_SUBMIT",
+            "CLOSED",
+            "CANCELLED"
           ]
       recipient:
         $ref: "#/definitions/MandateRecipient"
@@ -3069,7 +3074,7 @@ definitions:
       status:
         type: string
         description: Card Status
-        enum: &CARD_STATUS ["UNKNOWN", "PROCESSING", "SUCCEEDED"]
+        enum: &CARD_STATUS ["UNKNOWN", "PROCESSING", "SUCCEEDED", "CANCELLED", "FAILED"]
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
       card_details:
