@@ -7259,30 +7259,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-
-  /payment_link/fvlink/payment/unlink:
-    post:
-      description: Unlink payment on payment link
-      operationId: unlinkPaymentPaymentLink
-      security:
-        - Oauth2: [paymentLinks:payment:unlink]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: ok
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
     
   /payment_link/fvlink/payment_attempt/demote:
     post:
