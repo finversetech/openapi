@@ -3112,6 +3112,8 @@ definitions:
       funding:
         type: string
         enum: &CARD_FUNDING_TYPE ["UNKNOWN", "CREDIT", "DEBIT", "PREPAID"]
+      finverse_authorization_reference:
+        type: string
 
   GetMandateResponse:
     properties:
