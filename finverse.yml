@@ -2226,6 +2226,12 @@ definitions:
         type: string
       collection_entity_name: 
         type: string
+      processor_details:
+        x-nullable: true
+        $ref: "#/definitions/PaymentProcessorDetails"
+      recurring_payment_mode:
+        type: string
+        description: The recurring payment mode
 
   PaymentDetailsReferences:
     properties:
@@ -2235,6 +2241,29 @@ definitions:
         type: string
       bank_transaction_reference:
         type: string
+
+  PaymentProcessorDetails:
+    properties:
+      auth_code:
+        type: string
+      processor_id: 
+        type: string
+      processor_reference:
+        type: string
+      result:
+        $ref: "#/definitions/PaymentProcessorResult"
+
+  PaymentProcessorResult:
+   properties:
+    decline_code:
+      type: string
+      description: Payment processor's decline code (e.g. "2")
+    decline_reason:
+      type: string
+      description: Payment processor's decline explanation (e.g. "Blocked card")
+    result_code:
+      type: string
+      description: Payment processor's result code (e.g. "Authorized", "Refused").
   
   PaymentResponse:
     properties:
