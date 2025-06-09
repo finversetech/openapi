@@ -3114,6 +3114,23 @@ definitions:
         enum: &CARD_FUNDING_TYPE ["UNKNOWN", "CREDIT", "DEBIT", "PREPAID"]
       finverse_authorization_reference:
         type: string
+      processor_details:
+        x-nullable: true
+        $ref: "#/definitions/FVCardProcessorDetails"
+      recurring_payment_mode:
+        type: string
+        description: The recurring payment mode
+
+  FVCardProcessorDetails:
+    properties:
+      auth_code:
+        type: string
+      processor_id: 
+        type: string
+      processor_reference:
+        type: string
+      token_id:
+        type: string
 
   GetMandateResponse:
     properties:
@@ -4374,6 +4391,7 @@ definitions:
         example: 2028
       collection_entity_name: 
         type: string
+      
 
   SenderAccountFvLinkResponse:
     properties:
