@@ -4516,6 +4516,103 @@ definitions:
     required:
       - download_url
 
+  DisputeResponse:
+    type: object
+    properties:
+      dispute_id:
+        type: string
+        description: The dispute id
+      disputed_amount:
+        type: integer
+        description: Amount to be disputed, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
+      currency:
+        type: string
+        example: "HKD"
+        description: The currency of the balance
+      last_event_name:
+        type: string
+        description: The name of the last event for this dispute
+      payment_processor:
+        type: string
+        example: "ADYEN"
+        description: The payment processor handling the dispute
+      payment_processor_account_id:
+        type: string
+        description: The account ID at the payment processor
+      payment_reference:
+        type: string
+        description: The payment reference for the disputed transaction
+      payment_processor_payment_reference:
+        type: string
+        description: The payment processor's payment reference
+      card_details:
+        type: object
+        properties:
+          brand:
+            type: string
+            example: "visa"
+      payment_processor_dispute_reference:
+        type: string
+        description: The payment processor's dispute reference
+      payment_processor_dispute_reason:
+        type: string
+        description: The reason for the dispute as provided by the payment processor
+      arn:
+        type: string
+        description: Acquirer Reference Number
+      payment_processor_dispute_code:
+        type: string
+        description: The dispute code from the payment processor
+      is_defendable:
+        type: boolean
+        description: Whether the dispute is defendable
+      dispute_status:
+        type: string
+        description: The status of the dispute
+        enum:
+          &DISPUTE_STATUS [
+            "UNDEFENDED",
+            "ACTION_REQUIRED",
+            "PROCESSING",
+            "ACCEPTED",
+            "LOST",
+            "WON"
+          ]
+      payment_processor_dispute_status:
+        type: string
+        description: The status of the dispute at the payment processor
+      is_auto_defended:
+        type: boolean
+        description: Whether the dispute was automatically defended
+      defense_period_deadline:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      issuer_comments:
+        type: object
+        additionalProperties:
+          type: string
+      created_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+      updated_at:
+        type: string
+        format: date-time
+        description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+  
+  ListDisputesResponse:
+    properties:
+      disputes:
+        type: array
+        items:
+          $ref: "#/definitions/DisputeResponse"
+      total_disputes:
+        type: integer
+    required:
+      - total_disputes
+      - disputes
+          
 paths:
   /jwks:
     get:
@@ -7367,3 +7464,54 @@ paths:
           description: Bad Request
           schema:
             $ref: "#/definitions/ErrBodyModelV2"      
+    
+  /disputes:
+    get:
+      description: List Disputes
+      operationId: listDisputes
+      security:
+        - Oauth2: [dispute:list]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema: 
+            $ref: "#/definitions/ListDisputesResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+      parameters:
+        - in: query
+          name: date_from
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: date_to
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: statuses
+          type: array
+          items:
+            type: string
+            enum: *DISPUTE_STATUS
+          description: The dispute statuses to filter for, comma separated
+        - in: query
+          name: currencies
+          type: array
+          items:
+            type: string
+          description: The currencies to filter for, comma separated
