@@ -4522,7 +4522,7 @@ definitions:
       dispute_id:
         type: string
         description: The dispute id
-      disputed_amount:
+      amount:
         type: integer
         description: Amount to be disputed, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
       currency:
@@ -4532,6 +4532,9 @@ definitions:
       last_event_name:
         type: string
         description: The name of the last event for this dispute
+      payment_id: 
+        type: string
+        description: The payment id
       payment_processor:
         type: string
         example: "ADYEN"
