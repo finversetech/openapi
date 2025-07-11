@@ -4574,6 +4574,7 @@ definitions:
         description: The status of the dispute
         enum:
           &DISPUTE_STATUS [
+            "UNKNOWN",
             "UNDEFENDED",
             "ACTION_REQUIRED",
             "PROCESSING",
