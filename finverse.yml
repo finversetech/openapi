@@ -7512,9 +7512,3 @@ paths:
             type: string
             enum: *DISPUTE_STATUS
           description: The dispute statuses to filter for, comma separated
-        - in: query
-          name: currencies
-          type: array
-          items:
-            type: string
-          description: The currencies to filter for, comma separated
