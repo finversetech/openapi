@@ -7512,3 +7512,18 @@ paths:
             type: string
             enum: *DISPUTE_STATUS
           description: The dispute statuses to filter for, comma separated
+        - in: query
+          name: offset
+          description: default is 0
+          required: false
+          type: integer
+          default: 0
+          minimum: 0
+        - in: query
+          name: limit
+          description: default is 500, max is 1000
+          required: false
+          type: integer
+          default: 500
+          minimum: 1
+          maximum: 1000
