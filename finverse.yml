@@ -4539,9 +4539,8 @@ definitions:
         type: string
         example: "ADYEN"
         description: The payment processor handling the dispute
-      payment_processor_account_id:
+      payment_processor_merchant_reference:
         type: string
-        description: The account ID at the payment processor
       payment_reference:
         type: string
         description: The payment reference for the disputed transaction
