@@ -4603,6 +4603,9 @@ definitions:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+    required:
+      - is_auto_defended
+      - is_defendable
   
   ListDisputesResponse:
     properties:
