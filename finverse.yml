@@ -11,7 +11,7 @@ info:
   license:
     name: "unknown license"
 
-host: api.sandbox.finverse.net
+host: api.prod.finverse.net
 basePath: /
 schemes:
   - https
