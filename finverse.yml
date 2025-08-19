@@ -4568,6 +4568,7 @@ definitions:
       is_defendable:
         type: boolean
         description: Whether the dispute is defendable
+        x-nullable: true
       dispute_status:
         type: string
         description: The status of the dispute
@@ -4587,10 +4588,12 @@ definitions:
       is_auto_defended:
         type: boolean
         description: Whether the dispute was automatically defended
+        x-nullable: true
       defense_period_deadline:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+        x-nullable: true
       issuer_comments:
         type: object
         additionalProperties:
@@ -4603,9 +4606,6 @@ definitions:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
-    required:
-      - is_auto_defended
-      - is_defendable
   
   ListDisputesResponse:
     properties:
