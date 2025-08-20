@@ -2453,6 +2453,20 @@ definitions:
       scheduled_date:
         type: string
         format: date-time
+      processor_details:
+        $ref: "#/definitions/PayoutProcessorDetails"
+      references:
+        $ref: "#/definitions/PayoutReferences"
+
+  PayoutProcessorDetails:
+    properties:
+      processor_id:
+        type: string
+  
+  PayoutReferences:
+    properties:
+      recipient_reference:
+        type: string
 
   PayoutDetails:
     properties:
