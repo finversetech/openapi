@@ -2400,6 +2400,11 @@ definitions:
         format: date-time
       transaction_date:
         type: string
+      transaction_time:
+        type: string
+        format: date-time
+        x-nullable: true
+        example: "2025-08-22T12:00:00Z"
       payment_details:
         $ref: "#/definitions/PayoutSnapshotDetails"
       metadata:
