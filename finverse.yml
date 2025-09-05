@@ -2876,6 +2876,9 @@ definitions:
         $ref: '#/definitions/RecipientAccountFilters'
       autopay_enrollment_configuration:
         $ref: "#/definitions/AutopayEnrollmentConfiguration"
+      recurring_payment_mode:
+        type: string
+        description: The recurring payment mode
 
   AutopayEnrollmentConfiguration:
     properties:
