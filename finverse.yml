@@ -3021,6 +3021,8 @@ definitions:
       account_token:
         type: string
         minimum: 1
+      unit_type_id:
+        type: string
     required:
       - corp_code
       - s_location_code
@@ -3041,6 +3043,8 @@ definitions:
       tenant_default_currency:
         type: string
       account_token:
+        type: string
+      unit_type_id:
         type: string
 
   IntegrationMetadataRequest:
