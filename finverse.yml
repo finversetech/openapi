@@ -2391,7 +2391,7 @@ definitions:
         enum: &PAYOUT_STATUS ["EXECUTED", "CREATED", "PROCESSING", "PROCESSING_FUNDS", "CANCELLED", "FAILED", "FUNDED", "SUBMITTED"]
       type:
         type: string
-        enum: &PAYOUT_TYPE ["MANUAL", "SCHEDULED"]
+        enum: &PAYOUT_TYPE ["MANUAL", "SCHEDULED", "SETTLEMENT"]
       created_at:
         type: string
         format: date-time
