@@ -2805,7 +2805,7 @@ definitions:
       payment_setup_options:
         type: object
         description: Optional field indicating if mandatory AUTOPAY should be set
-        $ref: "#/definitions/PaymentSetupOptions"
+        $ref: "#/definitions/PaymentSetupOptionsRequest"
       metadata:
         $ref:  "#/definitions/CreateMetadata"
         description: "Additional attributes of the payment link in key:value format (e.g. payment_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
@@ -2866,6 +2866,28 @@ definitions:
         enum: [AUTOPAY, CLICK_TO_PAY]
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLink"
+      payment_method_types:
+        type: array
+        items:
+          type: string
+          enum: *PAYMENT_TYPE
+        x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
+      recipient_account_filters:
+        $ref: '#/definitions/RecipientAccountFilters'
+      autopay_enrollment_configuration:
+        $ref: "#/definitions/AutopayEnrollmentConfiguration"
+      recurring_payment_mode:
+        type: string
+        description: The recurring payment mode
+
+  PaymentSetupOptionsRequest:
+    properties:
+      future_payments:
+        type: string
+        description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
+        enum: [AUTOPAY, CLICK_TO_PAY]
+      mandate_details:
+        $ref: "#/definitions/MandateDetailsForPaymentLinkRequest"
       payment_method_types:
         type: array
         items:
@@ -3375,7 +3397,7 @@ definitions:
         x-nullable: true
         description: Pre-scheduled payment details (only communicated to banks which require a specific payment schedule and amount when setting up a mandate).
       transaction_limits:
-        $ref: "#/definitions/TransactionLimits"
+        $ref: "#/definitions/TransactionLimitsResponse"
         x-nullable: true
         description: Pre-set limits on the frequency and amounts of payments under this mandate.
       description:
@@ -3412,7 +3434,7 @@ definitions:
         x-nullable: true
         description: Pre-scheduled payment details (only communicated to banks which require a specific payment schedule and amount when setting up a mandate).
       transaction_limits:
-        $ref: "#/definitions/TransactionLimits"
+        $ref: "#/definitions/TransactionLimitsRequest"
         x-nullable: true
         description: Pre-set limits on the frequency and amounts of payments under this mandate.
       description:
@@ -3444,7 +3466,7 @@ definitions:
         x-nullable: true
         description: YYYY-MM-DD, must be later than the date of creation.
       transaction_limits:
-        $ref: "#/definitions/TransactionLimits"
+        $ref: "#/definitions/TransactionLimitsRequest"
         x-nullable: true
         description: Pre-set limits on the frequency and amounts of payments under this mandate.
       description:
@@ -3467,7 +3489,27 @@ definitions:
         x-nullable: true
         description: YYYY-MM-DD, must be later than the date of creation.
       transaction_limits:
-        $ref: "#/definitions/TransactionLimits"
+        $ref: "#/definitions/TransactionLimitsResponse"
+        x-nullable: true
+        description: Pre-set limits on the frequency and amounts of payments under this mandate.
+      description:
+        type: string
+        description: End-user facing description of the mandate (used in notifications, and in payments if no description is provided)
+
+  MandateDetailsForPaymentLinkRequest:
+    properties:
+      start_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than or the same as the date of creation. If unspecified, default to the date of creation.
+      end_date:
+        type: string
+        format: date
+        x-nullable: true
+        description: YYYY-MM-DD, must be later than the date of creation.
+      transaction_limits:
+        $ref: "#/definitions/TransactionLimitsRequest"
         x-nullable: true
         description: Pre-set limits on the frequency and amounts of payments under this mandate.
       description:
@@ -3507,7 +3549,7 @@ definitions:
       - amount
       - frequency
 
-  TransactionLimits:
+  TransactionLimitsRequest:
     properties:
       max_period_amount:
         type: integer
@@ -3521,6 +3563,32 @@ definitions:
         type: integer
         description: The maximum amount of money that can be transferred in a single transaction under this mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
         minimum: 1
+      period:
+        type: string
+        x-nullable: true
+        description: Reference calendar periods for the payment limits. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
+        enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
+    required:
+      - max_transaction_amount
+
+  TransactionLimitsResponse:
+    properties:
+      max_period_amount:
+        type: integer
+        description: Maximum amount of money that can be paid during the reference period (across any number of transactions). Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        minimum: 1
+      max_period_count:
+        type: integer
+        description: Maximum number of transactions (of any amount) that can be executed during the reference period.
+        minimum: 1
+      max_transaction_amount:
+        type: integer
+        description: The maximum amount of money that can be transferred in a single transaction under this mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        minimum: 1
+      max_transaction_amount_set_by_payer_initial:
+        type: integer
+        x-nullable: true
+        description: The maximum amount of money that can be transferred in a single transaction under this mandate set by the payer. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
       period:
         type: string
         x-nullable: true
