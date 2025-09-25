@@ -3594,9 +3594,7 @@ definitions:
         x-nullable: true
         description: Reference calendar periods for the payment limits. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
         enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
-    required:
-      - max_transaction_amount
-
+    
   GetMandateAuthLinkResponse:
     properties:
       access_token:
