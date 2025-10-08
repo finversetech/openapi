@@ -885,7 +885,7 @@ definitions:
         type: string
         description: ISO639-1 language code. Language to display when user open the link, default to English (en) if not specified
         example: en
-        enum: &LANGUAGE ["en", "vi", "zh"]
+        enum: &LANGUAGE ["en", "vi", "zh", "ko"]
         maxLength: 3
       code_challenge:
         type: string
