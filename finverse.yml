@@ -4717,7 +4717,71 @@ definitions:
     required:
       - total_disputes
       - disputes
-          
+
+  CompleteKcpPaymentRequest:
+    properties:
+      lang:
+        type: string
+      res_cd:
+        type: string
+        description: Result code, "0000" if the payment is successful
+      res_msg:
+        type: string
+        description: Result message
+      buyr_mail:
+        type: string
+        description: Buyer's mail
+      tran_cd:
+        type: string
+        description: Transaction code
+      trace_no:
+        type: string
+        description: Trace number
+      ret_pay_method:
+        type: string
+      use_pay_method:
+        type: string
+      enc_data:
+        type: string
+      enc_info:
+        type: string
+      ordr_idxx:
+        type: string
+        description: FV Payment ID
+      card_pay_method:
+        type: string
+        description: Card payment method
+      card_point_use:
+        type: string
+        description: If card point is used
+        enum: ["Y", "N"]
+      kcp_select_card_code:
+        type: string
+        description: KCP select card code
+        example: CCXB
+      ordr_chk:
+        type: string
+        description: In the format of "[FV Payment ID] | [Amount]"
+    required:
+      - buyr_mail
+      - tran_cd
+      - trace_no
+      - enc_data
+      - enc_info
+      - ordr_idxx
+      - card_pay_method
+      - card_point_use
+      - kcp_select_card_code
+      - ordr_chk
+
+  CompleteKcpPaymentResponse:
+    properties:
+      redirect:
+        type: string
+        description: retryUrl from the token's claims
+    required:
+      - redirect
+
 paths:
   /jwks:
     get:
@@ -5343,6 +5407,33 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/PaymentLinkResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_links/kcp/payment:
+    post:
+      description: Complete a KCP payment
+      operationId: completeKcpPayment
+      security: 
+        - Oauth2: [kcp:completePayment]
+      parameters:
+        - in: body
+          name: completeKcpPaymentRequest
+          description: Parameters from the KCP SDK callback to complete the payment
+          required: true
+          schema:
+            $ref: "#/definitions/CompleteKcpPaymentRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CompleteKcpPaymentResponse"
         400:
           description: Bad Request
           schema:
