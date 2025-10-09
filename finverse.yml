@@ -4761,7 +4761,7 @@ definitions:
         example: CCXB
       ordr_chk:
         type: string
-        description: In the format of "[FV Payment ID] | [Amount]"
+        description: In the format of "[FV Payment ID]|[Amount]"
     required:
       - buyr_mail
       - tran_cd
