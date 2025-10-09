@@ -80,6 +80,9 @@ definitions:
       payment_attempt_id: # This will be populated if its a token for payment link
         type: string
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      payment_id: 
+        type: string
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       product_flow:
         type: string
         example: PAYMENT_LINK
