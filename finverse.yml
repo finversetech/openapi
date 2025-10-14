@@ -4766,17 +4766,11 @@ definitions:
         type: string
         description: In the format of "[FV Payment ID]|[Amount]"
     required:
-      - buyr_mail
       - tran_cd
-      - trace_no
       - enc_data
       - enc_info
       - ordr_idxx
-      - card_pay_method
-      - card_point_use
-      - kcp_select_card_code
-      - ordr_chk
-
+      
   CompleteKcpPaymentResponse:
     properties:
       redirect:
