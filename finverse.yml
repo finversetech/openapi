@@ -4462,6 +4462,9 @@ definitions:
       status: 
         type: string
         enum: *PAYMENT_STATUS
+      type:
+        type: string
+        enum: *PAYMENT_TYPE
       payment_details:
         $ref: "#/definitions/PaymentFvLinkDetails"
       error:
