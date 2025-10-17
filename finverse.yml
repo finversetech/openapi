@@ -1082,10 +1082,11 @@ definitions:
 
   CreatePaymentLinkCardPaymentRequest:
     properties:
-      # TODO: After Fv link part is finished, we can make this field required
       is_mobile:
         type: boolean
         description: Whether the request is from a mobile device
+    required:
+      - is_mobile
 
   CreatePaymentLinkCardPaymentResponse:
     properties:
@@ -5297,8 +5298,7 @@ paths:
           description: request body for initiating card payment for a payment link
           schema:
             $ref: "#/definitions/CreatePaymentLinkCardPaymentRequest"
-          # TODO: After Fv link part is finished, we can make this field required
-          required: false
+          required: true 
       responses:
         200:
           description: Successful
