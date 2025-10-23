@@ -4397,6 +4397,7 @@ definitions:
         enum:
           - "STRIPE" 
           - "CYBERSOURCE"
+          - "ADYEN"
       stripe_metadata:
         type: object
         properties:
@@ -4424,6 +4425,25 @@ definitions:
             type: string
         required:
           - payment_token 
+      adyen_metadata:
+        type: object
+        properties:
+          payment_method_id:
+            type: string
+          auth_code:
+            type: string
+          psp_reference:
+            type: string
+          recurring_processing_model:
+            type: string
+            enum:
+            - "CardOnFile" 
+            - "UnscheduledCardOnFile"
+            - "Subscription"
+          network_transaction_reference:
+            type: string
+        required:
+          - payment_method_id 
     required:
       - integration_id
 
