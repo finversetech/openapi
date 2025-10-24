@@ -3225,6 +3225,9 @@ definitions:
         type: string
       token_id:
         type: string
+      network_transaction_reference:
+        type: string
+        description: The network transaction reference
 
   GetMandateResponse:
     properties:
