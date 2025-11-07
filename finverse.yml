@@ -4478,6 +4478,32 @@ definitions:
       card:
         $ref: "#/definitions/CardFvLinkResponse"
   
+  AvailablePaymentMethodsFvLinkResponse:
+    properties:
+      available_payment_methods:
+        type: array
+        items:
+          $ref: "#/definitions/AvailablePaymentMethod"
+
+  AvailablePaymentMethod:
+    properties:
+      payment_account_id:
+        type: string
+      title:
+        type: string
+      description:
+        type: string
+      payment_method_type:
+        type: string
+        description: The payment method type, possible values CARD, MANDATE and MANUAL
+      payment_method_subtype:
+        type: string
+        description: The payment method subtype
+      recurring:
+        type: boolean
+      fee:
+        type: string
+
   # Payment that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentFvLinkResponse:
     properties:
@@ -7654,6 +7680,32 @@ paths:
       responses:
         200:
           description: ok
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_link/fvlink/available_payment_methods:
+    get:
+      description: List available payment methods
+      operationId: listAvailablePaymentMethodsPaymentLink
+      security:
+        - Oauth2: ['paymentLinks:availablePaymentMethod:list']
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/AvailablePaymentMethodsFvLinkResponse"
         400:
           description: Bad Request
           schema:
