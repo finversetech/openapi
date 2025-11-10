@@ -4496,12 +4496,13 @@ definitions:
       payment_method_type:
         type: string
         description: The payment method type, possible values CARD, MANDATE and MANUAL
-      payment_method_subtype:
-        type: string
-        description: The payment method subtype
       recurring:
         type: boolean
       fee:
+        type: string
+      payment_method_provider:
+        type: string
+      payment_rail_id:
         type: string
 
   # Payment that is safe to return to the front end (i.e. non-sensitive fields)
