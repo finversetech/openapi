@@ -7693,7 +7693,7 @@ paths:
       description: List available payment methods
       operationId: listAvailablePaymentMethodsPaymentLink
       security:
-        - Oauth2: ['paymentLinks:availablePaymentMethod:list']
+        - Oauth2: ['paymentLink:availablePaymentMethod:list']
       produces:
         - application/json
       responses:
