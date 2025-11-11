@@ -128,6 +128,19 @@ definitions:
       - "client_id"
       - "subject"
 
+  PaymentMethodProvider:
+    type: string
+    description: The payment method provider.
+    enum:
+      - HK_EDDA
+      - SG_EGIRO
+      - STRIPE
+      - CYBERSOURCE
+      - ADYEN
+      - KCP
+      - HK_FPS
+      - SG_PAYNOW
+      
   GetAccountResponse:
     properties:
       account:
@@ -4833,6 +4846,34 @@ definitions:
     required:
       - redirect
 
+  SelectPaymentMethodRequest:
+    properties:
+      payment_account_id:
+        type: string
+        description: The payment account ID of the selected payment method
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      payment_method_provider:
+        $ref: "#/definitions/PaymentMethodProvider"
+        description: The payment method provider
+      user_type:
+        type: string
+        enum: *SENDER_TYPE
+      is_mobile:
+        type: boolean
+        description: Whether the user is on mobile device (only makes a difference if payment_method_provider is KCP)
+        default: false
+    required:
+      - payment_account_id
+
+  SelectPaymentMethodResponse:
+    properties:
+      token:
+        type: string
+        description: Token for the selected payment method
+      card_processor_redirect_uri:
+        type: string
+        description: URL to redirect to for making the card payment
+
 paths:
   /jwks:
     get:
@@ -7701,6 +7742,41 @@ paths:
           description: ok
           schema:
             $ref: "#/definitions/AvailablePaymentMethodsFvLinkResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+
+  /payment_links/fvlink/select_payment_method:
+    post:
+      description: Select a payment method for payment link
+      operationId: selectPaymentMethodPaymentLink
+      security:
+        - Oauth2: ['paymentLinks:paymentMethod:select']
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: selectPaymentMethodRequest
+          description: request body for selecting a payment method
+          schema:
+            $ref: "#/definitions/SelectPaymentMethodRequest"
+          required: true
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/SelectPaymentMethodResponse"
         400:
           description: Bad Request
           schema:
