@@ -4489,10 +4489,6 @@ definitions:
     properties:
       payment_account_id:
         type: string
-      title:
-        type: string
-      description:
-        type: string
       payment_method_type:
         type: string
         description: The payment method type, possible values CARD, MANDATE and MANUAL
@@ -4501,8 +4497,6 @@ definitions:
       fee:
         type: string
       payment_method_provider:
-        type: string
-      payment_rail_id:
         type: string
 
   # Payment that is safe to return to the front end (i.e. non-sensitive fields)
