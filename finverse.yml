@@ -4859,7 +4859,7 @@ definitions:
       payment_method_provider:
         $ref: "#/definitions/PaymentMethodProvider"
         description: The payment method provider
-      user_type:
+      sender_type:
         type: string
         enum: *SENDER_TYPE
       is_mobile:
@@ -4873,8 +4873,9 @@ definitions:
   SelectPaymentMethodResponse:
     properties:
       token:
-        type: string
+        $ref: "#/definitions/PaymentLinkTokenResponse"
         description: Token for the selected payment method
+        x-nullable: true
       card_processor_redirect_uri:
         type: string
         description: URL to redirect to for making the card payment
