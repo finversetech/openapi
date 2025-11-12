@@ -4852,6 +4852,10 @@ definitions:
         type: string
         description: The payment account ID of the selected payment method
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      payment_method_type:
+        type: string
+        description: The type of payment method to select
+        enum: *PAYMENT_TYPE
       payment_method_provider:
         $ref: "#/definitions/PaymentMethodProvider"
         description: The payment method provider
@@ -4864,6 +4868,7 @@ definitions:
         default: false
     required:
       - payment_account_id
+      - payment_method_type
 
   SelectPaymentMethodResponse:
     properties:
@@ -7760,7 +7765,7 @@ paths:
       description: Select a payment method for payment link
       operationId: selectPaymentMethodPaymentLink
       security:
-        - Oauth2: ['paymentLinks:paymentMethod:select']
+        - Oauth2: ['paymentLink:paymentMethod:select']
       consumes:
         - application/json
       produces:
