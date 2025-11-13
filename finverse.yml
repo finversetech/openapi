@@ -400,6 +400,9 @@ definitions:
       amount:
         type: object
         $ref: "#/definitions/CurrencyAmount"
+      running_balance:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
       transaction_details:
         type: object
         description: Transaction Details
