@@ -4183,6 +4183,9 @@ definitions:
       payment_method_type:
         type: string
         description: The payment method type, possible values CARD, MANDATE and MANUAL
+      payment_method_subtype:
+        type: string
+        description: The payment method subtype, e.g., EDDA_HK, CARD_GENERIC etc
       payment_processor:
         type: string
         description: Only shown if funds flow via Finverse, possible values FINVERSE
@@ -4492,6 +4495,9 @@ definitions:
       payment_method_type:
         type: string
         description: The payment method type, possible values CARD, MANDATE and MANUAL
+      payment_method_subtype:
+        type: string
+        description: The payment method subtype, e.g., EDDA_HK, CARD_GENERIC etc
       recurring:
         type: boolean
       fee:
