@@ -4183,9 +4183,6 @@ definitions:
       payment_method_type:
         type: string
         description: The payment method type, possible values CARD, MANDATE and MANUAL
-      payment_method_subtype:
-        type: string
-        description: The payment method subtype
       payment_processor:
         type: string
         description: Only shown if funds flow via Finverse, possible values FINVERSE
