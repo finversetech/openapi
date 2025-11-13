@@ -128,19 +128,6 @@ definitions:
       - "client_id"
       - "subject"
 
-  PaymentMethodProvider:
-    type: string
-    description: The payment method provider.
-    enum:
-      - HK_EDDA
-      - SG_EGIRO
-      - STRIPE
-      - CYBERSOURCE
-      - ADYEN
-      - KCP
-      - HK_FPS
-      - SG_PAYNOW
-      
   GetAccountResponse:
     properties:
       account:
@@ -4511,6 +4498,8 @@ definitions:
         type: string
       payment_method_provider:
         type: string
+    required:
+      - recurring
 
   # Payment that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentFvLinkResponse:
@@ -4856,9 +4845,6 @@ definitions:
         type: string
         description: The type of payment method to select
         enum: *PAYMENT_TYPE
-      payment_method_provider:
-        $ref: "#/definitions/PaymentMethodProvider"
-        description: The payment method provider
       sender_type:
         type: string
         enum: *SENDER_TYPE
