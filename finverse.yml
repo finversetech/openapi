@@ -7266,7 +7266,7 @@ paths:
           name: paymentType
           description: The payment type
           required: true
-          enum: [MANDATE, MANUAL]
+          enum: [MANDATE, MANUAL, CARD]
           type: string
       tags:
         - customer
