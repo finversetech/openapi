@@ -3084,6 +3084,13 @@ definitions:
         items:
           $ref: "#/definitions/LineItem"
 
+  GetLineItemsForDisplayResponseV2:
+    properties:
+      line_items:
+        type: array
+        items:
+          $ref: "#/definitions/LineItem"
+
   LineItem:
     properties:
       currency:
@@ -7126,6 +7133,34 @@ paths:
           required: true
           enum: [MANDATE, MANUAL, CARD]
           type: string
+      tags:
+        - customer
+
+  /calculate/line_items_v2:
+    get:
+      description: Get line items for display
+      operationId: getLineItemsForDisplayV2
+      security:
+        - Oauth2: [line_items:get]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: "#/definitions/GetLineItemsForDisplayResponseV2"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        401:
+          description: Unauthorized
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - customer
 
