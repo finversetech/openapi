@@ -83,6 +83,9 @@ definitions:
       payment_id: 
         type: string
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
+      payment_account_id:
+        type: string
+        example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       product_flow:
         type: string
         example: PAYMENT_LINK
