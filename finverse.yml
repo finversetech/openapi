@@ -3315,6 +3315,9 @@ definitions:
     properties:
       name:
         type: string
+      email:
+        type: string
+        format: email
       external_user_id:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
@@ -3328,6 +3331,8 @@ definitions:
         maxItems: 10
         items:
           $ref: "#/definitions/SenderDetail"
+    required:
+      - email
 
   GetMandateSender:
     properties:
