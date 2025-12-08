@@ -3080,13 +3080,6 @@ definitions:
     required:
       - amount
 
-  GetLineItemsForDisplayResponse:
-    properties:
-      line_items:
-        type: array
-        items:
-          $ref: "#/definitions/LineItem"
-
   GetLineItemsForDisplayResponseV2:
     properties:
       line_items:
@@ -7108,41 +7101,6 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-
-  /calculate/line_items/{paymentType}:
-    get:
-      description: Get line items for display
-      operationId: getLineItemsForDisplay
-      security:
-        - Oauth2: [line_items:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetLineItemsForDisplayResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-      parameters:
-        - in: path
-          name: paymentType
-          description: The payment type
-          required: true
-          enum: [MANDATE, MANUAL, CARD]
-          type: string
-      tags:
-        - customer
 
   /calculate/line_items_v2:
     get:
