@@ -3024,6 +3024,17 @@ definitions:
       - tenant_id
       - account_token
 
+  # only used for payment user creation and tenant_default_currency is a required field
+  RapidstorPaymentUserMetadataRequest:
+    allOf:
+      - $ref: "#/definitions/RapidstorMetadataRequest"
+      - type: object
+        properties:
+          tenant_default_currency:
+            type: string
+        required:
+          - tenant_default_currency
+
   RapidstorMetadataResponse:
     properties:
       corp_code:
@@ -3049,6 +3060,17 @@ definitions:
         enum: &INTEGRATION_ID ["RAPIDSTOR"]
       rapidstor_metadata:
         $ref: "#/definitions/RapidstorMetadataRequest"
+    required:
+      - integration_id
+
+  # only used for payment user creation
+  IntegrationMetadataPaymentUserRequest:
+    properties:
+      integration_id:
+        type: string
+        enum: *INTEGRATION_ID
+      rapidstor_metadata:
+        $ref: "#/definitions/RapidstorPaymentUserMetadataRequest"
     required:
       - integration_id
 
@@ -4228,7 +4250,7 @@ definitions:
       autopay_consent:
         type: boolean
       integration_metadata:
-        $ref: "#/definitions/IntegrationMetadataRequest"
+        $ref: "#/definitions/IntegrationMetadataPaymentUserRequest"
     required:
       - name
       - external_user_id
