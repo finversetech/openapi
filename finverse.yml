@@ -3157,6 +3157,8 @@ definitions:
         $ref: "#/definitions/FVCardDetails"
       recipient_account:
         $ref: "#/definitions/MandateRecipientAccount"
+      risk_data:
+        $ref: "#/definitions/RiskData"
 
   # Card details returned for API
   FVCardDetails:
@@ -3183,10 +3185,14 @@ definitions:
         type: string
       country:
         type: string
+        description: The issuer country
+        example: "HK"
       fingerprint:
         type: string
+        example: "V0010013822052427221044754993"
       funding:
         type: string
+        description: The funding source of the card
         enum: &CARD_FUNDING_TYPE ["UNKNOWN", "CREDIT", "DEBIT", "PREPAID"]
       finverse_authorization_reference:
         type: string
@@ -3196,6 +3202,47 @@ definitions:
       recurring_payment_mode:
         type: string
         description: The recurring payment mode
+      acquirer_authorization_reference:
+        type: string
+        description: The acquirer authorization reference
+        example: "524506894419"
+      brand_product_name:
+        type: string
+        description: The brand product name
+        example: "visacommercialpremiumcredit"
+      card_number_alias:
+        type: string
+        description: The card number alias
+        example: "F046886807590403"
+      is_commercial:
+        type: boolean
+        description: Whether the card is a commercial card
+        example: true
+        x-nullable: true
+
+  RiskData:
+    properties:
+      browser_type:
+        type: string
+        description: The browser type
+        example: Chrome
+      device_type:
+        type: string
+        description: The device type
+        example: Desktop
+      shopper_country:
+        type: string
+        description: The shopper country
+        example: "HK"
+      shopper_ip:
+        type: string
+        description: The shopper IP address
+        example: "127.0.0.1"
+      shopper_locale:
+        type: string
+        description: The shopper locale
+        example: "en-HK"
+      
 
   FVCardProcessorDetails:
     properties:
