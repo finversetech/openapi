@@ -4660,6 +4660,21 @@ definitions:
             type: integer
           expiry_year:
             type: integer
+          card_bin:
+            type: string
+            description: First 6 digits of the credit card number
+          card_number_alias:
+            type: string
+            description: The card number alias
+            example: "F046886807590403"
+          country:
+            type: string
+            description: The issuer country
+            example: "HK"
+          funding:
+            type: string
+            enum: *CARD_FUNDING_TYPE
+            description: The funding source of the card
         required:
           - brand
           - last4
