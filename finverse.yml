@@ -2955,10 +2955,6 @@ definitions:
         type: string
         enum: [OPEN,PROCESSING,COMPLETE,FAILED]
         description: The session status of payment link
-      expires_at:
-        type: string
-        format: date-time
-        description: Timestamp of when the payment link was or will expired in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       created_at:
         type: string
         format: date-time
