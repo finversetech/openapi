@@ -2258,7 +2258,7 @@ definitions:
       type:
         type: string
         description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD", "MANUAL"]
+        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD", "MANUAL", "WALLET"]
       updated_at:
         type: string
         format: date-time
