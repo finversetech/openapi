@@ -3216,6 +3216,21 @@ definitions:
         example: true
         x-nullable: true
 
+  FVWalletDetails:
+    properties:
+      brand:
+        type: string
+        description: The wallet brand
+        example: "Alipay"
+      brand_product_name:
+        type: string
+        description: The brand product name
+        example: "alipay_hk"
+      country:
+        type: string
+        description: The issuer country
+        example: "HK"
+
   RiskData:
     properties:
       processor_risk_data:
@@ -4639,6 +4654,12 @@ definitions:
         properties:
           card_details:
             $ref: "#/definitions/FVCardDetails"
+      wallet:
+        properties:
+          wallet_details:
+            $ref: "#/definitions/FVWalletDetails"
+          risk_data:
+            $ref: "#/definitions/RiskData"
       
   RefreshPaymentAttemptResponse:
     properties:
