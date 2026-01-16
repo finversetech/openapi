@@ -2220,6 +2220,7 @@ definitions:
       processor_reference:
         type: string
       result:
+        x-nullable: true
         $ref: "#/definitions/PaymentProcessorResult"
 
   PaymentProcessorResult:
