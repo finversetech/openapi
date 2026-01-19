@@ -4528,6 +4528,11 @@ definitions:
             type: string
             enum: ["managed", "direct"]
             description: How GoCardless handles funds settlement
+          verified_at:
+            type: string
+            format: date-time
+            description: The timestamp when the mandate was verified, in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+            x-nullable: true
         required:
           - mandate_id
     required:
