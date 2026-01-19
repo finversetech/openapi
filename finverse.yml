@@ -4254,7 +4254,10 @@ definitions:
     properties:
       account_number:
         $ref: "#/definitions/RecipientAccountNumber"
-        description: Account number of the payment account
+        description: Account number of the payment account. Optional for EXTERNAL_ACCOUNT type. If provided, account_number_masked will be auto-generated. Only one of account_number or account_number_masked can be provided.
+      account_number_masked:
+        type: string
+        description: Masked account number of the payment account. Optional for EXTERNAL_ACCOUNT type. Can be provided when account_number is not available. Only one of account_number or account_number_masked can be provided.
       account_type:
         type: string
         description: "Type of payment account. Currently only allow creating external account."
@@ -4285,7 +4288,6 @@ definitions:
         $ref:  "#/definitions/CreateMetadata"
         description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
     required:
-      - account_number
       - account_type
       - accountholder_name
       - institution_id
