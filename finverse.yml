@@ -2219,6 +2219,9 @@ definitions:
         type: string
       processor_reference:
         type: string
+      scheme:
+        type: string
+        description: Scheme like becs, bacs, ach, etc. (applicable to Gocardless for now)
       result:
         x-nullable: true
         $ref: "#/definitions/PaymentProcessorResult"
@@ -2234,6 +2237,12 @@ definitions:
     result_code:
       type: string
       description: Payment processor's result code (e.g. "Authorized", "Refused").
+    last_action:
+      type: string
+      description: Last action taken by the payment processor (e.g. "created", "captured", "failed", etc.)
+    status:
+      type: string
+      description: Status of the payment reported by processor (e.g. "authorized", "captured", "failed", etc.)
   
   PaymentResponse:
     properties:
