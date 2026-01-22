@@ -4212,6 +4212,7 @@ definitions:
         items:
           type: string
         description: The business units the payment account belongs to
+        x-omitempty: true
       legal_entity_name:
         type: string
         description: This field is only applicable to settlement account
