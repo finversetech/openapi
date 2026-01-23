@@ -4531,6 +4531,7 @@ definitions:
             type: string
             format: date
             description: The next possible charge date, in ISO format (YYYY-MM-DD)
+            x-nullable: true
           payments_require_approval:
             type: boolean
             description: Whether payments require approval
