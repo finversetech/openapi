@@ -4696,6 +4696,11 @@ definitions:
         $ref: "#/definitions/PaymentFvLinkDetails"
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
+      skip_polling:
+        type: boolean
+        description: Set to true if payment uses GoCardless rail, indicating frontend should skip polling
+    required:
+      - skip_polling
 
   # Payment details that are safe to return to the front-end (i.e. non-sensitive fields)
   PaymentFvLinkDetails:
