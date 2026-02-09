@@ -2888,13 +2888,12 @@ definitions:
         description: Indicate whether the autopay enrollment screen should be prompted to the end user
         type: boolean
       enrollment_prefill_value:
-        description: Indicate what value should be prefilled on the autopay enrollment screen
+        description: Indicate what value should be prefilled on the autopay enrollment screen. Required when display_enrollment_screen is true; optional when display_enrollment_screen is false.
         type: string
         enum: ["YES", "NO"]
     required:
       - display_enrollment_screen
-      - enrollment_prefill_value
-  
+
   RecipientAccountFilters:
     properties:
       business_unit:
