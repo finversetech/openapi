@@ -27,7 +27,6 @@ openapi-generator-cli generate --ignore-file-override .openapi-generator-ignore 
 
 ```
 
-
 ## Troubleshooting
 
 If we make backward incompatible changes to API then we may run into errors like the following in the pipeline to publish Typescript SDK.
