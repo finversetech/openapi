@@ -5073,6 +5073,9 @@ definitions:
       mandate_processor_redirect_uri:
         type: string
         description: URL to redirect to for making the mandate payment (right now only for Gocardless)
+      processor_redirect_uri:
+        type: string
+        description: URL to redirect to for making the payment
 
 paths:
   /jwks:
