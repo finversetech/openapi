@@ -3240,6 +3240,13 @@ definitions:
         description: The issuer country
         example: "HK"
 
+  BankTransferDetails:
+    properties:
+      transfer_type:
+        type: string
+        description: The transfer type
+        example: "PayNow"
+
   RiskData:
     properties:
       processor_risk_data:
@@ -4791,7 +4798,13 @@ definitions:
             $ref: "#/definitions/FVWalletDetails"
           risk_data:
             $ref: "#/definitions/RiskData"
-      
+      bank_transfer:
+        properties:
+          bank_transfer_details:
+            $ref: "#/definitions/BankTransferDetails"
+          risk_data:
+            $ref: "#/definitions/RiskData"
+
   RefreshPaymentAttemptResponse:
     properties:
       redirect_url:
