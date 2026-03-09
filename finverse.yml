@@ -100,6 +100,10 @@ definitions:
         $ref: "#/definitions/GetMandateAuthLinkRequest"
       currency:
         type: string
+      history_date_limit:
+        type: string
+        description: Limit historical data retrieval to this date (YYYY-MM-DD)
+        example: "2024-01-31"
 
       # Some Payment Link specific stuffs
       redirect_uri:
@@ -964,6 +968,11 @@ definitions:
         maxLength: 100
       user_configs:
         $ref: '#/definitions/LinkTokenUserConfigs'
+      history_date_limit:
+        type: string
+        format: date
+        description: Limit historical data retrieval to this date. ISO format (YYYY-MM-DD)
+        example: "2024-01-31"
     required:
       - grant_type
       - response_type
@@ -4875,6 +4884,11 @@ definitions:
         type: string
         example: user-state-passed
         maxLength: 100
+      history_date_limit:
+        type: string
+        format: date
+        description: Limit historical data retrieval to this date. ISO format (YYYY-MM-DD)
+        example: "2024-01-31"
   
   RefreshLoginIdentityRequest:
     properties:
