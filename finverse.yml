@@ -276,6 +276,9 @@ definitions:
       statement_balance:
         type: object
         $ref: "#/definitions/CurrencyAmount"
+      ledger_balance:
+        type: object
+        $ref: "#/definitions/CurrencyAmount"
       is_parent:
         type: boolean
         example: false
