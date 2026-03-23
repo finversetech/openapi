@@ -40,14 +40,16 @@ security:
       - test
 
 tags:
-  - description: Operations does not required an access token
+  - description: Publicly accessible endpoints
     name: public
-  - description: Operations required a customer access token
+  - description: Customer endpoints
     name: customer
-  - description: Operations required a login identity access token
+  - description: Login identity endpoints
     name: login_identity
-  - description: Operations required a link token
+  - description: Link endpoints
     name: link
+  - description: Payment endpoints
+    name: payment
 
 definitions:
   Principal:
@@ -5520,6 +5522,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - customer
 
   /identity:
     get:
@@ -5544,28 +5548,6 @@ paths:
             $ref: "#/definitions/BadRequestModelV2"
       tags:
         - login_identity
-
-  /payment_links/confirm:
-    post:
-      description: Confirm a payment against a payment Link
-      operationId: confirmPayment
-      security:
-        - Oauth2: [payment:confirm] # This scope will be set by payment-link svc in the mandate token
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/ConfirmPaymentResponse"
-        "400":
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
 
   /payment_links:
     post:
@@ -5593,6 +5575,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payment_links/{paymentLinkId}:
     get:
@@ -5622,6 +5606,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payment_links/{paymentLinkId}/cancel:
     post:
@@ -5651,6 +5637,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payment_links/kcp/payment:
     post:
@@ -5678,6 +5666,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /link:
     post:
@@ -5747,8 +5737,7 @@ paths:
           schema:
             $ref: "#/definitions/BadRequestModelV2"
       tags:
-        - customer
-        - login_identity
+        - link
 
   /link/relink/{loginIdentityId}:
     post:
@@ -5854,35 +5843,6 @@ paths:
       tags:
         - link
 
-  /link/fvlink/status/{loginIdentityId}:
-    get:
-      description: Check the status of a given login identity via FVLink
-      operationId: linkStatusNonSensitive
-      security:
-        - Oauth2: [fvLinkStatus:read]
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          name: loginIdentityId
-          description: The login identity id
-          required: true
-          type: string
-      responses:
-        "200":
-          description: Successful
-          schema:
-            $ref: "#/definitions/NonSensitiveLinkStatusResponse"
-        "400":
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModel"
-      tags:
-        - link
 
   /auth/token:
     post:
@@ -5989,7 +5949,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - login_identity
 
   /login_identity/{loginIdentityId}/history:
     get:
@@ -6019,7 +5979,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - login_identity
 
   /login_identity:
     get:
@@ -6244,6 +6204,9 @@ paths:
           description: Payment User Id
           required: true
           type: string
+      tags:
+        - payment
+
     post:
       description: Create a Payment Method for a user
       operationId: createPaymentMethod
@@ -6281,7 +6244,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"        
-      
+      tags:
+        - payment
   
   /mandates:
     post:
@@ -6322,7 +6286,8 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
+
     get:
       description: List mandates
       operationId: listMandates
@@ -6393,6 +6358,8 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+      tags:
+        - payment
 
   /mandates/details:
     get:
@@ -6465,7 +6432,8 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
-
+      tags:
+        - payment
 
   /mandates/institution_selection:
     post:
@@ -6502,7 +6470,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /mandates/{mandateId}:
     get:
@@ -6536,7 +6504,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - payment
 
   /mandates/link:
     post:
@@ -6571,7 +6539,7 @@ paths:
             $ref: "#/definitions/GetMandateAuthLinkRequest"
           required: true
       tags:
-        - customer
+        - payment
 
   /mandates/sender_account:
     post:
@@ -6612,6 +6580,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payments:
     post:
@@ -6652,7 +6622,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
     get:
       description: List Payments
       operationId: listPayments
@@ -6747,6 +6717,8 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+      tags:
+        - payment
 
   /payments/{paymentId}:
     get:
@@ -6780,7 +6752,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - payment
     post:
       description: Update payment
       operationId: updatePayment
@@ -6818,7 +6790,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /mandates/auth:
     get:
@@ -6847,7 +6819,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
     post:
       description: Submit authorization checklist items
@@ -6882,7 +6854,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /mandates/{mandateId}/authorize:
     post:
@@ -6923,7 +6895,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /payments/instruction:
     post:
@@ -6962,7 +6934,8 @@ paths:
 
   /testing/payments/{paymentId}/status:
     post:
-      description: Update the status of a test manual payment
+      description: "[DEPRECATED] Update the status of a test manual payment"
+      deprecated: true
       operationId: updateTestPaymentStatus
       security:
         - Oauth2: [testPayment:update]
@@ -6992,11 +6965,12 @@ paths:
           schema:
             $ref: "#/definitions/UpdateTestPaymentStatusRequest"
       tags:
-        - customer
+        - payment
 
   /payments/instruction/{paymentInstructionId}:
     get:
-      description: Get payment instructions by payment_instruction_id
+      description: "[DEPRECATED] Get payment instructions by payment_instruction_id"
+      deprecated: true
       operationId: getPaymentInstruction
       security:
         - Oauth2: [payment:get]
@@ -7027,35 +7001,6 @@ paths:
           type: string
       tags:
         - customer
-
-  /payments/manual_payment:
-    post:
-      description: Submit manual payment confirmation
-      operationId: confirmManualPayment
-      security:
-        - Oauth2: [manual_payment:confirm] #this scope will be in manual payment token
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: manualPaymentIdentifiers
-          description: Request body containing information to identify manual payment
-          required: true
-          schema:
-            $ref: "#/definitions/ManualPaymentConfirmationRequest"
-      responses:
-        200:
-          description: ok
-          schema:
-            $ref: "#/definitions/ManualPaymentConfirmationResponse"
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
 
   /payouts/scheduled:
     post:
@@ -7090,6 +7035,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payouts/{payoutId}:
     get:
@@ -7122,6 +7069,8 @@ paths:
           description: payout id
           required: true
           type: string
+      tags:
+        - payment
 
   /payouts:
     get:
@@ -7197,6 +7146,8 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000       
+      tags:
+        - payment
 
   /payouts/{payoutId}/cancel:
     post:
@@ -7229,60 +7180,8 @@ paths:
           description: payout id
           required: true
           type: string
-
-  /payment_links/fps/qr_code:
-    get:
-      description: Get the FPS QR code
-      operationId: getFpsQrCode
-      security:
-        - Oauth2: [qr_code:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/FpsQrCodeResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-
-  /calculate/line_items_v2:
-    get:
-      description: Get line items for display
-      operationId: getLineItemsForDisplayV2
-      security:
-        - Oauth2: [line_items:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetLineItemsForDisplayResponseV2"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /payment_users/{paymentUserId}/payment_accounts:
     get:
@@ -7316,7 +7215,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - payment
 
   /payment_accounts:
     post:
@@ -7351,7 +7250,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
     get:
       description: Get payment account for customer app
       operationId: listPaymentAccountsWithEnrichedData
@@ -7404,7 +7303,7 @@ paths:
           minimum: 1
           maximum: 1000
       tags:
-        - customer
+        - payment
 
   /payment_accounts/{paymentAccountId}:
     delete:
@@ -7436,7 +7335,7 @@ paths:
           required: true
           type: string
       tags:
-        - customer
+        - payment
 
   /payment_users:
     post:
@@ -7471,7 +7370,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
 
   /payment_users/{paymentUserId}:
     get:
@@ -7504,7 +7403,7 @@ paths:
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       tags:
-        - customer
+        - payment
     post:
       description: Update a payment user
       operationId: updatePaymentUser
@@ -7536,6 +7435,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /payment_methods/{paymentMethodId}:
     get:
@@ -7567,41 +7468,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
-
-  /payment_links/fvlink/select_payment_method:
-    post:
-      description: Select a payment method for payment link
-      operationId: selectPaymentMethodPaymentLink
-      security:
-        - Oauth2: ['paymentLink:paymentMethod:select']
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: selectPaymentMethodRequest
-          description: request body for selecting a payment method
-          schema:
-            $ref: "#/definitions/SelectPaymentMethodRequest"
-          required: true
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/SelectPaymentMethodResponse"
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
 
   /ledger/statement:
     get:
@@ -7637,7 +7505,8 @@ paths:
           description: Bad Request
           schema:
             $ref: "#/definitions/ErrBodyModelV2"      
-    
+      tags:
+        - payment
   /disputes:
     get:
       description: List Disputes
@@ -7697,3 +7566,5 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+      tags:
+        - payment
