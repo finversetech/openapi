@@ -5089,6 +5089,10 @@ definitions:
         type: boolean
         description: Whether the user is on mobile device (only makes a difference if payment_method_provider is KCP)
         default: false
+      institution_id:
+        type: string
+        description: Optional Finverse institution ID (passed through when selecting KCP manual payment flow)
+        maxLength: 100
     required:
       - payment_account_id
       - payment_method_type
