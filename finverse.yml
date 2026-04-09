@@ -2236,6 +2236,12 @@ definitions:
       scheme:
         type: string
         description: Scheme like becs, bacs, ach, etc. (applicable to Gocardless for now)
+      virtual_account_number:
+        type: string
+        description: Virtual account number issued by the processor (e.g. KCP manual virtual account payments).
+      virtual_account_bank_code:
+        type: string
+        description: Bank code for the virtual account without a BK prefix (e.g. KCP manual virtual account payments).
       result:
         x-nullable: true
         $ref: "#/definitions/PaymentProcessorResult"
