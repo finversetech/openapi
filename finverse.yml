@@ -5020,6 +5020,130 @@ definitions:
       - total_disputes
       - disputes
 
+  FVBill:
+    properties:
+      bill_id:
+        type: string
+      external_bill_id:
+        type: string
+      user_id:
+        type: string
+      external_user_id:
+        type: string
+      customer_app_id:
+        type: string
+      bill_date:
+        type: string
+        format: date-time
+        x-nullable: true
+      due_date:
+        type: string
+        format: date-time
+        x-nullable: true
+      integration_metadata:
+        $ref: "#/definitions/BillIntegrationMetadata"
+      details:
+        $ref: "#/definitions/BillDetails"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+      status:
+        type: string
+        enum: &BILL_STATUS ["UNKNOWN", "UNPAID", "PAID", "CANCELLED", "FAILED"]
+      integration_id:
+        type: string
+      payment_id:
+        type: string
+      sender_details:
+        $ref: "#/definitions/BillSenderDetails"
+      created_at:
+        type: string
+        format: date-time
+        x-nullable: true
+      updated_at:
+        type: string
+        format: date-time
+        x-nullable: true
+      is_finverse_autopay_eligible:
+        type: boolean
+
+  GetBillResponse:
+    allOf:
+      - $ref: "#/definitions/FVBill"
+      - type: object
+        properties:
+          payments:
+            type: array
+            items:
+              $ref: "#/definitions/PaymentResponse"
+
+  ListBillsResponse:
+    properties:
+      bills:
+        type: array
+        items:
+          $ref: "#/definitions/FVBill"
+      has_more:
+        type: boolean
+        description: Whether additional bills exist beyond this page for the same query.
+    required:
+      - has_more
+
+  BillDetails:
+    properties:
+      total_amount_due:
+        type: integer
+        format: int64
+      total_amount_due_raw:
+        type: string
+      currency:
+        type: string
+      description:
+        type: string
+      bill_reference_id:
+        type: string
+
+  BillIntegrationMetadata:
+    properties:
+      integration_id:
+        type: string
+      rapidstor_metadata:
+        $ref: "#/definitions/BillRapidstorMetadata"
+
+  BillRapidstorMetadata:
+    properties:
+      corp_code:
+        type: string
+      s_location_code:
+        type: string
+      tenant_id:
+        type: string
+      i_anniv_days:
+        type: integer
+        format: int64
+      tenant_default_currency:
+        type: string
+      s_unit_name:
+        type: string
+      account_token:
+        type: string
+      ledger_id:
+        type: string
+      unit_id:
+        type: string
+      i_lease_num:
+        type: string
+      d_sched_out:
+        type: string
+      unit_type_id:
+        type: string
+
+  BillSenderDetails:
+    properties:
+      name:
+        type: string
+
   CompleteKcpPaymentRequest:
     properties:
       lang:
@@ -7588,6 +7712,94 @@ paths:
             type: string
             enum: *DISPUTE_STATUS
           description: The dispute statuses to filter for, comma separated
+        - in: query
+          name: offset
+          description: default is 0
+          required: false
+          type: integer
+          default: 0
+          minimum: 0
+        - in: query
+          name: limit
+          description: default is 500, max is 1000
+          required: false
+          type: integer
+          default: 500
+          minimum: 1
+          maximum: 1000
+      tags:
+        - payment
+  /bills/{billId}:
+    get:
+      description: Get a bill by ID
+      operationId: getBill
+      security:
+        - Oauth2: [bill:get]
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: billId
+          type: string
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/GetBillResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
+
+  /bills:
+    get:
+      description: List bills
+      operationId: listBills
+      security:
+        - Oauth2: [bill:list]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ListBillsResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: query
+          name: date_from
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: date_to
+          type: string
+          format: date
+          description: ISO format (YYYY-MM-DD)
+        - in: query
+          name: statuses
+          type: array
+          items:
+            type: string
+            enum: *BILL_STATUS
+          description: Bill statuses to filter for, comma separated
+        - in: query
+          name: user_id
+          type: string
+        - in: query
+          name: external_user_id
+          type: string
+        - in: query
+          name: currencies
+          type: array
+          items:
+            type: string
         - in: query
           name: offset
           description: default is 0
