@@ -5067,6 +5067,8 @@ definitions:
         x-nullable: true
       is_finverse_autopay_eligible:
         type: boolean
+    required:
+      - is_finverse_autopay_eligible
 
   GetBillResponse:
     allOf:
