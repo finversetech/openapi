@@ -52,6 +52,14 @@ tags:
     name: payment
 
 definitions:
+  FvDecimal:
+    type: number
+    x-go-type:
+      type: FvDecimal
+      import:
+        package: gitlab.com/finverse/gitops/applications/common-go/amount
+      embedded: true
+
   Principal:
     type: object
     properties:
@@ -77,7 +85,7 @@ definitions:
         type: string
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       expires_in:
-        type: number
+        type: integer
         example: 3600
       payment_attempt_id: # This will be populated if its a token for payment link
         type: string
@@ -313,8 +321,7 @@ definitions:
         example: "2021-10-27"
         description: The date the balance was recorded
       amount:
-        type: number
-        example: 69.00
+        $ref: "#/definitions/FvDecimal"
         description: The end of day balance for this account on this specific date
       currency:
         type: string
@@ -346,8 +353,7 @@ definitions:
         type: string
         example: "UNI$"
       value:
-        type: number
-        example: 69.00
+        $ref: "#/definitions/FvDecimal"
       raw:
         type: string
         example: "69.00"
@@ -360,8 +366,7 @@ definitions:
         type: string
         example: "HKD"
       value:
-        type: number
-        example: 69.00
+        $ref: "#/definitions/FvDecimal"
       raw:
         type: string
         example: "69.00"
@@ -839,7 +844,7 @@ definitions:
       token_type:
         type: string
       expires_in:
-        type: number
+        type: integer
         format: int64
         description: seconds
       issued_at:
@@ -998,7 +1003,7 @@ definitions:
       token_type:
         type: string
       expires_in:
-        type: number
+        type: integer
         format: int64
         description: seconds
       issued_at:
@@ -1021,7 +1026,7 @@ definitions:
       token_type:
         type: string
       expires_in:
-        type: number
+        type: integer
         format: int64
         description: seconds
       issued_at:
@@ -1356,7 +1361,7 @@ definitions:
       token_type:
         type: string
       expires_in:
-        type: number
+        type: integer
         format: int64
         description: seconds
       refresh_token:
@@ -1600,9 +1605,8 @@ definitions:
   IncomeEstimate:
     properties:
       amount:
-        type: number
+        $ref: "#/definitions/FvDecimal"
         description: Income amount
-        example: 100
       currency:
         type: string
         description: Currency
@@ -2042,12 +2046,12 @@ definitions:
       err:
         type: string
       http_status_code:
-        type: number
+        type: integer
         format: int
       status_text:
         type: string
       app_code:
-        type: number
+        type: integer
         format: int64
       error_category:
         type: string
@@ -2065,7 +2069,7 @@ definitions:
         type: object
         properties:
           code:
-            type: number
+            type: integer
             example: 40004
           name:
             type: string
@@ -2095,7 +2099,7 @@ definitions:
             type: string
             example: CREDENTIALS_INVALID
           code:
-            type: number
+            type: integer
             example: 40004
           message:
             type: string
@@ -2496,158 +2500,12 @@ definitions:
       - mandate_id
       - scheduled_date
 
-  CreatePaymentInstructionResponse:
-    properties:
-      payment_instruction_id:
-        type: string
-
-  GetPaymentInstructionsResponse:
-    properties:
-      payment_instruction:
-        $ref: "#/definitions/PaymentInstruction"
-
   UpdateTestPaymentStatusRequest:
     properties:
       status:
         type: string
         description: The payment status
         enum: ["EXECUTED"]
-
-  CustomerPaymentInstruction:
-    properties:
-      user_id:
-        type: string
-        description: A id of the user of this payment, need to equal to userId when creating link
-        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
-      type:
-        type: string
-        description: Type of payment is being created, please check Documentation on which payment type is supported in each institution
-        enum: ["DEBIT_AUTHORIZATION"]
-      recipient_name:
-        type: string
-        description: The recipient name
-        example: John Wick
-      recipient_account_id:
-        type: string
-        description: The recipient account Id
-        example: Something
-      sender_name:
-        type: string
-        description: The sender name
-        example: Jane Doe
-      sender_account_id:
-        type: string
-        description: The sender account Id
-        example: Something
-      start_date:
-        type: string
-        description: When the payment should start
-        example: 2022-01-23
-        format: date
-        x-nullable: true
-      end_date:
-        type: string
-        description: When the payment should stop
-        example: 2022-11-30
-        format: date
-        x-nullable: true
-      currency:
-        type: string
-        description: The currency for the payment
-        example: HKD
-      amount:
-        type: number
-        description: The payment amount
-        example: 123.45
-      frequency:
-        type: string
-        description: How often the payment should be executed
-        example: DAILY, WEEKLY OR MONTHLY
-      remarks:
-        type: string
-        description: Related remarks about this instruction
-        example: This is regular payment to pay for loan
-    required:
-      - user_id
-      - type
-
-  PaymentInstruction:
-    properties:
-      payment_instruction_id:
-        type: string
-        description: An id of the this payment
-        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
-      user_id:
-        type: string
-        description: An id of the user of this payment, need to equal to userId when creating link
-        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
-      login_identity_id:
-        type: string
-        description: An id that links this payment to a specific Login Identity
-        example: 01BX5ZZKBKACTAV9WEVGEMMVRY
-      type:
-        type: string
-        description: Type of payment that was created, please check Documentation on which payment type is supported in each institution
-        enum: ["DEBIT_AUTHORIZATION"]
-      recipient_name:
-        type: string
-        description: The recipient name
-        example: John Wick
-      recipient_account_id:
-        type: string
-        description: The recipient account Id
-        example: Something
-      sender_name:
-        type: string
-        description: The sender name
-        example: Jane Doe
-      sender_account:
-        $ref: "#/definitions/PaymentAccount"
-      sender_account_id:
-        type: string
-        description: The sender account Id
-        example: The sender account ID
-      start_date:
-        type: string
-        description: When the payment should start
-        example: 2022-01-23
-        format: date
-        x-nullable: true
-      end_date:
-        type: string
-        description: When the payment should stop
-        example: 2022-11-30
-        format: date
-        x-nullable: true
-      currency:
-        type: string
-        description: The currency for the payment
-        example: HKD
-      amount:
-        type: number
-        description: The payment amount
-        example: 123.45
-      frequency:
-        type: string
-        description: How often the payment should be executed
-        example: DAILY, WEEKLY OR MONTHLY
-      remarks:
-        type: string
-        description: Related remarks about this instruction
-        example: This is regular payment to pay for loan
-      status:
-        type: string
-        description: Status of the payment
-        example: UNKNOWN, STARTED, SUBMITTED, FAILED, NOT_SUPPORTED OR TEMPORARILY_UNAVAILABLE_FOR_INSTITUTION
-      reference_id:
-        type: string
-        description: Reference identification returned by institution
-      last_update:
-        type: string
-        format: date-time
-      info:
-        type: object
-        description: Extra information collected for this payment instruction
 
   CreateMandateRequest:
     properties:
@@ -7033,41 +6891,6 @@ paths:
       tags:
         - payment
 
-  /payments/instruction:
-    post:
-      description: Create a new payment instruction to be used when linking to perform new payment
-      operationId: createPaymentInstruction
-      security:
-        - Oauth2: [payment:create]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/CreatePaymentInstructionResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: body
-          name: paymentInstruction
-          description: Request body for starting a new Link
-          required: true
-          schema:
-            $ref: "#/definitions/CustomerPaymentInstruction"
-      tags:
-        - customer
-
   /testing/payments/{paymentId}/status:
     post:
       description: "[DEPRECATED] Update the status of a test manual payment"
@@ -7102,41 +6925,6 @@ paths:
             $ref: "#/definitions/UpdateTestPaymentStatusRequest"
       tags:
         - payment
-
-  /payments/instruction/{paymentInstructionId}:
-    get:
-      description: "[DEPRECATED] Get payment instructions by payment_instruction_id"
-      deprecated: true
-      operationId: getPaymentInstruction
-      security:
-        - Oauth2: [payment:get]
-      produces:
-        - application/json
-      responses:
-        200:
-          description: Successful
-          schema:
-            $ref: "#/definitions/GetPaymentInstructionsResponse"
-        400:
-          description: Invalid Request
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/BadRequestModel"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      parameters:
-        - in: path
-          name: paymentInstructionId
-          description: The id of a payment instruction
-          required: true
-          type: string
-      tags:
-        - customer
 
   /payouts/scheduled:
     post:
