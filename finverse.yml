@@ -4926,7 +4926,22 @@ definitions:
       is_finverse_autopay_eligible:
         type: boolean
     required:
+      - bill_id
+      - external_bill_id
+      - user_id
+      - external_user_id
+      - customer_app_id
+      - bill_date
+      - due_date
+      - details
+      - status
+      - integration_id
+      - payment_id
+      - sender_details
+      - created_at
+      - updated_at
       - is_finverse_autopay_eligible
+      - integration_metadata
 
   GetBillResponse:
     allOf:
@@ -4937,6 +4952,8 @@ definitions:
             type: array
             items:
               $ref: "#/definitions/PaymentResponse"
+        required:
+          - payments
 
   ListBillsResponse:
     properties:
@@ -4948,6 +4965,7 @@ definitions:
         type: boolean
         description: Whether additional bills exist beyond this page for the same query.
     required:
+      - bills
       - has_more
 
   BillDetails:
@@ -4963,6 +4981,12 @@ definitions:
         type: string
       bill_reference_id:
         type: string
+    required:
+      - total_amount_due
+      - total_amount_due_raw
+      - currency
+      - description
+      - bill_reference_id
 
   BillIntegrationMetadata:
     properties:
@@ -4970,6 +4994,8 @@ definitions:
         type: string
       rapidstor_metadata:
         $ref: "#/definitions/BillRapidstorMetadata"
+    required:
+      - integration_id
 
   BillRapidstorMetadata:
     properties:
@@ -4998,11 +5024,26 @@ definitions:
         type: string
       unit_type_id:
         type: string
+    required:
+      - corp_code
+      - s_location_code
+      - tenant_id
+      - i_anniv_days
+      - tenant_default_currency
+      - s_unit_name
+      - account_token
+      - ledger_id
+      - unit_id
+      - i_lease_num
+      - d_sched_out
+      - unit_type_id
 
   BillSenderDetails:
     properties:
       name:
         type: string
+    required:
+      - name
 
   CompleteKcpPaymentRequest:
     properties:
