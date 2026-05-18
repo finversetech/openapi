@@ -4562,6 +4562,11 @@ definitions:
         type: string
       payment_method_provider:
         type: string
+      payment_methods_list:
+        type: array
+        description: Ordered list of payment method brands, e.g. VISA, MASTERCARD, DISCOVER
+        items:
+          type: string
     required:
       - recurring
 
