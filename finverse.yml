@@ -4916,8 +4916,6 @@ definitions:
         enum: &BILL_STATUS ["UNKNOWN", "UNPAID", "PAID", "CANCELLED", "FAILED"]
       integration_id:
         type: string
-      payment_id:
-        type: string
       sender_details:
         $ref: "#/definitions/BillSenderDetails"
       created_at:
@@ -4941,7 +4939,6 @@ definitions:
       - details
       - status
       - integration_id
-      - payment_id
       - sender_details
       - created_at
       - updated_at
@@ -4978,8 +4975,6 @@ definitions:
       total_amount_due:
         type: integer
         format: int64
-      total_amount_due_raw:
-        type: string
       currency:
         type: string
       description:
@@ -4988,9 +4983,7 @@ definitions:
         type: string
     required:
       - total_amount_due
-      - total_amount_due_raw
       - currency
-      - description
       - bill_reference_id
 
   BillIntegrationMetadata:
