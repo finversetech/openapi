@@ -5101,6 +5101,21 @@ definitions:
     required:
       - redirect
 
+  AdyenCardSetupPaymentRequest:
+    description: Raw Drop-in state.data from onSubmit or onAdditionalDetails; forwarded as-is to the Adyen integration service
+    type: object
+    additionalProperties: true
+
+  AdyenCardSetupPaymentResponse:
+    description: Raw Adyen /payments or /payments/details JSON response; passed directly to Drop-in actions.resolve()
+    type: object
+    additionalProperties: true
+
+  AdyenCardSetupPaymentMethodsResponse:
+    description: Raw Adyen /paymentMethods JSON response; passed directly to Drop-in initialisation
+    type: object
+    additionalProperties: true
+
   SelectPaymentMethodRequest:
     properties:
       payment_account_id:
@@ -7644,5 +7659,83 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000
+      tags:
+        - payment
+
+  /payment_link/fvlink/adyen/payment_methods:
+    get:
+      description: Get available Adyen payment methods for Advanced card setup (proxy to Adyen /paymentMethods)
+      operationId: getAdyenCardSetupPaymentMethods
+      security:
+        - Oauth2: [adyenCheckout:bootstrap]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Adyen /paymentMethods response
+          schema:
+            $ref: "#/definitions/AdyenCardSetupPaymentMethodsResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
+
+  /payment_link/fvlink/adyen/payments:
+    post:
+      description: Submit Adyen card setup payment (proxy to Adyen /payments with Drop-in state.data from onSubmit)
+      operationId: submitAdyenCardSetupPayment
+      security:
+        - Oauth2: [adyenCheckout:submit]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: submitAdyenCardSetupPaymentRequest
+          description: Full Drop-in state.data from onSubmit
+          required: true
+          schema:
+            $ref: "#/definitions/AdyenCardSetupPaymentRequest"
+      responses:
+        200:
+          description: Adyen /payments response
+          schema:
+            $ref: "#/definitions/AdyenCardSetupPaymentResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
+
+  /payment_link/fvlink/adyen/payments/details:
+    post:
+      description: Submit Adyen card setup payment details (proxy to Adyen /payments/details with Drop-in state.data from onAdditionalDetails)
+      operationId: submitAdyenCardSetupPaymentDetails
+      security:
+        - Oauth2: [adyenCheckout:submit]
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: submitAdyenCardSetupPaymentDetailsRequest
+          description: Full Drop-in state.data from onAdditionalDetails (includes details + paymentData)
+          required: true
+          schema:
+            $ref: "#/definitions/AdyenCardSetupPaymentRequest"
+      responses:
+        200:
+          description: Adyen /payments/details response
+          schema:
+            $ref: "#/definitions/AdyenCardSetupPaymentResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
       tags:
         - payment
