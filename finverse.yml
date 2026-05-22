@@ -3033,7 +3033,7 @@ definitions:
       status:
         type: string
         description: Card Status
-        enum: &CARD_STATUS ["UNKNOWN", "PROCESSING", "SUCCEEDED", "CANCELLED", "FAILED"]
+        enum: &CARD_STATUS ["UNKNOWN", "CREATED", "SUCCEEDED", "CANCELLED", "FAILED"]
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
       card_details:
