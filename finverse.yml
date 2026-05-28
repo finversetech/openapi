@@ -2359,32 +2359,6 @@ definitions:
     required:
       - total_payments
 
-  CreateScheduledPayoutRequest:
-    properties:
-      amount:
-        type: integer
-        example: 100
-        description: Amount to be paid, in currency's smallest unit or “minor unit”, as defined in ISO 4217. For example, HKD 100.01 is represented as amount = 10001 (minor unit = cents). For currencies without minor units (e.g. VND, JPY), the amount is represented as is, without modification. For example, VND 15101 is represented as amount = 15101.
-      currency:
-        type: string
-        example: HKD
-        description: The currency code as defined in ISO 4217.
-        maxLength: 3
-      payment_details:
-        description: Additional details required for each payment type.
-        $ref: "#/definitions/PayoutDetails"
-      recipient_account:
-        $ref: "#/definitions/MandateRecipientRequest"
-        description: Information about the accountholder receiving the payment. See below.
-      metadata:
-        $ref:  "#/definitions/CreateMetadata"
-        description: "Additional attributes of the payout instruction in key:value format (e.g. payout_instruction_internal_id: 1234). It supports up to 10 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
-    required:
-      - payment_details
-      - recipient_account
-      - amount
-      - currency
-
   PayoutSnapshotResponse:
     properties:
       payout_id:
@@ -6980,42 +6954,6 @@ paths:
       tags:
         - payment
 
-  /payouts/scheduled:
-    post:
-      description: Create a scheduled payout
-      operationId: createScheduledPayout
-      security:
-        - Oauth2: [payout:create]
-      produces:
-        - application/json
-      parameters:
-        - in: header
-          name: Idempotency-Key
-          type: string
-          description: A random key provided by the customer, per unique payment. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
-          required: true
-        - in: body
-          name: createScheduledPayoutRequest
-          description: Request body containing information to create scheduled payout
-          required: true
-          schema:
-            $ref: "#/definitions/CreateScheduledPayoutRequest"
-      responses:
-        200:
-          description: ok
-          schema:
-            $ref: "#/definitions/PayoutSnapshotResponse"
-        400:
-          description: Bad Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-      tags:
-        - payment
-
   /payouts/{payoutId}:
     get:
       description: Get payout by payout_id
@@ -7142,14 +7080,6 @@ paths:
             $ref: "#/definitions/PayoutSnapshotResponse"
         400:
           description: Invalid Request
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        401:
-          description: Unauthorized
-          schema:
-            $ref: "#/definitions/ErrBodyModelV2"
-        500:
-          description: Internal Server Error
           schema:
             $ref: "#/definitions/ErrBodyModelV2"
       parameters:
