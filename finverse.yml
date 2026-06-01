@@ -2368,7 +2368,7 @@ definitions:
         enum: &PAYOUT_STATUS ["EXECUTED", "CREATED", "PROCESSING", "PROCESSING_FUNDS", "CANCELLED", "FAILED", "FUNDED", "SUBMITTED"]
       type:
         type: string
-        enum: &PAYOUT_TYPE ["MANUAL", "SCHEDULED", "SETTLEMENT"]
+        enum: &PAYOUT_TYPE ["MANUAL", "SCHEDULED", "SETTLEMENT", "ON_DEMAND"]
       created_at:
         type: string
         format: date-time
@@ -2411,6 +2411,59 @@ definitions:
         $ref: "#/definitions/FvEmbeddedErrorModel"
     required:
       - live
+
+  CreatePayoutRequest:
+    type: object
+    properties:
+      amount:
+        type: integer
+        description: The payout amount, in the minor unit of the currency
+      currency:
+        type: string
+        description: ISO 4217 currency code of the payout
+      confirm:
+        type: boolean
+        description: If true, the payout is immediately submitted for processing. If false, the payout is created in CREATED status and must be confirmed via POST /payouts/{payoutId}/confirm before it is processed.
+      payment_details:
+        $ref: "#/definitions/CreatePayoutDetails"
+      sender_account:
+        $ref: "#/definitions/PayoutAccountRef"
+      recipient_account:
+        $ref: "#/definitions/PayoutAccountRef"
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+        description: Up to 20 metadata key-value pairs
+    required:
+      - amount
+      - currency
+      - confirm
+      - payment_details
+      - sender_account
+      - recipient_account
+
+  CreatePayoutDetails:
+    type: object
+    properties:
+      description:
+        type: string
+        description: A description for the payout
+      external_transaction_reference:
+        type: string
+        description: Any reference ID provided by the customer for this payout
+    required:
+      - description
+      - external_transaction_reference
+
+  PayoutAccountRef:
+    type: object
+    properties:
+      account_id:
+        type: string
+        description: The payment account id
+    required:
+      - account_id
 
   ListPayoutsResponse:
     properties:
@@ -6989,6 +7042,36 @@ paths:
         - payment
 
   /payouts:
+    post:
+      description: Create a payout
+      operationId: createPayout
+      security:
+        - Oauth2: [payout:create]
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          type: string
+          description: A random key provided by the customer, per unique payout. The purpose for the Idempotency key is to allow safe retrying without the operation being performed multiple times.
+          required: true
+        - in: body
+          name: createPayoutRequest
+          description: Request body containing information to create a payout
+          required: true
+          schema:
+            $ref: "#/definitions/CreatePayoutRequest"
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/PayoutSnapshotResponse"
+        400:
+          description: Bad Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      tags:
+        - payment
     get:
       description: List payouts
       operationId: listPayouts
@@ -7062,6 +7145,32 @@ paths:
           default: 500
           minimum: 1
           maximum: 1000       
+      tags:
+        - payment
+
+  /payouts/{payoutId}/confirm:
+    post:
+      description: Confirm a payout that was created with confirm = false, submitting it for processing
+      operationId: confirmPayout
+      security:
+        - Oauth2: [payout:confirm]
+      produces:
+        - application/json
+      responses:
+        200:
+          description: ok
+          schema:
+            $ref: "#/definitions/PayoutSnapshotResponse"
+        400:
+          description: Invalid Request
+          schema:
+            $ref: "#/definitions/ErrBodyModelV2"
+      parameters:
+        - in: path
+          name: payoutId
+          description: payout id
+          required: true
+          type: string
       tags:
         - payment
 
