@@ -5164,9 +5164,28 @@ definitions:
         type: string
         description: Optional Finverse institution ID (passed through when selecting KCP manual payment flow)
         maxLength: 100
+      kcp_va_metadata:
+        $ref: "#/definitions/KcpVaMetadata"
     required:
       - payment_account_id
       - payment_method_type
+
+  KcpVaMetadata:
+    description: KCP virtual account metadata
+    type: object
+    properties:
+      va_receipt_gubn:
+        type: string
+        description: Cash receipt type; "0" = income tax deduction (for individuals), "1" = proof of expenditure (for businesses)
+        enum:
+          - "0"
+          - "1"
+      va_taxno:
+        type: string
+        description: ID number for cash receipt issuance
+    required:
+      - va_receipt_gubn
+      - va_taxno
 
   SelectPaymentMethodResponse:
     properties:
