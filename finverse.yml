@@ -2510,6 +2510,8 @@ definitions:
     properties:
       recipient_reference:
         type: string
+      finverse_transaction_reference:
+        type: string
 
   PayoutDetails:
     properties:
