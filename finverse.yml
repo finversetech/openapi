@@ -716,10 +716,8 @@ definitions:
         type: string
         example: "https://example.com/login"
       login_details:
-        x-go-type:
-          type: LoginDetails
-          import:
-            package: gitlab.com/finverse/gitops/applications/api/models/custom
+        x-nullable: true
+        $ref: "#/definitions/LoginDetails"
       login_methods:
         type: array
         items:
@@ -746,17 +744,19 @@ definitions:
       - institution_name
       - user_type
       - status
-      - login_details
 
-  # We will enable this once all our customers have stopped using legacy fields
-  # LoginDetails:
-  #   properties:
-  #     info_message:
-  #       type: string
-  #       example: "Use credentials: User ID = usergood | Password = datagood"
-  #     secret_required:
-  #       type: boolean
-  #       example: true
+  LoginDetails:
+    properties:
+      info_message:
+        type: string
+        example: "Use credentials: User ID = usergood | Password = datagood"
+      secret_required:
+        type: boolean
+        example: true
+      refresh_supported:
+        type: boolean
+        example: true
+        x-omitempty: false
 
   LoginMethod:
     properties:
