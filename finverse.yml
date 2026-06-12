@@ -2483,6 +2483,8 @@ definitions:
         type: string
       transaction_reference_id:
         type: string
+      external_transaction_reference:
+        type: string
       mandate_id:
         type: string
       scheduled_date:
