@@ -5137,9 +5137,33 @@ definitions:
     type: object
     additionalProperties: true
 
+  FrontendFvErrorModel:
+    description: Finverse error details surfaced to the frontend; absent on success and action-required outcomes
+    type: object
+    properties:
+      error_code:
+        type: string
+        description: Finverse error code
+        example: PAYMENT_METHOD_EXPIRED
+      message:
+        type: string
+        description: Short human-readable error message
+        example: Payment method expired
+      display_details:
+        type: string
+        description: Human-readable error detail safe for display to the end user
+        example: Please use a different payment method.
+    required:
+      - error_code
+      - message
+      - display_details
+
   AdyenCardSetupPaymentResponse:
     description: Raw Adyen /payments or /payments/details JSON response; passed directly to Drop-in actions.resolve()
     type: object
+    properties:
+      error:
+        $ref: "#/definitions/FrontendFvErrorModel"
     additionalProperties: true
 
   AdyenCardSetupPaymentMethodsResponse:
