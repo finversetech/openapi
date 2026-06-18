@@ -3292,6 +3292,9 @@ definitions:
         description: "Type of recipient account."
         example: "SETTLEMENT_ACCOUNT"
         enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+      settlement_account_reference:
+        type: string
+        description: Optional reference identifier for the settlement account. Only applicable to settlement accounts.
     required:
       - account_id
       - account_type
