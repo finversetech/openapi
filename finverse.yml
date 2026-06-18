@@ -4131,6 +4131,9 @@ definitions:
       legal_entity_name:
         type: string
         description: This field is only applicable to settlement account
+      settlement_account_reference:
+        type: string
+        description: Optional reference identifier for the settlement account. Only applicable to settlement accounts.
       metadata:
         type: object
         additionalProperties:
