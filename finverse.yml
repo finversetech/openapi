@@ -2514,6 +2514,10 @@ definitions:
         type: string
       finverse_transaction_reference:
         type: string
+      bank_transaction_reference:
+        type: string
+      bank_additional_reference:
+        type: string
 
   PayoutDetails:
     properties:
