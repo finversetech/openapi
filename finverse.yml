@@ -2182,7 +2182,7 @@ definitions:
         description: ID of the payment method this pament is referring to.
       payment_details:
         description: Additional details required for each payment type.
-        $ref: "#/definitions/PaymentDetails2"
+        $ref: "#/definitions/PaymentDetailsRequest"
       metadata:
         $ref:  "#/definitions/CreateMetadata"
         description: "Additional attributes of the payment in key:value format (e.g. payment_internal_id: 1234). It supports up to 20 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
@@ -2191,7 +2191,7 @@ definitions:
       - amount
       - currency
 
-  PaymentDetails2:
+  PaymentDetailsRequest:
     properties:
       description:
         type: string
@@ -2199,7 +2199,7 @@ definitions:
         maxLength: 100
       mandate_id:
         type: string
-        description: ID of the mandate this pament is referring to.
+        description: ID of the mandate this payment is referring to.
       transaction_reference_id:
         type: string
         description: "Deprecated: Customer's ID for this transaction"
@@ -2207,11 +2207,29 @@ definitions:
         type: string
         description: Customer reference for this transaction
         maxLength: 35
+      recurring_payment_mode:
+        type: string
+        description: The recurring payment mode
+
+  PaymentDetailsResponse:
+    properties:
+      description:
+        type: string
+        description: The transaction description provided to banks, which banks will show to their customers.
+      mandate_id:
+        type: string
+        description: ID of the mandate this payment is referring to.
+      transaction_reference_id:
+        type: string
+        description: "Deprecated: Customer's ID for this transaction"
+      external_transaction_reference:
+        type: string
+        description: Customer reference for this transaction
       references:
         $ref: "#/definitions/PaymentDetailsReferences"
-      processor_entity_name: 
+      processor_entity_name:
         type: string
-      collection_entity_name: 
+      collection_entity_name:
         type: string
       processor_details:
         x-nullable: true
@@ -2317,7 +2335,7 @@ definitions:
         description: ID of the payment method this pament is referring to.
       payment_details:
         description: Additional details required for each payment type.
-        $ref: "#/definitions/PaymentDetails2"
+        $ref: "#/definitions/PaymentDetailsResponse"
       recipient:
         $ref: "#/definitions/MandateRecipient"
       recipient_account:
