@@ -1306,6 +1306,10 @@ definitions:
       last_session_id:
         type: string
         format: ulid
+      username_hash_id:
+        type: string
+        format: ulid
+        description: stable id for the hashed bank username, used to track unique end-user online-banking accounts
       refresh:
         $ref: "#/definitions/RefreshData"
     required:
