@@ -2295,6 +2295,10 @@ definitions:
       payment_id:
         type: string
         description: Finverse Payment ID
+      live:
+        type: boolean
+        description: Whether the payment is live (true) or a test payment (false), based on its payment rail. Absent if the payment rail is unknown.
+        x-nullable: true
       amount:
         type: integer
         example: 100
@@ -4604,6 +4608,10 @@ definitions:
         type: string
       payment_method_type:
         type: string
+      live:
+        type: boolean
+        description: Whether the payment method is live (true) or a test payment method (false), based on its payment rail. Absent if the payment rail is unknown.
+        x-nullable: true
       mandate:
         $ref: "#/definitions/GetMandateResponse"
       card:
