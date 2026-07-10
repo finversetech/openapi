@@ -60,6 +60,62 @@ definitions:
         package: gitlab.com/finverse/gitops/applications/common-go/amount
       embedded: true
 
+  MandateStatus:
+    type: string
+    description: Mandate status
+    enum: &MANDATE_STATUS
+      - AUTHORIZATION_REQUIRED
+      - AUTHORIZING
+      - PROCESSING
+      - SUBMITTED
+      - SUCCEEDED
+      - FAILED
+      - REVOKED
+      - READY_TO_SUBMIT
+      - CLOSED
+      - CANCELLED
+
+  CardStatus:
+    type: string
+    description: Card status
+    enum: &CARD_STATUS
+      - UNKNOWN
+      - CREATED
+      - SUCCEEDED
+      - CANCELLED
+      - FAILED
+
+  PaymentStatus:
+    type: string
+    description: Payment status
+    enum: &PAYMENT_STATUS
+      - AUTHORIZATION_REQUIRED
+      - AUTHORIZING
+      - PROCESSING
+      - SUBMITTED
+      - EXECUTED
+      - FAILED
+      - REVOKED
+      - CANCELLED
+      - CREATED
+
+  PaymentType:
+    type: string
+    description: Indicates whether this is a mandate-based payment or one-off direct payment to an account
+    enum: &PAYMENT_TYPE
+      - MANDATE
+      - SINGLE
+      - CARD
+      - MANUAL
+      - WALLET
+
+  PaymentMethodType:
+    type: string
+    description: The payment method type
+    enum: &PAYMENT_METHOD_TYPE
+      - CARD
+      - MANDATE
+
   Principal:
     type: object
     properties:
@@ -2316,28 +2372,13 @@ definitions:
         example: HKD
         description: The currency code as defined in ISO 4217.
       type:
-        type: string
-        description: Indicates whether this is a mandate-based payment or one-off direct payment to an account. Possible values - MANDATE, SINGLE
-        enum: &PAYMENT_TYPE ["MANDATE", "SINGLE", "CARD", "MANUAL", "WALLET"]
+        $ref: "#/definitions/PaymentType"
       updated_at:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       status:
-        type: string
-        description: Possible values - CREATED, AUTHORIZED, SUBMITTED, EXECUTED, FAILED, REJECTED, CANCELLED.
-        enum:
-          &PAYMENT_STATUS [
-            "AUTHORIZATION_REQUIRED",
-            "AUTHORIZING",
-            "PROCESSING",
-            "SUBMITTED",
-            "EXECUTED",
-            "FAILED",
-            "REVOKED",
-            "CANCELLED",
-            "CREATED"
-          ]
+        $ref: "#/definitions/PaymentStatus"
       payment_method_id:
         type: string
         description: ID of the payment method this pament is referring to.
@@ -2646,21 +2687,7 @@ definitions:
         type: string
         description: Finverse Payment Method ID (ULID)
       status:
-        type: string
-        description: Mandate status
-        enum:
-          &MANDATE_STATUS [
-            "AUTHORIZATION_REQUIRED",
-            "AUTHORIZING",
-            "PROCESSING",
-            "SUBMITTED",
-            "SUCCEEDED",
-            "FAILED",
-            "REVOKED",
-            "READY_TO_SUBMIT",
-            "CLOSED",
-            "CANCELLED"
-          ]
+        $ref: "#/definitions/MandateStatus"
       recipient:
         $ref: "#/definitions/MandateRecipient"
       recipient_account:
@@ -2786,8 +2813,7 @@ definitions:
       payment_method_types:
         type: array
         items:
-          type: string
-          enum: *PAYMENT_TYPE
+          $ref: "#/definitions/PaymentType"
         x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
       recipient_account_filters:
         $ref: '#/definitions/RecipientAccountFilters'
@@ -2808,8 +2834,7 @@ definitions:
       payment_method_types:
         type: array
         items:
-          type: string
-          enum: *PAYMENT_TYPE
+          $ref: "#/definitions/PaymentType"
         x-omitempty: true # Reference: https://github.com/go-swagger/go-swagger/issues/1206
       recipient_account_filters:
         $ref: '#/definitions/RecipientAccountFilters'
@@ -3090,9 +3115,7 @@ definitions:
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
       status:
-        type: string
-        description: Card Status
-        enum: &CARD_STATUS ["UNKNOWN", "CREATED", "SUCCEEDED", "CANCELLED", "FAILED"]
+        $ref: "#/definitions/CardStatus"
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
       card_details:
@@ -3244,18 +3267,7 @@ definitions:
         type: string
         description: Finverse Payment Method ID (ULID)
       status:
-        type: string
-        description: Mandate Status
-        enum:
-          [
-            "AUTHORIZATION_REQUIRED",
-            "AUTHORIZING",
-            "PROCESSING",
-            "SUBMITTED",
-            "SUCCEEDED",
-            "FAILED",
-            "REVOKED",
-          ]
+        $ref: "#/definitions/MandateStatus"
       recipient:
         $ref: "#/definitions/MandateRecipient"
       recipient_account:
@@ -4099,8 +4111,7 @@ definitions:
       payment_id:
         type: string
       status:
-        type: string
-        enum: *PAYMENT_STATUS
+        $ref: "#/definitions/PaymentStatus"
 
   ListPaymentAccountsResponse:
     properties:
@@ -4213,8 +4224,7 @@ definitions:
         type: string
         description: It can be either REALTIME or DELAYED
       payment_method_type:
-        type: string
-        description: The payment method type, possible values CARD, MANDATE and MANUAL
+        $ref: "#/definitions/PaymentType"
       payment_method_subtype:
         type: string
         description: The payment method subtype, e.g., EDDA_HK, CARD_GENERIC etc
@@ -4422,10 +4432,7 @@ definitions:
       integration_metadata:
         $ref: '#/definitions/PaymentMethodIntegrationMetadata'
       payment_method_type:
-        type: string
-        enum:
-          - "CARD"
-          - "MANDATE"
+        $ref: "#/definitions/PaymentMethodType"
     required:
       - payment_method_type
 
@@ -4607,7 +4614,7 @@ definitions:
       payment_method_id:
         type: string
       payment_method_type:
-        type: string
+        $ref: "#/definitions/PaymentMethodType"
       live:
         type: boolean
         description: Whether the payment method is live (true) or a test payment method (false), based on its payment rail. Absent if the payment rail is unknown.
@@ -4625,7 +4632,7 @@ definitions:
       payment_method_id:
         type: string
       payment_method_type:
-        type: string
+        $ref: "#/definitions/PaymentMethodType"
       recipient_entity_name:
         type: string
       mandate:
@@ -4645,8 +4652,7 @@ definitions:
       payment_account_id:
         type: string
       payment_method_type:
-        type: string
-        description: The payment method type, possible values CARD, MANDATE and MANUAL
+        $ref: "#/definitions/PaymentType"
       payment_method_subtype:
         type: string
         description: The payment method subtype, e.g., EDDA_HK, CARD_GENERIC etc
@@ -4669,12 +4675,10 @@ definitions:
     properties:
       payment_id:
         type: string
-      status: 
-        type: string
-        enum: *PAYMENT_STATUS
+      status:
+        $ref: "#/definitions/PaymentStatus"
       type:
-        type: string
-        enum: *PAYMENT_TYPE
+        $ref: "#/definitions/PaymentType"
       payment_details:
         $ref: "#/definitions/PaymentFvLinkDetails"
       error:
@@ -4716,8 +4720,7 @@ definitions:
   CardFvLinkResponse:
     properties:
       status:
-        type: string
-        enum: *CARD_STATUS
+        $ref: "#/definitions/CardStatus"
       card_details:
         $ref: "#/definitions/CardFvLinkDetails"
       recipient:
@@ -5241,9 +5244,7 @@ definitions:
         description: The payment account ID of the selected payment method
         example: 01ARZ3NDEKTSV4RRFFQ69G5FAV
       payment_method_type:
-        type: string
-        description: The type of payment method to select
-        enum: *PAYMENT_TYPE
+        $ref: "#/definitions/PaymentType"
       sender_type:
         type: string
         enum: *SENDER_TYPE
