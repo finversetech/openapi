@@ -200,6 +200,41 @@ definitions:
       - AUTOPAY
       - CLICK_TO_PAY
 
+  PaymentUserType:
+    type: string
+    description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
+    enum: &SENDER_TYPE
+      - INDIVIDUAL
+      - BUSINESS
+
+  FeePaidBy:
+    type: string
+    description: Who pays the fee
+    enum: &FEE_PAID_BY
+      - RECIPIENT
+      - SENDER
+
+  PaymentAccountType:
+    type: string
+    description: Type of payment account
+    enum: &PAYMENT_ACCOUNT_TYPE
+      - EXTERNAL_ACCOUNT
+      - SETTLEMENT_ACCOUNT
+
+  AccountNumberType:
+    type: string
+    description: "Type of account number. Possible values: LOCAL, IBAN"
+    enum: &ACCOUNT_NUMBER_TYPE
+      - LOCAL
+      - IBAN
+
+  FinverseErrorCategory:
+    type: string
+    description: The error type
+    enum: &FINVERSE_ERROR_CATEGORY
+      - LINK_ERROR
+      - API_ERROR
+
   Principal:
     type: object
     properties:
@@ -2083,10 +2118,7 @@ definitions:
   FvEmbeddedErrorModel:
     properties:
       type:
-        type: string
-        enum: [LINK_ERROR, API_ERROR]
-        description: The error type
-        example: LINKING_ERROR
+        $ref: "#/definitions/FinverseErrorCategory"
       error_code:
         type: string
         example: CREDENTIALS_INVALID
@@ -2105,10 +2137,7 @@ definitions:
   FvErrorModelV2:
     properties:
       type:
-        type: string
-        enum: [LINK_ERROR, API_ERROR]
-        description: The error type
-        example: LINKING_ERROR
+        $ref: "#/definitions/FinverseErrorCategory"
       error_code:
         type: string
         example: CREDENTIALS_INVALID
@@ -2156,10 +2185,7 @@ definitions:
   FvErrorModel:
     properties:
       type:
-        type: string
-        enum: [LINK_ERROR, API_ERROR]
-        description: The error type
-        example: LINKING_ERROR
+        $ref: "#/definitions/FinverseErrorCategory"
       error_code:
         type: string
         example: CREDENTIALS_INVALID
@@ -2235,10 +2261,7 @@ definitions:
         type: object
         properties:
           type:
-            type: string
-            enum: [LINK_ERROR, API_ERROR]
-            description: The error type
-            example: LINKING_ERROR
+            $ref: "#/definitions/FinverseErrorCategory"
           error_code:
             type: string
             example: CREDENTIALS_INVALID
@@ -3127,9 +3150,7 @@ definitions:
         type: string
         example: HKD
       paid_by:
-        type: string
-        example: RECIPIENT
-        enum: [RECIPIENT, SENDER]
+        $ref: "#/definitions/FeePaidBy"
       paid_by_account_id:
         type: string
         description: The payment account Id
@@ -3394,10 +3415,7 @@ definitions:
         type: string
         description: Merchant account ID assigned by Finverse
       account_type:
-        type: string
-        description: "Type of recipient account."
-        example: "SETTLEMENT_ACCOUNT"
-        enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+        $ref: "#/definitions/PaymentAccountType"
       settlement_account_reference:
         type: string
         description: Optional reference identifier for the settlement account. Only applicable to settlement accounts.
@@ -3434,9 +3452,7 @@ definitions:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
       user_type:
-        type: string
-        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
-        enum: &SENDER_TYPE ["INDIVIDUAL", "BUSINESS"]
+        $ref: "#/definitions/PaymentUserType"
       user_details:
         description: Sender details which will be used for fraud checking.
         type: array
@@ -3457,9 +3473,7 @@ definitions:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
       user_type:
-        type: string
-        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
-        enum: ["INDIVIDUAL", "BUSINESS"]
+        $ref: "#/definitions/PaymentUserType"
       user_details:
         description: Sender details which will be used for fraud checking.
         type: array
@@ -3485,9 +3499,7 @@ definitions:
         type: string
         description: Customer App's user ID, representing the end-user making the payment.
       user_type:
-        type: string
-        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
-        enum: ["INDIVIDUAL", "BUSINESS"]
+        $ref: "#/definitions/PaymentUserType"
       user_details:
         description: Sender details which will be used for fraud checking.
         type: array
@@ -3829,9 +3841,7 @@ definitions:
         type: string
         description: Finverse Institution ID. Only returned if institution_id was included in the request.
       sender_type:
-        type: string
-        description: Type of account held by the Sender at the Institution. Possible values are INDIVIDUAL, BUSINESS
-        enum: ["INDIVIDUAL", "BUSINESS"]
+        $ref: "#/definitions/PaymentUserType"
       auth_checklist:
         description: Checklist of the authorization factors needed to complete Mandate authorization
         type: array
@@ -4029,10 +4039,7 @@ definitions:
         $ref: "#/definitions/RecipientAccountNumber"
         description: "Account number of the recipient’s account. See below."
       account_type:
-        type: string
-        description: "Type of recipient account."
-        example: "EXTERNAL_ACCOUNT"
-        enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+        $ref: "#/definitions/PaymentAccountType"
       currencies:
         type: array
         items:
@@ -4060,9 +4067,7 @@ definitions:
     type: object
     properties:
       type:
-        type: string
-        description: "Type of account number. Possible values: LOCAL, IBAN"
-        enum: [LOCAL, IBAN]
+        $ref: "#/definitions/AccountNumberType"
       number:
         type: string
         description: "Account number value"
@@ -4101,10 +4106,7 @@ definitions:
         type: string
         description: "Masked Account number of the sender’s account"
       account_type:
-        type: string
-        description: "Type of sender account."
-        example: "EXTERNAL_ACCOUNT"
-        enum: [EXTERNAL_ACCOUNT]
+        $ref: "#/definitions/PaymentAccountType"
       institution_id:
         type: string
         description: "Finverse Institution ID for the sender’s institution."
@@ -4216,10 +4218,7 @@ definitions:
         type: string
         description: Masked Account number of the payment account
       account_type:
-        type: string
-        description: "Type of payment account."
-        example: "EXTERNAL_ACCOUNT"
-        enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+        $ref: "#/definitions/PaymentAccountType"
       accountholder_name:
         type: string
         description: "Accountholder name of the payment account"
@@ -4362,8 +4361,7 @@ definitions:
         type: string
         maxLength: 100
       user_type:
-        type: string
-        enum: *SENDER_TYPE
+        $ref: "#/definitions/PaymentUserType"
       email:
         type: string
         maxLength: 256 # is max as specified in RFC 5321
@@ -4403,8 +4401,7 @@ definitions:
         format: date-time
         x-nullable: true        
       user_type:
-        type: string
-        enum: *SENDER_TYPE
+        $ref: "#/definitions/PaymentUserType"
         x-nullable: true  
     additionalProperties: true
 
@@ -4437,8 +4434,7 @@ definitions:
       user_id:
         type: string
       user_type:
-        type: string
-        enum: *SENDER_TYPE
+        $ref: "#/definitions/PaymentUserType"
       autopay_consent:
         type: boolean
         example: false
@@ -4478,8 +4474,7 @@ definitions:
       user_id:
         type: string
       user_type:
-        type: string
-        enum: *SENDER_TYPE
+        $ref: "#/definitions/PaymentUserType"
       autopay_consent:
         type: boolean
         example: false
@@ -5298,8 +5293,7 @@ definitions:
       payment_method_type:
         $ref: "#/definitions/PaymentType"
       sender_type:
-        type: string
-        enum: *SENDER_TYPE
+        $ref: "#/definitions/PaymentUserType"
       is_mobile:
         type: boolean
         description: Whether the user is on mobile device (only makes a difference if payment_method_provider is KCP)
@@ -7465,7 +7459,7 @@ paths:
           name: account_type
           type: string
           description: The account_type to filter for
-          enum: [EXTERNAL_ACCOUNT, SETTLEMENT_ACCOUNT]
+          enum: *PAYMENT_ACCOUNT_TYPE
         - in: query
           name: currencies
           type: array
