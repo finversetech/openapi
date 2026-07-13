@@ -116,6 +116,90 @@ definitions:
       - CARD
       - MANDATE
 
+  PaymentLinkStatus:
+    type: string
+    description: The status of payment link
+    enum: &PAYMENT_LINK_STATUS
+      - CREATED
+      - PAID
+      - EXPIRED
+
+  PaymentLinkSessionStatus:
+    type: string
+    description: The session status of payment link
+    enum: &PAYMENT_LINK_SESSION_STATUS
+      - OPEN
+      - PROCESSING
+      - COMPLETE
+      - FAILED
+
+  PaymentLinkMode:
+    type: string
+    description: The payment link mode
+    enum: &PAYMENT_LINK_MODE
+      - PAYMENT
+      - SETUP
+
+  BillStatus:
+    type: string
+    description: Bill status
+    enum: &BILL_STATUS
+      - UNKNOWN
+      - UNPAID
+      - PAID
+      - CANCELLED
+      - FAILED
+
+  DisputeStatus:
+    type: string
+    description: The status of the dispute
+    enum: &DISPUTE_STATUS
+      - UNKNOWN
+      - UNDEFENDED
+      - ACTION_REQUIRED
+      - PROCESSING
+      - ACCEPTED
+      - LOST
+      - WON
+
+  PayoutStatus:
+    type: string
+    description: Payout status
+    enum: &PAYOUT_STATUS
+      - EXECUTED
+      - CREATED
+      - PROCESSING
+      - PROCESSING_FUNDS
+      - CANCELLED
+      - FAILED
+      - FUNDED
+      - SUBMITTED
+
+  PayoutType:
+    type: string
+    description: Payout type
+    enum: &PAYOUT_TYPE
+      - MANUAL
+      - SCHEDULED
+      - SETTLEMENT
+      - ON_DEMAND
+
+  CardFundingType:
+    type: string
+    description: The funding source of the card
+    enum: &CARD_FUNDING_TYPE
+      - UNKNOWN
+      - CREDIT
+      - DEBIT
+      - PREPAID
+
+  FuturePaymentsMode:
+    type: string
+    description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
+    enum: &FUTURE_PAYMENTS_MODE
+      - AUTOPAY
+      - CLICK_TO_PAY
+
   Principal:
     type: object
     properties:
@@ -2431,11 +2515,9 @@ definitions:
       payout_id:
         type: string
       status:
-        type: string
-        enum: &PAYOUT_STATUS ["EXECUTED", "CREATED", "PROCESSING", "PROCESSING_FUNDS", "CANCELLED", "FAILED", "FUNDED", "SUBMITTED"]
+        $ref: "#/definitions/PayoutStatus"
       type:
-        type: string
-        enum: &PAYOUT_TYPE ["MANUAL", "SCHEDULED", "SETTLEMENT", "ON_DEMAND"]
+        $ref: "#/definitions/PayoutType"
       created_at:
         type: string
         format: date-time
@@ -2732,10 +2814,7 @@ definitions:
       link_customizations:
         $ref: "#/definitions/PaymentLinkCustomizations"
       mode:
-        type: string
-        enum: [PAYMENT, SETUP]
-        description: The payment link mode
-        example: PAYMENT
+        $ref: "#/definitions/PaymentLinkMode"
       payment_details:
         type: object
         $ref: "#/definitions/PaymentLinkDetails"
@@ -2805,9 +2884,7 @@ definitions:
   PaymentSetupOptions:
     properties:
       future_payments:
-        type: string
-        description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
-        enum: [AUTOPAY, CLICK_TO_PAY]
+        $ref: "#/definitions/FuturePaymentsMode"
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLink"
       payment_method_types:
@@ -2826,9 +2903,7 @@ definitions:
   PaymentSetupOptionsRequest:
     properties:
       future_payments:
-        type: string
-        description: "The type of future_payments that customer want to use. Possible values: AUTOPAY or CLICK_TO_PAY"
-        enum: [AUTOPAY, CLICK_TO_PAY]
+        $ref: "#/definitions/FuturePaymentsMode"
       mandate_details:
         $ref: "#/definitions/MandateDetailsForPaymentLinkRequest"
       payment_method_types:
@@ -2890,10 +2965,7 @@ definitions:
       link_customizations:
         $ref: "#/definitions/PaymentLinkCustomizations"
       mode:
-        type: string
-        enum: [PAYMENT]
-        description: The payment link mode
-        example: PAYMENT
+        $ref: "#/definitions/PaymentLinkMode"
       payment_details:
         type: object
         $ref: "#/definitions/PaymentLinkDetails"
@@ -2919,13 +2991,9 @@ definitions:
         type: string
         description: The URL for payment link
       status:
-        type: string
-        enum: [CREATED, PAID, EXPIRED]
-        description: The status of payment link
+        $ref: "#/definitions/PaymentLinkStatus"
       session_status:
-        type: string
-        enum: [OPEN,PROCESSING,COMPLETE,FAILED]
-        description: The session status of payment link
+        $ref: "#/definitions/PaymentLinkSessionStatus"
       created_at:
         type: string
         format: date-time
@@ -3156,9 +3224,7 @@ definitions:
         type: string
         example: "V0010013822052427221044754993"
       funding:
-        type: string
-        description: The funding source of the card
-        enum: &CARD_FUNDING_TYPE ["UNKNOWN", "CREDIT", "DEBIT", "PREPAID"]
+        $ref: "#/definitions/CardFundingType"
       finverse_authorization_reference:
         type: string
       processor_details:
@@ -4818,9 +4884,7 @@ definitions:
             description: The issuer country
             example: "HK"
           funding:
-            type: string
-            enum: *CARD_FUNDING_TYPE
-            description: The funding source of the card
+            $ref: "#/definitions/CardFundingType"
         required:
           - brand
           - last4
@@ -4931,18 +4995,7 @@ definitions:
         description: Whether the dispute is defendable
         x-nullable: true
       dispute_status:
-        type: string
-        description: The status of the dispute
-        enum:
-          &DISPUTE_STATUS [
-            "UNKNOWN",
-            "UNDEFENDED",
-            "ACTION_REQUIRED",
-            "PROCESSING",
-            "ACCEPTED",
-            "LOST",
-            "WON"
-          ]
+        $ref: "#/definitions/DisputeStatus"
       payment_processor_dispute_status:
         type: string
         description: The status of the dispute at the payment processor
@@ -5009,8 +5062,7 @@ definitions:
         additionalProperties:
           type: string
       status:
-        type: string
-        enum: &BILL_STATUS ["UNKNOWN", "UNPAID", "PAID", "CANCELLED", "FAILED"]
+        $ref: "#/definitions/BillStatus"
       integration_id:
         type: string
       sender_details:
