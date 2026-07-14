@@ -3067,8 +3067,8 @@ definitions:
       tenant_id:
         type: string
       i_anniv_days:
-        type: number
-        format: int32
+        type: integer
+        format: int64
         minimum: 1
         maximum: 31
       account_token:
@@ -3102,8 +3102,8 @@ definitions:
       tenant_id:
         type: string
       i_anniv_days:
-        type: number
-        format: int32
+        type: integer
+        format: int64
       tenant_default_currency:
         type: string
       account_token:
@@ -3227,10 +3227,12 @@ definitions:
         example: "1234"
       expiry_month:
         type: integer
+        format: int32
         description: The credit card expiry month
         example: 7
       expiry_year:
         type: integer
+        format: int32
         description: The credit card expiry year
         example: 2028
       processor_entity_name: 
@@ -3831,9 +3833,7 @@ definitions:
         type: string
         description: Finverse Mandate ID
       mandate_status:
-        type: string
-        description: Mandate status
-        enum: ["CREATED", "PROCESSING", "SUBMITTED", "ERROR"]
+        $ref: "#/definitions/MandateStatus"
       recipient_account_id:
         type: string
         description: Merchant account ID assigned by Finverse
@@ -3944,9 +3944,7 @@ definitions:
         items:
           $ref: "#/definitions/AuthChecklistFactor"
       mandate_status:
-        type: string
-        description: Mandate status
-        enum: ["CREATED", "PROCESSING", "SUBMITTED", "ERROR"]
+        $ref: "#/definitions/MandateStatus"
       last_update:
         type: string
         format: date-time
@@ -4763,7 +4761,7 @@ definitions:
       institution_id:
         type: string
       mandate_status:
-        type: string
+        $ref: "#/definitions/MandateStatus"
       recipient:
         $ref: "#/definitions/MandateRecipient"
       sender_account:
@@ -4802,10 +4800,12 @@ definitions:
         example: "1234"
       expiry_month:
         type: integer
+        format: int32
         description: The credit card expiry month
         example: 7
       expiry_year:
         type: integer
+        format: int32
         description: The credit card expiry year
         example: 2028
       collection_entity_name: 
@@ -4865,8 +4865,10 @@ definitions:
             type: string
           expiry_month:
             type: integer
+            format: int32
           expiry_year:
             type: integer
+            format: int32
           card_bin:
             type: string
             description: First 6 digits of the credit card number
