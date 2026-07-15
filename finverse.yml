@@ -235,6 +235,70 @@ definitions:
       - LINK_ERROR
       - API_ERROR
 
+  LoginIdentityStatus:
+    type: string
+    description: Login identity status
+    enum: &LOGIN_IDENTITY_STATUS
+      - UNKNOWN
+      - ERROR
+      - LINKING
+      - AUTHENTICATING
+      - CONNECTION_COMPLETE
+      - CONNECTION_IN_PROGRESS
+      - DATA_RETRIEVAL_IN_PROGRESS
+      - DATA_AVAILABLE
+      - DATA_RETRIEVAL_PARTIALLY_SUCCESSFUL
+      - DATA_RETRIEVAL_COMPLETE
+      - REFRESHING
+      - UNLINKED
+      - UNLINK_SUCCEEDED
+      - UNLINK_FAILED
+
+  LoginIdentitySessionStatus:
+    type: string
+    description: Login identity session status
+    enum: &LOGIN_IDENTITY_SESSION_STATUS
+      - UNKNOWN
+      - IN_PROGRESS
+      - COMPLETED
+      - UNLINKED
+
+  ProductHealthStatus:
+    type: string
+    description: Health status of a login identity product
+    enum: &PRODUCT_HEALTH_STATUS
+      - UNKNOWN
+      - IN_PROGRESS
+      - SUCCESS
+      - WARNING
+      - ERROR
+      - NOT_SUPPORTED
+      - NOT_AVAILABLE
+      - TEMPORARILY_UNAVAILABLE_FOR_INSTITUTION
+
+  LoginIdentityAuthStatus:
+    type: string
+    description: Login identity authentication status
+    enum: &LOGIN_IDENTITY_AUTH_STATUS
+      - UNKNOWN
+      - LINKING
+      - AUTHENTICATING
+      - AUTHENTICATED
+      - AUTHENTICATE_FAILED
+      - AUTHENTICATION_TEMPORARILY_UNAVAILABLE_FOR_INSTITUTION
+      - AUTHENTICATION_TOO_MANY_ATTEMPTS
+
+  AccountCategory:
+    type: string
+    description: Account category
+    enum: &ACCOUNT_CATEGORY
+      - UNKNOWN
+      - DEPOSIT
+      - CARD
+      - INVESTMENT
+      - LOAN
+      - OTHER
+
   Principal:
     type: object
     properties:
@@ -1402,8 +1466,7 @@ definitions:
         type: string
         format: ulid
       status:
-        type: string
-        example: LINKING
+        $ref: "#/definitions/LoginIdentityStatus"
       last_session_id:
         type: string
         format: ulid
@@ -1436,15 +1499,14 @@ definitions:
         $ref: "#/definitions/LoginIdentityBillingDetails"
         example: {}
       status:
-        type: string
-        example: LINKING
+        $ref: "#/definitions/LoginIdentityStatus"
       status_details:
         $ref: "#/definitions/LoginIdentityStatusDetails"
         example: {}
       product_status:
         $ref: "#/definitions/AllProductStatus"
       authentication_status:
-        $ref: "#/definitions/ProductStatus"
+        $ref: "#/definitions/AuthenticationStatus"
       error:
         $ref: "#/definitions/LoginIdentityError"
         example: {}
@@ -1459,8 +1521,7 @@ definitions:
         format: uri
         example: https://auth.example.com/callback
       session_status:
-        type: string
-        example: COMPLETED
+        $ref: "#/definitions/LoginIdentitySessionStatus"
       institution_id:
         type: string
         example: 123
@@ -1628,12 +1689,29 @@ definitions:
       card_details:
         $ref: "#/definitions/ProductStatus"
 
+  AuthenticationStatus:
+    properties:
+      status:
+        $ref: "#/definitions/LoginIdentityAuthStatus"
+      status_details:
+        type: string
+        description: The detailed event name
+        example: AUTHENTICATION_INITIALIZED
+      last_update:
+        type: string
+        format: date-time
+        example: "2021-02-01T10:01:02.333Z"
+        x-nullable: true
+      last_successful_update:
+        type: string
+        format: date-time
+        example: "2021-02-01T10:01:02.333Z"
+        x-nullable: true
+
   ProductStatus:
     properties:
       status:
-        type: string
-        description: The current health of this product
-        example: IN_PROGRESS, SUCCESS, PARTIAL_ERROR, WARNING, ERROR
+        $ref: "#/definitions/ProductHealthStatus"
       status_details:
         type: string
         description: The detailed event name
@@ -2309,9 +2387,7 @@ definitions:
   AccountType:
     properties:
       type:
-        type: string
-        example: "DEPOSIT"
-        enum: [DEPOSIT, CARD, INVESTMENT, LOAN, UNKNOWN]
+        $ref: "#/definitions/AccountCategory"
       subtype:
         type: string
         example: "SAVINGS"
