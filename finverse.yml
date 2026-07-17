@@ -432,6 +432,8 @@ definitions:
       source:
         type: string
         enum: [INSTITUTION, COMPUTED]
+    required:
+      - source
 
   GetIdentityResponse:
     properties:
@@ -688,6 +690,8 @@ definitions:
           $ref: "#/definitions/categoryPredictions"
     required:
       - is_pending
+      - transaction_id
+      - account_id
 
   categoryPredictions:
     type: object
@@ -902,6 +906,8 @@ definitions:
       portal_name:
         type: string
         example: Personal Internet Banking
+    required:
+      - institution_id
 
   Institution:
     properties:
@@ -1470,6 +1476,9 @@ definitions:
       last_session_id:
         type: string
         format: ulid
+    required:
+      - login_identity_id
+      - status
 
   LoginIdentity:
     properties:
@@ -1552,6 +1561,8 @@ definitions:
       - user_id
       - customer_app_id
       - institution_id
+      - login_identity_id
+      - status
 
   RefreshData:
     type: object
@@ -1585,6 +1596,8 @@ definitions:
       success:
         type: boolean
         example: "true"
+    required:
+      - success
 
   LinkResponse:
     properties:
@@ -1651,6 +1664,8 @@ definitions:
         type: string
         format: date-time
         example: "2021-02-01T10:01:02.333Z"
+    required:
+      - id
 
   StatementLink:
     properties:
@@ -1665,6 +1680,9 @@ definitions:
       statement_id:
         type: string
         example: "sadasd"
+    required:
+      - url
+      - statement_id
 
   AllProductStatus:
     properties:
@@ -1726,6 +1744,8 @@ definitions:
         format: date-time
         example: "2021-02-01T10:01:02.333Z"
         x-nullable: true
+    required:
+      - status
 
   CardDetails:
     properties:
@@ -1796,6 +1816,8 @@ definitions:
         type: string
         format: date-time
         example: "2021-02-01T10:01:02.333Z"
+    required:
+      - account_id
 
   CardTotal:
     properties:
@@ -2594,9 +2616,13 @@ definitions:
       payment_method:
         $ref: "#/definitions/PaymentSnapshotPaymentMethod"
     required:
+      - payment_id
       - amount
       - surcharge_amount
       - amount_total_with_surcharge
+      - currency
+      - type
+      - status
 
   ListPaymentsResponse:
     properties:
@@ -2607,6 +2633,7 @@ definitions:
       total_payments:
         type: integer
     required:
+      - payments
       - total_payments
 
   PayoutSnapshotResponse:
@@ -2659,6 +2686,11 @@ definitions:
         $ref: "#/definitions/FvEmbeddedErrorModel"
     required:
       - live
+      - payout_id
+      - status
+      - type
+      - currency
+      - amount
 
   CreatePayoutRequest:
     type: object
@@ -3113,6 +3145,13 @@ definitions:
         $ref: "#/definitions/PaymentMethodResponse"
       integration_metadata:
         $ref: "#/definitions/IntegrationMetadataResponse"
+    required:
+      - payment_link_id
+      - amount
+      - currency
+      - mode
+      - status
+      - session_status
 
   # basically same as PaymentLinkSender but it also contain the user_id
   # MandateSender obj has no email, so creating new definition here
@@ -3233,6 +3272,7 @@ definitions:
         example: The payment account ID
     required:
       - amount
+      - currency
 
   GetLineItemsForDisplayResponseV2:
     properties:
@@ -3289,6 +3329,8 @@ definitions:
         $ref: "#/definitions/MandateRecipientAccount"
       risk_data:
         $ref: "#/definitions/RiskData"
+    required:
+      - status
 
   # Card details returned for API
   FVCardDetails:
@@ -3486,6 +3528,8 @@ definitions:
       name:
         type: string
         description: Merchant account name
+    required:
+      - name
 
   MandateRecipientAccount:
     properties:
@@ -3806,6 +3850,8 @@ definitions:
         x-nullable: true
         description: Reference calendar periods for the payment limits. Possible values (DAILY, WEEKLY, MONTHLY, QUARTERLY, YEARLY)
         enum: ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "YEARLY"]
+    required:
+      - max_transaction_amount
     
   GetMandateAuthLinkResponse:
     properties:
@@ -4200,6 +4246,8 @@ definitions:
         additionalProperties:
           type: string
         description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 20 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
+    required:
+      - account_type
 
   GetPaymentUserResponse:
     type: object
@@ -4353,6 +4401,9 @@ definitions:
         type: string
         format: date-time
         description: Timestamp of when the payment link was last updated in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+    required:
+      - account_id
+      - account_type
 
   PaymentMethodOverview:
     properties:
@@ -4517,6 +4568,7 @@ definitions:
         $ref: "#/definitions/IntegrationMetadataResponse"
     required:
       - autopay_consent
+      - user_id
 
   # Should return this model for all endpoints except /payment_users/{id}
   PaymentUserWithoutEmail:
@@ -4557,6 +4609,7 @@ definitions:
         $ref: "#/definitions/IntegrationMetadataResponse"
     required:
       - autopay_consent
+      - user_id
 
   CreatePaymentMethodRequest:
     properties:
@@ -4760,6 +4813,9 @@ definitions:
         $ref: "#/definitions/FVCard"
       integration_metadata:
         $ref: '#/definitions/PaymentMethodIntegrationMetadataResponse'
+    required:
+      - payment_method_id
+      - payment_method_type
 
   # Payment method that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentMethodFvLinkResponse:
@@ -4774,7 +4830,10 @@ definitions:
         $ref: "#/definitions/MandateFvLinkResponse"
       card:
         $ref: "#/definitions/CardFvLinkResponse"
-  
+    required:
+      - payment_method_id
+      - payment_method_type
+
   AvailablePaymentMethodsFvLinkResponse:
     properties:
       available_payment_methods:
@@ -4804,6 +4863,7 @@ definitions:
           type: string
     required:
       - recurring
+      - payment_method_type
 
   # Payment that is safe to return to the front end (i.e. non-sensitive fields)
   PaymentFvLinkResponse:
@@ -4823,6 +4883,8 @@ definitions:
         description: Set to true if payment uses GoCardless rail, indicating frontend should skip polling
     required:
       - skip_polling
+      - status
+      - type
 
   # Payment details that are safe to return to the front-end (i.e. non-sensitive fields)
   PaymentFvLinkDetails:
@@ -4846,6 +4908,8 @@ definitions:
         $ref: "#/definitions/FvEmbeddedErrorModel"
       mandate_details:
         $ref: "#/definitions/MandateFvLinkDetails"
+    required:
+      - mandate_status
 
   MandateFvLinkDetails:
     properties:
@@ -4862,6 +4926,8 @@ definitions:
         $ref: "#/definitions/CardRecipient"
       error:
         $ref: "#/definitions/FvEmbeddedErrorModel"
+    required:
+      - status
 
   # Card details returned for FE (which may be different to what is returned to BE)
   CardFvLinkDetails:
@@ -5093,6 +5159,11 @@ definitions:
         type: string
         format: date-time
         description: Timestamp in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+    required:
+      - dispute_id
+      - amount
+      - currency
+      - dispute_status
   
   ListDisputesResponse:
     properties:
