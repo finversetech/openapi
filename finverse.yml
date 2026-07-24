@@ -2525,10 +2525,13 @@ definitions:
         description: Scheme like becs, bacs, ach, etc. (applicable to Gocardless for now)
       virtual_account_number:
         type: string
-        description: Virtual account number issued by the processor (e.g. KCP manual virtual account payments).
+        description: Virtual account number issued by the processor (applicable to KCP manual virtual account payments).
       virtual_account_bank_code:
         type: string
-        description: Bank code for the virtual account without a BK prefix (e.g. KCP manual virtual account payments).
+        description: Bank code for the virtual account without a "BK"/"B" prefix (applicable to KCP manual virtual account payments).
+      bank_code:
+        type: string
+        description: Bank code of the payer's bank without a "BK"/"B" prefix (applicable to KCP bank transfer payments).
       result:
         x-nullable: true
         $ref: "#/definitions/PaymentProcessorResult"
@@ -4246,8 +4249,6 @@ definitions:
         additionalProperties:
           type: string
         description: "Additional attributes of the sender account in key:value format (e.g. sender_id: 1234). It supports up to 20 key:value pairs, whereas the key and value supports up to 50 and 1000 characters respectively."
-    required:
-      - account_type
 
   GetPaymentUserResponse:
     type: object
