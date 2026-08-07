@@ -5052,7 +5052,7 @@ definitions:
         example: redirect
       redirect_uri:
         type: string
-        description: Required if ui_mode is redirect or auto_redirect
+        description: Required if user_present is true, or if ui_mode is redirect or auto_redirect
       state:
         type: string
         example: user-state-passed
@@ -5067,8 +5067,9 @@ definitions:
     properties:
       user_present:
         type: boolean
-        description: Indicate whether the user is present in this flow. If the user is not present, only institutions that do not require 2fa can be refreshed
+        description: Indicate whether the user is present in this flow. If the user is not present, only institutions that do not require 2fa can be refreshed. If true, link_customizations.redirect_uri is required
       link_customizations:
+        description: Required if user_present is true
         $ref: "#/definitions/RefreshLoginIdentityLinkCustomizations"
 
   DownloadBalanceStatementResponse:
