@@ -109,6 +109,22 @@ definitions:
       - MANUAL
       - WALLET
 
+  PaymentSubtype:
+    type: string
+    description: The payment subtype, derived from the payment's rail. Absent if the payment rail is unknown.
+    enum: &PAYMENT_SUBTYPE
+      - FPS_HK
+      - PAYNOW_SG
+      - EGIRO_SG
+      - EDDA_HK
+      - CARD_KR
+      - CARD_GENERIC
+      - WALLET_GENERIC
+      - GOCARDLESS_GENERIC
+      - MANUAL_GENERIC
+      - MANUAL_KR
+      - BANKPAY_KR
+
   PaymentMethodType:
     type: string
     description: The payment method type
@@ -2563,6 +2579,8 @@ definitions:
         type: boolean
         description: Whether the payment is live (true) or a test payment (false), based on its payment rail. Absent if the payment rail is unknown.
         x-nullable: true
+      subtype:
+        $ref: "#/definitions/PaymentSubtype"
       amount:
         type: integer
         example: 100
