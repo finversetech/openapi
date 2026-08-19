@@ -1676,6 +1676,10 @@ definitions:
       name:
         type: string
         example: "BusinessVantage"
+      file_name:
+        type: string
+        description: "name of the statement file"
+        example: "260530_bochk-biz_HKD.pdf"
       created_at:
         type: string
         format: date-time
