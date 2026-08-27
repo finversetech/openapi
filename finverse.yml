@@ -4855,7 +4855,7 @@ definitions:
         description: Whether the payment method is live (true) or a test payment method (false), based on its payment rail. Absent if the payment rail is unknown.
         x-nullable: true
       mandate:
-        $ref: "#/definitions/GetMandateResponse"
+        $ref: "#/definitions/PaymentMethodMandate"
       card:
         $ref: "#/definitions/FVCard"
       integration_metadata:
