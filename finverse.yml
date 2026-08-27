@@ -3482,7 +3482,7 @@ definitions:
         type: string
         description: The network transaction reference
 
-  GetMandateResponse:
+  MandateBase:
     properties:
       created_at:
         type: string
@@ -3502,8 +3502,6 @@ definitions:
         $ref: "#/definitions/MandateStatus"
       recipient:
         $ref: "#/definitions/MandateRecipient"
-      recipient_account:
-        $ref: "#/definitions/MandateRecipientAccount"
       sender:
         $ref: "#/definitions/GetMandateSender"
       sender_account:
@@ -3528,6 +3526,22 @@ definitions:
       - recipient
       - sender
       - mandate_details
+
+  GetMandateResponse:
+    allOf:
+      - $ref: "#/definitions/MandateBase"
+      - type: object
+        properties:
+          recipient_account:
+            $ref: "#/definitions/MandateRecipientAccount"
+
+  PaymentMethodMandate:
+    allOf:
+      - $ref: "#/definitions/MandateBase"
+      - type: object
+        properties:
+          recipient_account:
+            $ref: "#/definitions/PaymentMethodRecipientAccount"
 
   ListMandatesResponse:
     properties:
@@ -3569,6 +3583,18 @@ definitions:
     required:
       - account_id
       - account_type
+
+  PaymentMethodRecipientAccount:
+    allOf:
+      - $ref: "#/definitions/MandateRecipientAccount"
+      - type: object
+        properties:
+          business_units:
+            type: array
+            items:
+              type: string
+            description: The business units the payment account belongs to
+            x-omitempty: true
 
   MandateRecipientRequest:
     properties:
