@@ -3570,6 +3570,51 @@ definitions:
     required:
       - name
 
+  PaymentLinkConfigs:
+    properties:
+      display_configs:
+        $ref: "#/definitions/DisplayConfigs"
+
+  DisplayConfigs:
+    properties:
+      display_status:
+        type: string
+        enum: ["ACTIVE", "INACTIVE"]
+      payment_methods_list:
+        type: array
+        description: Ordered list of payment method brands
+        x-omitempty: true
+        items:
+          type: string
+          enum:
+            [
+              "ALIPAY",
+              "ALIPAY_HK",
+              "AMEX",
+              "APPLEPAY",
+              "DINERS",
+              "DISCOVER",
+              "EFTPOS",
+              "EGIRO_SG",
+              "FPS_HK",
+              "GOOGLEPAY",
+              "GRABPAY",
+              "JCB",
+              "MAESTRO",
+              "MASTERCARD",
+              "PAYME",
+              "PAYNOW_SG",
+              "PAYPAL",
+              "PAYTO_AU",
+              "UNIONPAY",
+              "VISA",
+              "WECHAT_PAY",
+              "EDDA_HK",
+              "BANKPAY_KR",
+              "CARD_GENERIC",
+              "BANK_GENERIC",
+            ]
+
   MandateRecipientAccount:
     properties:
       account_id:
@@ -4439,6 +4484,9 @@ definitions:
       settlement_account_reference:
         type: string
         description: Optional reference identifier for the settlement account. Only applicable to settlement accounts.
+      payment_link_configs:
+        $ref: "#/definitions/PaymentLinkConfigs"
+        description: This field is only applicable to settlement account.
       metadata:
         type: object
         additionalProperties:
