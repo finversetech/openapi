@@ -4290,6 +4290,10 @@ definitions:
         example: "01GY6H0JA7BS8EVGY56NSHFX2E"
       bank_code:
         type: string
+      bic:
+        type: string
+        description: "BIC (SWIFT code) of the sender’s institution. Only returned when account_type is EXTERNAL_ACCOUNT and the institution has a registered BIC."
+        example: "DBSSSGSGXXX"
       metadata:
         type: object
         additionalProperties:
