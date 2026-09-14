@@ -4462,6 +4462,10 @@ definitions:
         type: string
         description: "3-digit code associated with bank"
         example: "004"
+      bic:
+        type: string
+        description: "BIC (SWIFT code) of the account’s institution. Only returned when account_type is EXTERNAL_ACCOUNT and the institution has a registered BIC."
+        example: "DBSSSGSGXXX"
       branch_code:
         type: string
         description: "3-digit code used to identify specific bank branch"
