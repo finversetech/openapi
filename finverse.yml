@@ -4741,6 +4741,7 @@ definitions:
           - "CYBERSOURCE"
           - "ADYEN"
           - "GOCARDLESS"
+          - "CASHFREE"
       stripe_metadata:
         type: object
         properties:
@@ -4822,6 +4823,15 @@ definitions:
             x-nullable: true
         required:
           - mandate_id
+      cashfree_metadata:
+        type: object
+        properties:
+          cf_subscription_id:
+            type: string
+            description: Cashfree subscription reference
+          upi_id:
+            type: string
+            description: UPI ID used for the mandate
     required:
       - integration_id
 
@@ -4901,6 +4911,16 @@ definitions:
             format: date-time
             description: The timestamp when the mandate was verified, in ISO format (YYYY-MM-DDTHH:MM:SS.SSSZ)
             x-nullable: true
+        x-nullable: true
+      cashfree_metadata:
+        type: object
+        properties:
+          cf_subscription_id:
+            type: string
+            description: Cashfree subscription reference
+          upi_id:
+            type: string
+            description: UPI ID used for the mandate
         x-nullable: true
         
   # we use this model when payment method is nested
