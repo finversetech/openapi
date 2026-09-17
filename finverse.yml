@@ -3762,6 +3762,9 @@ definitions:
       mandate_bank_reference:
         type: string
         description: A bank specific reference, what the end user may see
+      finverse_authorization_reference:
+        type: string
+        description: Finverse-generated authorization reference for mandate setup with external processors.
       processor_entity_name:
         type: string
       collection_entity_name:
