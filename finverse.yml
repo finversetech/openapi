@@ -125,6 +125,7 @@ definitions:
       - MANUAL_GENERIC
       - MANUAL_KR
       - BANKPAY_KR
+      - UPI_IN
 
   PaymentMethodType:
     type: string
