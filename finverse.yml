@@ -4958,9 +4958,22 @@ definitions:
         $ref: "#/definitions/MandateFvLinkResponse"
       card:
         $ref: "#/definitions/CardFvLinkResponse"
+      integration_metadata:
+        $ref: "#/definitions/PaymentMethodIntegrationMetadataFvLinkResponse"
     required:
       - payment_method_id
       - payment_method_type
+
+  # Integration metadata that is safe to return to the front end (i.e. non-sensitive fields)
+  PaymentMethodIntegrationMetadataFvLinkResponse:
+    properties:
+      cashfree_metadata:
+        $ref: "#/definitions/CashfreeMetadataFvLinkResponse"
+
+  CashfreeMetadataFvLinkResponse:
+    properties:
+      upi_id:
+        type: string
 
   AvailablePaymentMethodsFvLinkResponse:
     properties:
