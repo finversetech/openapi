@@ -3770,6 +3770,9 @@ definitions:
         type: string
       collection_entity_name:
         type: string
+      upi_id:
+        type: string
+        description: UPI ID (VPA) used for the mandate
     required:
       - currency
 
@@ -4830,9 +4833,6 @@ definitions:
           cf_subscription_id:
             type: string
             description: Cashfree subscription reference
-          upi_id:
-            type: string
-            description: UPI ID used for the mandate
     required:
       - integration_id
 
@@ -4919,9 +4919,6 @@ definitions:
           cf_subscription_id:
             type: string
             description: Cashfree subscription reference
-          upi_id:
-            type: string
-            description: UPI ID used for the mandate
         x-nullable: true
         
   # we use this model when payment method is nested
