@@ -991,6 +991,8 @@ definitions:
       color:
         type: string
         example: "#FFFFFF"
+      logos:
+        $ref: "#/definitions/InstitutionLogos"
       updated_at:
         type: string
         format: date-time
@@ -1007,6 +1009,17 @@ definitions:
       - institution_name
       - user_type
       - status
+
+  InstitutionLogos:
+    properties:
+      full:
+        type: string
+        description: URL of the full-size (rectangular) institution logo
+        example: "https://link.prod.finverse.net/img/institutions/hsbc.svg"
+      square:
+        type: string
+        description: URL of the square institution icon
+        example: "https://link.prod.finverse.net/img/square/hsbc.svg"
 
   LoginDetails:
     properties:
