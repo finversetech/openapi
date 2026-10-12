@@ -3628,6 +3628,7 @@ definitions:
               "BANKPAY_KR",
               "CARD_GENERIC",
               "BANK_GENERIC",
+              "RUPAY",
             ]
 
   MandateRecipientAccount:
