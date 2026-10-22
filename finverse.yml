@@ -2463,6 +2463,12 @@ definitions:
             MORTGAGE,
             PERSONAL_LOAN,
             REVOLVING_LOAN,
+            RETIREMENT,
+            TRADE_FINANCE,
+            WORKING_CAPITAL_LOAN,
+            PROPERTY_LOAN,
+            TERM_LOAN,
+            BRIDGE_LOAN,
             UNKNOWN,
           ]
 
