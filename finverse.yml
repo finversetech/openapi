@@ -3722,7 +3722,6 @@ definitions:
     required:
       - user_id
       - external_user_id
-      - user_type
 
   # Same as GetMandateSender but also echoes the sender's email from the create request.
   CreateMandateSenderResponse:
@@ -3748,7 +3747,6 @@ definitions:
     required:
       - user_id
       - external_user_id
-      - user_type
 
   # this is mandate details that is returned by READ endpoint
   MandateDetailsResponse:
