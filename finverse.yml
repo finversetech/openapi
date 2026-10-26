@@ -5673,6 +5673,7 @@ paths:
         - in: body
           name: tokenRequest
           description: token request
+          required: true
           schema:
             $ref: "#/definitions/TokenRequest"
       responses:
