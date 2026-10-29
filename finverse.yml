@@ -3432,6 +3432,10 @@ definitions:
         type: string
         description: The card number alias
         example: "F046886807590403"
+      accountholder_name:
+        type: string
+        description: The cardholder name returned by the card processor
+        example: "John Doe"
       is_commercial:
         type: boolean
         description: Whether the card is a commercial card
