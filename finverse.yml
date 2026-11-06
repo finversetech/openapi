@@ -2261,11 +2261,16 @@ definitions:
         type: string
       details:
         type: string
+      display_details:
+        type: string
+        description: Human-readable error detail safe for display to the end user
+        example: Please use a different payment method.
     required:
       - type
       - error_code
       - message
       - details
+      - display_details
 
   # DONOTUSE
   # This is the inner part of ErrBodyModelV2 and should not be used directly
@@ -2280,6 +2285,10 @@ definitions:
         type: string
       details:
         type: string
+      display_details:
+        type: string
+        description: Human-readable error detail safe for display to the end user
+        example: Please use a different payment method.
       request_id:
         type: string
         description: The request_id provided in the request header
@@ -2288,6 +2297,7 @@ definitions:
       - error_code
       - message
       - details
+      - display_details
       - request_id
 
   # DONOTUSE
@@ -2331,6 +2341,10 @@ definitions:
         type: string
       details:
         type: string
+      display_details:
+        type: string
+        description: Human-readable error detail safe for display to the end user
+        example: Please use a different payment method.
       request_id:
         type: string
         description: The request_id provided in the request header
@@ -2340,6 +2354,7 @@ definitions:
       - error_code
       - message
       - details
+      - display_details
       - request_id
 
   # DONOTUSE
@@ -2407,6 +2422,10 @@ definitions:
             type: string
           details:
             type: string
+          display_details:
+            type: string
+            description: Human-readable error detail safe for display to the end user
+            example: Please use a different payment method.
           request_id:
             type: string
             description: The request_id provided in the request header
