@@ -1092,7 +1092,27 @@ definitions:
       type:
         type: string
         example: "password"
-        description: "could be password, text, number"
+        description: "could be password, text, number, select"
+      options:
+        type: array
+        description: This is only applicable when the field type is select
+        items:
+          $ref: "#/definitions/LoginFieldOption"
+        x-omitempty: true
+
+  LoginFieldOption:
+    properties:
+      label:
+        type: string
+        description: The text displayed in the select element
+        example: Singapore
+      value:
+        type: string
+        description: The value submitted when this option is selected
+        example: SG
+    required:
+      - label
+      - value
 
   TokenRequest:
     properties:
