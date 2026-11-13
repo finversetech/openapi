@@ -4004,12 +4004,16 @@ definitions:
         minimum: 1
       max_transaction_amount:
         type: integer
-        description: The maximum amount of money that can be transferred in a single transaction under this mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+        description: The maximum amount of money that can be transferred in a single transaction under this mandate. This is the final limit applied, which may differ from the merchant-requested limit (e.g. capped by the payment method). Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
         minimum: 1
       max_transaction_amount_set_by_payer_initial:
         type: integer
         x-nullable: true
         description: The maximum amount of money that can be transferred in a single transaction under this mandate set by the payer. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
+      max_transaction_amount_requested_by_merchant:
+        type: integer
+        x-nullable: true
+        description: The maximum amount of money per transaction requested by the merchant when creating the mandate. Expressed in currency's smallest unit or “minor unit”, as defined in ISO 4217.
       period:
         type: string
         x-nullable: true
